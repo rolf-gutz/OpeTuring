@@ -1,6 +1,6 @@
 from flask import render_template, request
 from app import app, db
-from app.models.tables import Pessoa
+from app.models.PessoaModel import Pessoa
 
 @app.route('/')
 @app.route('/login')
