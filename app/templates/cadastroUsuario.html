@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<meta http-equiv='cache-control' content='no-cache'>
+	<meta http-equiv='expires' content='0'>
+	<meta http-equiv='pragma' content='no-cache'>
+	<title>Cadastrar Usuário</title>
+
+</head>
+<body>
+	<nav class="navbar navbar-expand-sm bg-dark">
+		<div class="dropdown">
+			<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				Existente
+			</button>
+			<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			  <a class="dropdown-item" href="/listagem">Action</a>
+			  <a class="dropdown-item" href="/insercao">Another action</a>
+			  <a class="dropdown-item" href="/graficos">Something else here</a>
+			</div>
+		  </div>
+		  <div class="dropdown">
+			<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				Usuário
+			</button>
+			<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			  <a class="dropdown-item" href="/cadastrarUser">Cadastrar Usuário</a>
+			  <a class="dropdown-item" href="/insercao">Another action</a>
+			  <a class="dropdown-item" href="/graficos">Something else here</a>
+			</div>
+		  </div>
+	</nav>
+	<br>
+	<div class="container">
+		<h2>Cadastrar Usuário </h2>
+		<form class="ml-3" action="/salvar_cadastro" method="POST" name="form_insercao" class="ml-3"> 			
+			<div class="form-row">
+			  <div class="form-group col-md-6">
+				<label for="inputEmail4">Email</label>
+				<input type="email" name="email" class="form-control"  placeholder="Email">
+			  </div>
+			  <div class="form-group col-md-6">
+				<label for="inputPassword4">Senha</label>
+				<input type="password" name="password" class="form-control"  placeholder="Senha">
+			  </div>
+			</div>
+			<div class="form-group">
+			  <label for="inputAddress">Nome</label>
+			  <input type="text" name="nome" class="form-control"  placeholder="Nome Completo">
+			</div>
+			<div class="form-group">
+			  <label for="inputAddress2">Endereço</label>
+			  <input type="text"  name="endereco" class="form-control"  placeholder="Apartamento, hotel, casa, etc.">
+			</div>
+			<div class="form-row">
+			  <div class="form-group col-md-6">
+				<label for="inputCity">Cidade</label>
+				<input type="text"  name="cidade" class="form-control" >
+			  </div>
+			  <div class="form-group col-md-4">
+				<label for="inputEstado">Estado</label>
+				<select  name="estado" class="form-control">
+					<option>Administrador</option>
+					<option>Acre (AC)</option>
+					<option>Alagoas (AL)</option>
+					<option>Amapá (AP)</option>
+					<option>Amazonas (AM)</option>
+					<option>Bahia (BA)</option>
+					<option>Ceará (CE)</option>
+					<option>Distrito Federal (DF)</option>
+					<option>Espírito Santo (ES)</option>
+					<option>Goiás (GO)</option>
+					<option>Maranhão (MA)</option>
+					<option>Mato Grosso (MT)</option>
+					<option>Mato Grosso do Sul (MS)</option>
+					<option>Minas Gerais (MG)</option>
+					<option>Pará (PA)</option>
+					<option>Paraíba (PB)</option>
+					<option>Paraná (PR)</option>
+					<option>Pernambuco (PE)</option>
+					<option>Piauí (PI)</option>
+					<option>Rio de Janeiro(RJ)</option>
+					<option>Rio Grande do Norte(RN)</option>
+					<option>Rio Grande do Sul (RS)</option>
+					<option>Rondônia (RO)</option>
+					<option>Roraima (RR)</option>
+					<option>Santa Catarina (SC)</option>
+					<option>São Paulo (SP)</option>
+					<option>Sergipe (SE)</option>
+					<option>Tocantins (TO)</option>
+				</select>
+			  </div>
+			  <div class="form-group col-md-2">
+				<label for="inputCEP">CEP</label>
+				<input type="text" name="cep"class="form-control" >
+			  </div>
+			  <div class="form-group col-md-4">
+				<label for="inputTipo">Estado</label>
+				<select  name="tipoUsuario" class="form-control">
+					<option>Administrador</option>
+					<option>Funcionario</option>
+					<option>Cliente</option>
+				</select>
+			  </div>
+			</div>
+			
+			<button type="submit" class="btn btn-primary">Entrar</button>
+		  </form>
+	</div>
+</body>
+</html>
