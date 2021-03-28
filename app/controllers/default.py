@@ -1,11 +1,44 @@
 from flask import render_template, request
 from app import app, db
 from app.models.PessoaModel import Pessoa
+from app.models.UsuarioModel import UsuarioModel
+from werkzeug.security import generate_password_hash, check_password_hash
 
 @app.route('/')
 @app.route('/login')
 def login():
     return render_template('login.html')
+
+# CADASTRO USUARIO
+# *********************************************************
+
+@app.route('/cadastrarUsuario')
+def cadastrarUsuario():
+	return render_template('cadastroUsuario.html')
+
+@app.route('/salvar_cadastro',methods=['POST'])
+def salvar_cadastro():
+	nome = request.form.get('nome')
+	email = request.form.get('email')
+	password = generate_password_hash(request.form["password"])
+	endereco = request.form.get('endereco')
+	cidade = request.form.get('cidade')
+	estado = request.form.get('estado')
+	cep = request.form.get('cep')			
+	tipoUsuario = request.form.get('tipoUsuario')
+
+	usuario = UsuarioModel(nome,email,password,endereco,cidade,estado,cep,tipoUsuario)
+
+	db.session.add(usuario)
+	db.session.commit()
+
+	usuarios = UsuarioModel.query.all()
+	return render_template('listagem.html', usuarios=usuarios, ordem='id')
+
+
+# *********************************************************
+
+
 
 @app.route('/listagem')
 def listagem():
