@@ -15,7 +15,7 @@
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar navbar-expand-sm bg-dark">
-		<a class="navbar-brand" href="/index">Página Inicial</a>
+		<a class="navbar-brand" href="#">Página Inicial</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		  <span class="navbar-toggler-icon"></span>
 		</button>
@@ -45,7 +45,7 @@
 				</a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 				  <a class="dropdown-item" href="/cadastrarUsuario">Cadastrar Usuário</a>
-				  <a class="dropdown-item" href="/insercao">Another action</a>
+				  <a class="dropdown-item" href="/listarUsuarios">Listar Usuario</a>
 				  <div class="dropdown-divider"></div>
 				  <a class="dropdown-item" href="/graficos">Graficos</a>
 				</div>
@@ -86,7 +86,6 @@
 			  <div class="form-group col-md-4">
 				<label for="inputEstado">Estado</label>
 				<select  name="estado" class="form-control">
-					<option>Administrador</option>
 					<option>Acre (AC)</option>
 					<option>Alagoas (AL)</option>
 					<option>Amapá (AP)</option>
@@ -121,7 +120,7 @@
 				<input type="text" name="cep"class="form-control" >
 			  </div>
 			  <div class="form-group col-md-4">
-				<label for="inputTipo">Estado</label>
+				<label for="inputTipo">Tipo de Usuário</label>
 				<select  name="tipoUsuario" class="form-control">
 					<option>Administrador</option>
 					<option>Funcionario</option>
@@ -129,8 +128,9 @@
 				</select>
 			  </div>
 			</div>
-			
-			<button type="submit" class="btn btn-primary">Entrar</button>
+
+            <a href="/listarUsuarios" class="btn btn-secondary" role="button">Cancelar</a>
+            <button type="submit" class="btn btn-success">Inserir</button>
 		  </form>
 	</div>
 </body>

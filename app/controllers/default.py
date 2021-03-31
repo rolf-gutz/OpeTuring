@@ -47,7 +47,7 @@ def logout():
 
 
 
-# CADASTRO USUARIO
+#  USUARIO
 # *********************************************************
 
 @app.route('/cadastrarUsuario')
@@ -74,8 +74,14 @@ def salvar_cadastro():
 	return render_template('listagem.html', usuarios=usuarios, ordem='id')
 
 
-# *********************************************************
+@app.route('/listarUsuarios')
+def listarUsuarios():
+	usuarios = UsuarioModel.query.all()
+	return render_template('listarUsuarios.html', usuarios=usuarios)
 
+
+
+# *********************************************************
 
 
 @app.route('/listagem')
