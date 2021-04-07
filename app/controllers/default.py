@@ -51,10 +51,12 @@ def logout():
 # *********************************************************
 
 @app.route('/cadastrarUsuario')
+@login_required
 def cadastrarUsuario():
 	return render_template('cadastroUsuario.html')
 
 @app.route('/salvar_cadastro',methods=['POST'])
+@login_required
 def salvar_cadastro():
 	nome = request.form.get('nome')
 	email = request.form.get('email')
@@ -71,15 +73,68 @@ def salvar_cadastro():
 	db.session.commit()
 
 	usuarios = UsuarioModel.query.all()
-	return render_template('listagem.html', usuarios=usuarios, ordem='id')
-
+	return render_template('listarUsuarios.html', usuarios=usuarios)
 
 @app.route('/listarUsuarios')
+@login_required
 def listarUsuarios():
 	usuarios = UsuarioModel.query.all()
 	return render_template('listarUsuarios.html', usuarios=usuarios)
 
 
+@app.route('/deletarUsuario/<int:id>')
+@login_required
+def deletarUsuario(id=0):
+	usuario = usuarios = UsuarioModel.query.filter_by(id=id).first()
+
+	return render_template('deletarUsuario.html', usuario=usuario)
+
+@app.route('/savedeletarUsuario',methods=['POST'])
+@login_required
+def savedeletarUsuario():
+	id = int(request.form.get('id'))
+
+	usuario = usuarios = UsuarioModel.query.filter_by(id=id).first()
+	
+	db.session.delete(usuario)
+	db.session.commit()
+	
+	usuarios = UsuarioModel.query.all()
+	return render_template('listarUsuarios.html', usuarios=usuarios)
+
+@app.route('/editarUsuario/<int:id>')
+@login_required
+def editarUsuario(id=0):
+	usuario = usuarios = UsuarioModel.query.filter_by(id=id).first()
+	return render_template('editarUsuario.html', usuario=usuario)
+
+
+@app.route('/saveEditarUsuario',methods=['POST'])
+@login_required
+def saveeditarUsuario():
+	id = int(request.form.get('id'))
+	nome_form = request.form.get('nome')
+	email_form = request.form.get('email')
+	endereco_form = request.form.get('endereco')
+	cidade_form = request.form.get('cidade')
+	estado_form = request.form.get('estado')
+	cep_form = request.form.get('cep')			
+	tipoUsuario_form = request.form.get('tipoUsuario')
+
+	usuarios = UsuarioModel.query.filter_by(id=id).first()
+
+	usuarios.nome = nome_form
+	usuarios.email = email_form
+	usuarios.endereco = endereco_form
+	usuarios.cidade = cidade_form
+	usuarios.estado = estado_form
+	usuarios.cep = cep_form
+	usuarios.tipoUsuario = tipoUsuario_form
+
+	db.session.commit()
+
+	usuarios = UsuarioModel.query.all()
+	return render_template('listarUsuarios.html', usuarios=usuarios)
 
 # *********************************************************
 
@@ -91,11 +146,13 @@ def listagem():
 	return render_template('listagem.html', pessoas=pessoas, ordem='id')
 
 @app.route('/selecao/<int:id>')
+@login_required
 def selecao(id=0):
 	pessoas = Pessoa.query.filter_by(id=id).all()
 	return render_template('listagem.html',pessoas=pessoas,ordem='id')
 
 @app.route('/ordenacao/<campo>/<ordem_anterior>')
+@login_required
 def ordenacao(campo='id', ordem_anterior=''):
 	if campo =='id':
 		if ordem_anterior == campo:
@@ -128,6 +185,7 @@ def ordenacao(campo='id', ordem_anterior=''):
 	return render_template('listagem.html',pessoas=pessoas,ordem=campo)
 
 @app.route('/consulta',methods=['POST'])
+@login_required
 def consulta():
 	consulta = '%'+request.form.get('consulta')+'%'
 	campo = request.form.get('campo')
@@ -147,6 +205,7 @@ def consulta():
 
 
 @app.route('/insercao')
+@login_required
 def insercao():
 	return render_template('insercao.html')
 
@@ -166,12 +225,14 @@ def salvar_insercao():
 	return render_template('listagem.html',pessoas=  pessoas, ordem='id')
 
 @app.route('/edicao/<int:id>')
+@login_required
 def edicao(id=0):
 	pessoa = Pessoa.query.filter_by(id =id).first()
 	return render_template('edicao.html',pessoa = pessoa)
 
 
 @app.route('/salvar_edicao',methods=['POST'])
+@login_required
 def salvar_edicao():
 	Id = int(request.form.get('id'))
 	Nome = request.form.get('nome')
@@ -192,11 +253,13 @@ def salvar_edicao():
 	return render_template('listagem.html',pessoas=  pessoas, ordem='id')
 
 @app.route('/delecao/<int:id>')
+@login_required
 def delecao(id=0):
 	pessoa = Pessoa.query.filter_by(id=id).first()
 	return render_template('delecao.html', pessoa=pessoa)
 
 @app.route('/salvar_delecao', methods=['POST'])
+@login_required
 def salvar_delecao():
 	Id = int(request.form.get('id'))
 
@@ -210,6 +273,7 @@ def salvar_delecao():
 	
 
 @app.route('/graficos')
+@login_required
 def graficos():
 	pessoasM = Pessoa.query.filter_by(sexo='M').all()
 	pessoasF = Pessoa.query.filter_by(sexo='F').all()

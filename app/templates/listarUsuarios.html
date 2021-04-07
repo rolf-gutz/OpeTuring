@@ -67,6 +67,8 @@
 				<th class="th-sm">Estado</th>
 				<th class="th-sm">CEP</th>
 				<th class="th-sm">Tipo Usuario</th>
+				<th class="th-sm">Editar</th>
+				<th class="th-sm">Deletar</th>
 			  </tr>
 			</thead>
 			<tbody>
@@ -80,14 +82,23 @@
 				<td nowrap="true">{{usuario.estado}}</td>
 				<td nowrap="true">{{usuario.cep}}</td>
 				<td nowrap="true">{{usuario.tipoUsuario}}</td>
-				
+				<td>
+					<a href="/editarUsuario/{{usuario.id}}"
+					class="btn btn-primary" role="button">
+						Edicao
+					</a>
+				</td><td>
+					<a href="/deletarUsuario/{{usuario.id}}"
+					class="btn btn-danger" role="button">
+						DELETAR
+					</a>
+				</td>
 			  </tr>
 
 			  {% endfor %}
 
 			</tbody>
 		  </table>
-		  <a href="/listarUsuarios" class="btn btn-secondary" role="button">Cancelar</a>
 	</div>
 </body>
 </html>
