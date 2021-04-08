@@ -2,6 +2,7 @@ from flask import Flask,render_template,redirect,request,url_for,flash
 from app import app, db, login_manager
 from app.models.PessoaModel import Pessoa
 from app.models.UsuarioModel import UsuarioModel
+from app.models.ProdutoModel import ProdutoModel
 from flask_login import LoginManager, UserMixin, login_required,login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -139,6 +140,14 @@ def saveeditarUsuario():
 # *********************************************************
 
 
+#  PRODUTOS
+# *********************************************************
+
+@app.route('/cadastrarProduto')
+@login_required
+def cadastrarProduto():
+	return render_template('cadastroProduto.html')
+
 @app.route('/listagem')
 @login_required
 def listagem():
@@ -241,7 +250,7 @@ def salvar_edicao():
 	Salario = float(request.form.get('salario'))
 
 	pessoa = Pessoa.query.filter_by(id=Id).first()
-
+	
 	pessoa.nome = Nome
 	pessoa.idade = Idade
 	pessoa.sexo = Sexo

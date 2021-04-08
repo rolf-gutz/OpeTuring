@@ -10,7 +10,7 @@
 	<meta http-equiv='cache-control' content='no-cache'>
 	<meta http-equiv='expires' content='0'>
 	<meta http-equiv='pragma' content='no-cache'>
-	<title>Editar Usuário</title>
+	<title>Cadastrar Produtoss</title>
 
 </head>
 <body>
@@ -67,31 +67,34 @@
 	  </nav>
 	<br>
 	<div class="container">
-		<h2>Editar Usuário </h2>
-		<form class="ml-3" action="/saveEditarUsuario" method="POST" name="form_edicao_usuario" class="ml-3"> 			
-			<input type="hidden" name="id" value="{{usuario.id}}">
+		<h2>Cadastrarrr Produto </h2>
+		<form class="ml-3" action="/cadastrarProduto" method="POST" name="form_insercao" class="ml-3"> 			
 			<div class="form-row">
 			  <div class="form-group col-md-6">
 				<label for="inputEmail4">Email</label>
-				<input type="email" name="email" class="form-control"  value="{{usuario.email}}">
+				<input type="email" name="email" class="form-control"  placeholder="Email">
+			  </div>
+			  <div class="form-group col-md-6">
+				<label for="inputPassword4">Senha</label>
+				<input type="password" name="password" class="form-control"  placeholder="Senha">
 			  </div>
 			</div>
 			<div class="form-group">
 			  <label for="inputAddress">Nome</label>
-			  <input type="text" name="nome" class="form-control"  value="{{usuario.nome}}">
+			  <input type="text" name="nome" class="form-control"  placeholder="Nome Completo">
 			</div>
 			<div class="form-group">
 			  <label for="inputAddress2">Endereço</label>
-			  <input type="text"  name="endereco" class="form-control" value="{{usuario.endereco}}">
+			  <input type="text"  name="endereco" class="form-control"  placeholder="Apartamento, hotel, casa, etc.">
 			</div>
 			<div class="form-row">
 			  <div class="form-group col-md-6">
 				<label for="inputCity">Cidade</label>
-				<input type="text"  name="cidade" class="form-control" value="{{usuario.cidade}}" >
+				<input type="text"  name="cidade" class="form-control" >
 			  </div>
 			  <div class="form-group col-md-4">
 				<label for="inputEstado">Estado</label>
-				<select  name="estado" class="form-control" >
+				<select  name="estado" class="form-control">
 					<option>Acre (AC)</option>
 					<option>Alagoas (AL)</option>
 					<option>Amapá (AP)</option>
@@ -123,11 +126,11 @@
 			  </div>
 			  <div class="form-group col-md-2">
 				<label for="inputCEP">CEP</label>
-				<input type="text" name="cep"class="form-control" value="{{usuario.cep}}">
+				<input type="text" name="cep"class="form-control" >
 			  </div>
 			  <div class="form-group col-md-4">
 				<label for="inputTipo">Tipo de Usuário</label>
-				<select  name="tipoUsuario" class="form-control" >
+				<select  name="tipoUsuario" class="form-control">
 					<option>Administrador</option>
 					<option>Funcionario</option>
 					<option>Cliente</option>
@@ -136,16 +139,8 @@
 			</div>
 
             <a href="/listarUsuarios" class="btn btn-secondary" role="button">Cancelar</a>
-            <button type="submit" class="btn btn-success">Editar</button>
+            <button type="submit" class="btn btn-success">Inserir</button>
 		  </form>
 	</div>
-	<script>    
-        const estado = document.getElementsByName('estado')[0];
-        estado.value ="{{usuario.estado}}";
-		
-		const tipoUsuario = document.getElementsByName('tipoUsuario')[0];
-        tipoUsuario.value = "{{usuario.tipoUsuario}}";
-
-    </script>
 </body>
 </html>
