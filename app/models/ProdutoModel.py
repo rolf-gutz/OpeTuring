@@ -1,5 +1,6 @@
 from app import db
 from flask_login import LoginManager, UserMixin, login_required,login_user, logout_user
+from datetime import datetime, date
 
 class ProdutoModel(db.Model,UserMixin):
     __tablename__ = 'produto'
@@ -9,10 +10,10 @@ class ProdutoModel(db.Model,UserMixin):
     cnpj = db.Column(db.Integer,nullable = False)
     razaoSocial = db.Column(db.String(250),nullable=False)
     nome = db.Column(db.String(150),nullable=False)
-    dataEntrada = db.Column(db.DateTime)
+    dataEntrada = db.Column(db.Date, default = date.today())
     saldo = db.Column(db.Float)
     prazoPagamento = db.Column(db.Integer)
-    valorKg = db.Column(db.Float)
+    valorkg = db.Column(db.Float)
     caixa = db.Column(db.Float)
     sacos = db.Column(db.Integer)
     kg = db.Column(db.Float)
@@ -20,17 +21,20 @@ class ProdutoModel(db.Model,UserMixin):
 
     def __init__(self,
                      notaFiscal,cnpj,razaoSocial,nome,dataEntrada,saldo,
-                     prazoPagamento,valorKg,
+                     prazoPagamento,valorkg,
                      caixa,sacos,kg):
 
+        self.notaFiscal = notaFiscal
+        self.cnpj = cnpj
+        self.razaoSocial = razaoSocial
         self.nome = nome
-        self.email = email
-        self.password = password
-        self.endereco = endereco
-        self.cidade = cidade
-        self.estado = estado
-        self.cep = cep
-        self.tipoUsuario = tipoUsuario
+        self.dataEntrada = dataEntrada
+        self.saldo = saldo
+        self.prazoPagamento = prazoPagamento
+        self.valorkg = valorkg
+        self.caixa = caixa
+        self.sacos = sacos
+        self.kg = kg
 
     def __repr__(self):
         return '<ProdutoModel %r>' % self.nome

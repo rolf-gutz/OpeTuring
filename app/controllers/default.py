@@ -8,13 +8,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 
-#  PRODUTOS
-# *********************************************************
-
-# @app.route('/cadastrarProduto')
-# @login_required
-# def cadastrarProduto():
-# 	return render_template('cadastroProduto.html')
 
 @app.route('/listagem')
 @login_required
