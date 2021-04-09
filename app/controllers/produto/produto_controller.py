@@ -48,3 +48,70 @@ def salvar_produto():
 def listarProdutos():
 	produtos = ProdutoModel.query.all()
 	return render_template('listarProdutos.html', produtos=produtos)
+
+
+
+@app.route('/deletarProduto/<int:id>')
+@login_required
+def deletarProduto(id=0):
+	produto = ProdutoModel.query.filter_by(idProduto=id).first()
+	return render_template('deletarProduto.html', produto=produto)
+
+
+@app.route('/saveDeleteProduto',methods=['POST'])
+@login_required
+def saveDeleteProduto():
+	id = int(request.form.get('idProduto'))
+
+	produto = ProdutoModel.query.filter_by(idProduto=id).first()
+
+	db.session.delete(produto)
+	db.session.commit()
+	
+	produtos = ProdutoModel.query.all()
+	return render_template('listarProdutos.html', produtos=produtos)
+
+
+@app.route('/editarProduto/<int:id>')
+@login_required
+def editarProduto(id=0):
+	produto = ProdutoModel.query.filter_by(idProduto=id).first()
+	return render_template('editarProduto.html', produto=produto)
+
+
+@app.route('/saveEditarProduto',methods=['POST'])
+@login_required
+def saveEditarProduto():
+    id = int(request.form.get('idProduto'))
+    notaFiscal = int(request.form.get('notaFiscal'))
+    cnpj = int(request.form.get('cnpj'))
+    razaoSocial = request.form.get('razaoSocial')
+    nome = request.form.get('nome')
+    dataEntrada = request.form.get('dataentrada')
+    saldo = float(request.form.get('saldo'))
+    prazoPagamento = int(request.form.get('prazopagamento'))
+    valorkg = float(request.form.get('valorkg'))
+    caixa = float(request.form.get('caixa'))
+    sacos = int(request.form.get('sacos'))
+    kg = float(request.form.get('kg'))
+
+    dataEntrada = datetime.strptime(dataEntrada, "%Y-%m-%d").date()
+
+    produto = ProdutoModel.query.filter_by(idProduto=id).first()
+
+    produto.notaFiscal = notaFiscal
+    produto.cnpj = cnpj
+    produto.razaoSocial = razaoSocial
+    produto.nome = nome
+    produto.dataEntrada = dataEntrada
+    produto.saldo = saldo
+    produto.prazoPagamento = prazoPagamento
+    produto.valorkg = valorkg
+    produto.caixa = caixa
+    produto.sacos = sacos
+    produto.kg = kg
+
+    db.session.commit()
+
+    produtos = ProdutoModel.query.all()
+    return render_template('listarProdutos.html', produtos= produtos)

@@ -43,7 +43,7 @@ def listarUsuarios():
 @app.route('/deletarUsuario/<int:id>')
 @login_required
 def deletarUsuario(id=0):
-	usuario = usuarios = UsuarioModel.query.filter_by(id=id).first()
+	usuario = UsuarioModel.query.filter_by(id=id).first()
 
 	return render_template('deletarUsuario.html', usuario=usuario)
 
