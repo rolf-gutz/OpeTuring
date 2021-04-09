@@ -1,56 +1,28 @@
-from flask import render_template, request
-from app import app, db
+from flask import Flask,render_template,redirect,request,url_for,flash
+from app import app, db, login_manager
 from app.models.PessoaModel import Pessoa
 from app.models.UsuarioModel import UsuarioModel
+from app.models.ProdutoModel import ProdutoModel
+from flask_login import LoginManager, UserMixin, login_required,login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
-@app.route('/')
-@app.route('/login')
-def login():
-    return render_template('login.html')
-
-# CADASTRO USUARIO
-# *********************************************************
-
-@app.route('/cadastrarUsuario')
-def cadastrarUsuario():
-	return render_template('cadastroUsuario.html')
-
-@app.route('/salvar_cadastro',methods=['POST'])
-def salvar_cadastro():
-	nome = request.form.get('nome')
-	email = request.form.get('email')
-	password = generate_password_hash(request.form["password"])
-	endereco = request.form.get('endereco')
-	cidade = request.form.get('cidade')
-	estado = request.form.get('estado')
-	cep = request.form.get('cep')			
-	tipoUsuario = request.form.get('tipoUsuario')
-
-	usuario = UsuarioModel(nome,email,password,endereco,cidade,estado,cep,tipoUsuario)
-
-	db.session.add(usuario)
-	db.session.commit()
-
-	usuarios = UsuarioModel.query.all()
-	return render_template('listagem.html', usuarios=usuarios, ordem='id')
-
-
-# *********************************************************
 
 
 
 @app.route('/listagem')
+@login_required
 def listagem():
 	pessoas = Pessoa.query.all()
 	return render_template('listagem.html', pessoas=pessoas, ordem='id')
 
 @app.route('/selecao/<int:id>')
+@login_required
 def selecao(id=0):
 	pessoas = Pessoa.query.filter_by(id=id).all()
 	return render_template('listagem.html',pessoas=pessoas,ordem='id')
 
 @app.route('/ordenacao/<campo>/<ordem_anterior>')
+@login_required
 def ordenacao(campo='id', ordem_anterior=''):
 	if campo =='id':
 		if ordem_anterior == campo:
@@ -83,6 +55,7 @@ def ordenacao(campo='id', ordem_anterior=''):
 	return render_template('listagem.html',pessoas=pessoas,ordem=campo)
 
 @app.route('/consulta',methods=['POST'])
+@login_required
 def consulta():
 	consulta = '%'+request.form.get('consulta')+'%'
 	campo = request.form.get('campo')
@@ -102,6 +75,7 @@ def consulta():
 
 
 @app.route('/insercao')
+@login_required
 def insercao():
 	return render_template('insercao.html')
 
@@ -121,12 +95,14 @@ def salvar_insercao():
 	return render_template('listagem.html',pessoas=  pessoas, ordem='id')
 
 @app.route('/edicao/<int:id>')
+@login_required
 def edicao(id=0):
 	pessoa = Pessoa.query.filter_by(id =id).first()
 	return render_template('edicao.html',pessoa = pessoa)
 
 
 @app.route('/salvar_edicao',methods=['POST'])
+@login_required
 def salvar_edicao():
 	Id = int(request.form.get('id'))
 	Nome = request.form.get('nome')
@@ -135,7 +111,7 @@ def salvar_edicao():
 	Salario = float(request.form.get('salario'))
 
 	pessoa = Pessoa.query.filter_by(id=Id).first()
-
+	
 	pessoa.nome = Nome
 	pessoa.idade = Idade
 	pessoa.sexo = Sexo
@@ -147,11 +123,13 @@ def salvar_edicao():
 	return render_template('listagem.html',pessoas=  pessoas, ordem='id')
 
 @app.route('/delecao/<int:id>')
+@login_required
 def delecao(id=0):
 	pessoa = Pessoa.query.filter_by(id=id).first()
 	return render_template('delecao.html', pessoa=pessoa)
 
 @app.route('/salvar_delecao', methods=['POST'])
+@login_required
 def salvar_delecao():
 	Id = int(request.form.get('id'))
 
@@ -165,6 +143,7 @@ def salvar_delecao():
 	
 
 @app.route('/graficos')
+@login_required
 def graficos():
 	pessoasM = Pessoa.query.filter_by(sexo='M').all()
 	pessoasF = Pessoa.query.filter_by(sexo='F').all()

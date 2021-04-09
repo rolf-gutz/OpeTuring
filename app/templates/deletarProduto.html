@@ -1,0 +1,65 @@
+<title>Deletar Produto</title>
+
+{% extends "layout.html" %}
+
+<div class="container">
+	{% block rolf %}
+		<h2>Deletar Produto </h2>
+		<form class="ml-3" action="/saveDeleteProduto" method="POST" name="form_insercao" class="ml-3">
+			<input type="hidden" name="idProduto" value="{{produto.idProduto}}">			
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label >Nota Fiscal</label>
+					<input type="number" name="notaFiscal" class="form-control"  value="{{produto.notaFiscal}}" disabled="true">
+				</div>
+				<div class="form-group col-md-6">
+					<label >CNPJ:</label>
+					<input type="number" name="cnpj" class="form-control"  value="{{produto.cnpj}}" disabled="true">
+				</div>
+			</div>
+			<div class="form-group">
+				<label>Razão Social</label>
+				<input type="text" name="razaoSocial" class="form-control"  value="{{produto.razaoSocial}}" disabled="true">
+			</div>
+			<div class="form-group">
+			  <label>Nome</label>
+			  <input type="text" name="nome" class="form-control"  value="{{produto.nome}}" disabled="true">
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-3">
+					<label>Data Entrada</label>
+					<input type="date"  name="dataentrada" class="form-control" value="{{produto.dataEntrada}}" disabled="true">>
+				</div>
+				<div class="form-group col-md-3">
+					<label>Saldo</label>
+					<input type="number"  name="saldo" class="form-control"  placeholder="saldo" value="{{produto.saldo}}" disabled="true">>
+				</div>
+				<div class="form-group col-md-3">
+					<label>Prazo Pagamento</label>
+					<input type="number"  name="prazopagamento" class="form-control"  value="{{produto.prazoPagamento}}" disabled="true">
+				</div>
+				<div class="form-group col-md-3">
+					<label >Valor Kg</label>
+					<input type="number" name="valorkg"class="form-control" value="{{produto.valorkg}}" disabled="true">
+				  </div>
+			</div>
+			<div class="form-row">
+			  <div class="form-group col-md-6">
+				<label>Caixa</label>
+				<input type="number"  name="caixa" class="form-control" value="{{produto.caixa}}" disabled="true">
+			  </div>
+			  <div class="form-group col-md-4">
+				<label for="inputTipo">Sacos</label>
+				<input type="number"  name="sacos" class="form-control" value="{{produto.sacos}}" disabled="true">
+			  </div>
+			  <div class="form-group col-md-2">
+				<label>Kg</label>
+				<input type="number"  name="kg" class="form-control" value="{{produto.kg}}" disabled="true">
+			  </div>
+			</div>
+
+            <a href="/listarProdutos" class="btn btn-secondary" role="button">Cancelar</a>
+            <button type="submit" class="btn btn-success">Deletar</button>
+		  </form>
+	</div>
+{% endblock %}
