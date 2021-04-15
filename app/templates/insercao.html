@@ -2,9 +2,9 @@
 
 {% extends "layout.html" %}
 
-<div class="container">
-	{% block rolf %}
-		<h2>Inserção </h2>
+{% block rolf %}
+    <div class="container" style="height: 90%; width: 100%;">
+		<h2 id="titulo-pags">Inserção</h2>
 		<form class="ml-3" action="/salvar_insercao" method="POST" name="form_insercao" class="ml-3"> 
             <div class="form-group">
                 <label for="nome">Nome:</label>
@@ -15,9 +15,10 @@
                 <input class="form-control" type="number" name="idade" min="1" max="125">
             </div>
             <div  class="form-group">
+                <label for="idade">Sexo:</label>
                 <select class="form-control" name="sexo">
-                    <option value="M">Sexo: Masculino</option>
-                    <option value="F">Sexo: Femenino</option>
+                    <option value="M">Masculino</option>
+                    <option value="F">Feminino</option>
                 </select>
             </div>
             <div class="form-group">
@@ -29,4 +30,4 @@
             <button type="submit" class="btn btn-success">Inserir</button>
         </form>
 	</div>
-	{% endblock  %}
+{% endblock  %}
