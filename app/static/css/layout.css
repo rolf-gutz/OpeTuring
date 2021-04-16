@@ -1,0 +1,36 @@
+.navbar {
+    background-color: rgba(0, 0, 5, 0.8);
+}
+
+tr {
+    text-align: center;
+}
+
+.table-format, #tableId {
+    text-decoration: none;
+    color: #000000;
+  }
+
+  .table-format:hover {
+    text-decoration: none;
+    color: #000000;
+  }
+
+#titulo-pags {
+    text-align: center;
+  }
+
+footer {
+    background-color: #E9E3E6;
+    border-top: 1px solid #A2999E;
+    color: #000000;
+    padding: 2px;
+}
+
+#email {
+    color: #A2999E;
+}
+
+#email:hover {
+    color: #000000;
+}

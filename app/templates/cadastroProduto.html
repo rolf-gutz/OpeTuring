@@ -2,9 +2,9 @@
 
 {% extends "layout.html" %}
 
-<div class="container">
-	{% block rolf %}
-		<h2>Cadastrar Produto </h2>
+{% block rolf %}
+	<div class="container" style="height: 90%; width: 100%;">
+		<h2 id="titulo-pags">Cadastrar Produto </h2>
 		<form class="ml-3" action="/salvar_produto" method="POST" name="form_insercao" class="ml-3"> 			
 			<div class="form-row">
 				<div class="form-group col-md-6">
