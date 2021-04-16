@@ -20,11 +20,11 @@ def login():
 		usuario = UsuarioModel.query.filter_by(email=email).first()
 
 		if not usuario:
-			flash("Credênciais incorretas")
+			flash("Credenciais incorretas")
 			return redirect(url_for("login"))
 
 		if not check_password_hash(usuario.password, password):
-			flash("Senha  incorretas")
+			flash("Senha incorreta")
 			return redirect(url_for("login"))
 
 		login_user(usuario)

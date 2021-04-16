@@ -2,95 +2,93 @@
 
 {% extends "layout.html" %}
 
-<div class="container">
 	{% block rolf %}
-	<div class="container">
-		<h2>Listagem </h2>
-		<form action="consulta" method="POST" name="form_consulta" class="ml-3">
-			<div class=form-group>
-				<div class="row">
-					<input class="form-control col-md-5" type="text"  name="consulta" 
-					placeholder="Digite aqui sua consulta">
-					<select class="form-control col-md-2" name="campo">
-						<option value="nome">Nome</option>
-						<option value="idade">Idade</option>
-						<option value="sexo">Sexo</option>
-						<option value="salario">Salario</option>
-					</select>
-					<button type="submit" class="btn btn-success">Consultar</button>
+		<div class="container">
+			<h2 id="titulo-pags">Listagem</h2>
+			<form action="consulta" method="POST" name="form_consulta" class="ml-3">
+				<div class=form-group>
+					<div class="row">
+						<input class="form-control col-md-5 mr-4" type="text" name="consulta" placeholder="Digite aqui sua consulta">
+						<select class="form-control col-md-2 mr-1" name="campo">
+							<option value="nome">Nome</option>
+							<option value="idade">Idade</option>
+							<option value="sexo">Sexo</option>
+							<option value="salario">Salário</option>
+						</select>
+						<button type="submit" class="btn btn-dark">Consultar</button>
+					</div>
 				</div>
-			</div>
-		</form>
-		<div style="overflow: scroll; height: 310px; width: 100%;"  align="center">
-			<table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
-				<thead>
-					<tr>
-						<th> <a href="/ordenacao/id/{{ordem}}">ID</a></th>
-						<th> <a href="/ordenacao/nome/{{ordem}}">Nome</a></th>
-						<th> <a href="/ordenacao/idade/{{ordem}}">Idade</a></th>
-						<th> <a href="/ordenacao/sexo/{{ordem}}">Sexo</a></th>
-						<th> <a href="/ordenacao/salario/{{ordem}}">Salario</a></th>
-						<th> <a href="#">Editar</a></th>
-						<th> <a href="#">Deletar</a></th>
-						
-					</tr>
-				</thead>
-				<tbody>
-					{% for pessoa in pessoas %}
+			</form>
+			<div style="height: 90%; width: 100%;">
+				<table id="dtBasicExample" class="table table-striped table-bordered table-sm">
+					<thead class="table-light">
 						<tr>
-							<td nowrap="true"> 
-								<a href="/selecao/{{pessoa.id}}">{{pessoa.id}}</a>
-							</td>
-							<td nowrap="true">{{pessoa.nome}}</td>
-							<td nowrap="true">{{pessoa.idade}}</td>
-							<td nowrap="true">{{pessoa.sexo}}</td>
-							<td nowrap="true">{{pessoa.salario}}</td>
-							<td>
-								<a href="/edicao/{{pessoa.id}}"
-								class="btn btn-primary" role="button">
-									Edicao
-								</a>
-							</td>
-							<td>
-								<a href="/delecao/{{pessoa.id}}"
-								class="btn btn-danger" role="button">
-									DELETAR
-								</a>
-							</td>
+							<th><a href="/ordenacao/id/{{ordem}}" class="table-format text-uppercase">Id</a></th>
+							<th><a href="/ordenacao/nome/{{ordem}}" class="table-format text-uppercase">Nome</a></th>
+							<th><a href="/ordenacao/idade/{{ordem}}" class="table-format text-uppercase">Idade</a></th>
+							<th><a href="/ordenacao/sexo/{{ordem}}" class="table-format text-uppercase">Sexo</a></th>
+							<th><a href="/ordenacao/salario/{{ordem}}" class="table-format text-uppercase">Salário</a></th>
+							<th><a href="#" class="table-format text-uppercase">Editar</a></th>
+							<th><a href="#" class="table-format text-uppercase">Deletar</a></th>
 						</tr>
+					</thead>
+					<tbody>
+						{% for pessoa in pessoas %}
+							<tr>
+								<td nowrap="true">
+									<a href="/selecao/{{pessoa.id}}" id="tableId">{{pessoa.id}}</a>
+								</td>
+								<td nowrap="true">{{pessoa.nome}}</td>
+								<td nowrap="true">{{pessoa.idade}}</td>
+								<td nowrap="true">{{pessoa.sexo}}</td>
+								<td nowrap="true">{{pessoa.salario}}</td>
+								<td>
+									<a href="/edicao/{{pessoa.id}}"
+									class="btn btn-primary text-uppercase" role="button">
+										Editar
+									</a>
+								</td>
+								<td>
+									<a href="/delecao/{{pessoa.id}}"
+									class="btn btn-danger text-uppercase" role="button">
+										Deletar
+									</a>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				<a href="#" style="float: right; color: #000;" onclick="relatorio()">Imprimir Relatorio</a>
+				<textarea id="dados" style="display: none;">
+					{% for pessoa in pessoas %}
+						{{pessoa.nome}}|{{pessoa.idade}}|{{pessoa.sexo}}|{{pessoa.salario}}#
 					{% endfor %}
-				</tbody>
-			 </table>
-		</div>
-		<a href="#" style="float: right;" onclick="relatorio()">Imprimir Relatorio</a>
-		<textarea id="dados" style="display: none;">
-			{% for pessoa in pessoas %}
-				{{pessoa.nome}}|{{pessoa.idade}}|{{pessoa.sexo}}|{{pessoa.salario}}#
-			{% endfor %}
-		</textarea>
-		
-		<script>
-			function relatorio() {
-				const doc = new jsPDF({orientation:'landscape'});
-				const texto = document.getElementById('dados').innerText;
-				const arrLinhas = texto.split('#');
-				let conteudo = 'RELATORIO DE PESSOAS\n\n';
+				</textarea>
+			</div>
+			
+			
+			<script>
+				function relatorio() {
+					const doc = new jsPDF({orientation:'landscape'});
+					const texto = document.getElementById('dados').innerText;
+					const arrLinhas = texto.split('#');
+					let conteudo = 'RELATORIO DE PESSOAS\n\n';
 
-				for (let linha = 0; linha<arrLinhas.length;linha++){
-					let arrColunas = arrLinhas[linha].split('|');
-					arrColunas[0] = arrColunas[0].trim().padEnd(35,'*')
-					if (arrColunas[0].indexOf('*')> 0 ){
-						conteudo += `NOME: ${arrColunas[0]} - `+
-									`IDADE: ${arrColunas[1]} - `+
-									`SEXO: ${arrColunas[2]} - `+
-									`SALARIO: R$ ${arrColunas[3]}\n`;
+					for (let linha = 0; linha<arrLinhas.length;linha++){
+						let arrColunas = arrLinhas[linha].split('|');
+						arrColunas[0] = arrColunas[0].trim().padEnd(35,'*')
+						if (arrColunas[0].indexOf('*')> 0 ){
+							conteudo += `NOME: ${arrColunas[0]} - `+
+										`IDADE: ${arrColunas[1]} - `+
+										`SEXO: ${arrColunas[2]} - `+
+										`SALARIO: R$ ${arrColunas[3]}\n`;
+						}
 					}
+					doc.setFontSize(12);
+					doc.setFont('Courier');
+					doc.text(conteudo,30,30);
+					doc.save('Relatorio.pdf');
 				}
-				doc.setFontSize(12);
-				doc.setFont('Courier');
-				doc.text(conteudo,30,30);
-				doc.save('Relatorio.pdf');
-			}
-		</script>
-	</div>
-{% endblock %}
+			</script>
+		</div>
+	{% endblock %}
