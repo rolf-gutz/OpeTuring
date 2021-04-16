@@ -1,10 +1,10 @@
 <title>Graficos</title>
 
 {% extends "layout.html" %}
-
-<div class="container">
-	{% block rolf %}
-		<h2>Gráficos</h2>
+	
+{% block rolf %}
+	<div class="container" style="height: 90%; width: 100%;">
+		<h2 id="titulo-pags">Gráficos</h2>
 		<input type="hidden" id="salarioM" value="{{salarioM}}">
 		<input type="hidden" id="salarioF" value="{{salarioF}}">
 		<input type="hidden" id="idadeM" value="{{idadeM}}">
@@ -21,7 +21,8 @@
 			<div id="grafico" style="width: 800px; height: 400px;"></div>
 		</center>
     </div>
-    <script>    
+
+    <script>
         function plot(type='bar') {
             type = type.toString().toLowerCase().trim();
 

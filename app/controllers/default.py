@@ -19,7 +19,7 @@ def listagem():
 @login_required
 def selecao(id=0):
 	pessoas = Pessoa.query.filter_by(id=id).all()
-	return render_template('listagem.html',pessoas=pessoas,ordem='id')
+	return render_template('listagem.html', pessoas=pessoas, ordem='id')
 
 @app.route('/ordenacao/<campo>/<ordem_anterior>')
 @login_required
@@ -52,9 +52,9 @@ def ordenacao(campo='id', ordem_anterior=''):
 	else:
 		pessoas = Pessoa.query.order_by(Pessoa.id).all()
 
-	return render_template('listagem.html',pessoas=pessoas,ordem=campo)
+	return render_template('listagem.html', pessoas=pessoas, ordem=campo)
 
-@app.route('/consulta',methods=['POST'])
+@app.route('/consulta', methods=['POST'])
 @login_required
 def consulta():
 	consulta = '%'+request.form.get('consulta')+'%'
@@ -71,7 +71,7 @@ def consulta():
 	else:
 		pessoas = Pessoa.query.all()
 	
-	return render_template('listagem.html',pessoas = pessoas,ordem ='id')
+	return render_template('listagem.html', pessoas=pessoas, ordem='id')
 
 
 @app.route('/insercao')
@@ -79,7 +79,7 @@ def consulta():
 def insercao():
 	return render_template('insercao.html')
 
-@app.route('/salvar_insercao',methods=['POST'])
+@app.route('/salvar_insercao', methods=['POST'])
 def salvar_insercao():
 	nome = request.form.get('nome')
 	idade = int(request.form.get('idade'))
@@ -92,13 +92,13 @@ def salvar_insercao():
 	db.session.commit()
 
 	pessoas = Pessoa.query.all()
-	return render_template('listagem.html',pessoas=  pessoas, ordem='id')
+	return render_template('listagem.html', pessoas=pessoas, ordem='id')
 
 @app.route('/edicao/<int:id>')
 @login_required
 def edicao(id=0):
 	pessoa = Pessoa.query.filter_by(id =id).first()
-	return render_template('edicao.html',pessoa = pessoa)
+	return render_template('edicao.html', pessoa=pessoa)
 
 
 @app.route('/salvar_edicao',methods=['POST'])
@@ -120,7 +120,7 @@ def salvar_edicao():
 	db.session.commit()
 
 	pessoas = Pessoa.query.all()
-	return render_template('listagem.html',pessoas=  pessoas, ordem='id')
+	return render_template('listagem.html', pessoas=pessoas, ordem='id')
 
 @app.route('/delecao/<int:id>')
 @login_required
@@ -139,7 +139,7 @@ def salvar_delecao():
 	db.session.commit()
 
 	pessoas = Pessoa.query.all()
-	return render_template('listagem.html',pessoas= pessoas, ordem='id')
+	return render_template('listagem.html', pessoas=pessoas, ordem='id')
 	
 
 @app.route('/graficos')
@@ -173,7 +173,4 @@ def graficos():
 		IdadeF = IdadeF / len(pessoasF)
 			
 	return render_template('graficos.html',
-							salarioM=salarioM,salarioF=salarioF,idadeM=IdadeM,idadeF=IdadeF)
-
-
-	
+							salarioM=salarioM, salarioF=salarioF, idadeM=IdadeM, idadeF=IdadeF)

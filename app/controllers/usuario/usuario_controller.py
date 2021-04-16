@@ -22,7 +22,7 @@ def salvar_cadastro():
 	endereco = request.form.get('endereco')
 	cidade = request.form.get('cidade')
 	estado = request.form.get('estado')
-	cep = request.form.get('cep')			
+	cep = request.form.get('cep')
 	tipoUsuario = request.form.get('tipoUsuario')
 
 	usuario = UsuarioModel(nome,email,password,endereco,cidade,estado,cep,tipoUsuario)
@@ -77,7 +77,7 @@ def saveeditarUsuario():
 	endereco_form = request.form.get('endereco')
 	cidade_form = request.form.get('cidade')
 	estado_form = request.form.get('estado')
-	cep_form = request.form.get('cep')			
+	cep_form = request.form.get('cep')
 	tipoUsuario_form = request.form.get('tipoUsuario')
 
 	usuarios = UsuarioModel.query.filter_by(id=id).first()

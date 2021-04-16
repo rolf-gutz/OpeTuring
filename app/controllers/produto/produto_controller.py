@@ -40,7 +40,7 @@ def salvar_produto():
     db.session.commit()
 
     produtos = ProdutoModel.query.all()
-    return render_template('listarProdutos.html', produtos= produtos)
+    return render_template('listarProdutos.html', produtos=produtos)
     
     
 @app.route('/listarProdutos')
@@ -114,4 +114,4 @@ def saveEditarProduto():
     db.session.commit()
 
     produtos = ProdutoModel.query.all()
-    return render_template('listarProdutos.html', produtos= produtos)
+    return render_template('listarProdutos.html', produtos=produtos)
