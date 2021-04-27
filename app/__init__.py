@@ -5,7 +5,9 @@ from flask_migrate import Migrate, MigrateCommand
 from flask_login import LoginManager, UserMixin, login_required,login_user, logout_user
 
 
-app = Flask(__name__)
+app = Flask(__name__,
+template_folder="templates")
+
 app.config.from_object('config')
 login_manager = LoginManager(app)
 

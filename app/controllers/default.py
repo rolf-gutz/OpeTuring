@@ -3,6 +3,7 @@ from app import app, db, login_manager
 from app.models.PessoaModel import Pessoa
 from app.models.UsuarioModel import UsuarioModel
 from app.models.ProdutoModel import ProdutoModel
+from app.controllers.login.login import requires_roles
 from flask_login import LoginManager, UserMixin, login_required,login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -10,6 +11,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 @app.route('/listagem')
+@requires_roles('Cliente')
 @login_required
 def listagem():
 	pessoas = Pessoa.query.all()

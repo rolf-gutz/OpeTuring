@@ -12,7 +12,7 @@ from datetime import datetime, date
 @app.route('/cadastrarProduto')
 @login_required
 def cadastrarProduto():
-	return render_template('cadastroProduto.html')
+	return render_template('produtos/cadastroProduto.html')
 
 @app.route('/salvar_produto',methods=['POST'])
 @login_required

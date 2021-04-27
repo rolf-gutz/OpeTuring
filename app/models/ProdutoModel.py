@@ -11,11 +11,10 @@ class ProdutoModel(db.Model,UserMixin):
     razaoSocial = db.Column(db.String(250),nullable=False)
     nome = db.Column(db.String(150),nullable=False)
     dataEntrada = db.Column(db.Date, default = date.today())
-    saldo = db.Column(db.Float)
-    prazoPagamento = db.Column(db.Integer)
+    # cumpoDesconto = db.Column(db.String(50))
+    # prazoPagamento = db.Column(db.Integer)
     valorkg = db.Column(db.Float)
-    caixa = db.Column(db.Float)
-    sacos = db.Column(db.Integer)
+    # sacos = db.Column(db.Integer)
     kg = db.Column(db.Float)
 
 
