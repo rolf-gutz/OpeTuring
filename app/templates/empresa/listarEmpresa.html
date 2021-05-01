@@ -1,0 +1,50 @@
+<title>Listar Empresas</title>
+
+{% extends "layout.html" %}
+
+{% block rolf %}
+	<div class="container" style="height: 90%; width: 100%;">
+		<table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+			<thead>
+			  <tr>
+				<th class="th-sm">CNPJ</th>
+				<th class="th-sm">Razão Social</th>
+				<th class="th-sm">Nome da Empresa</th>
+				<th class="th-sm">Endereço</th>
+				<th class="th-sm">Cidade</th>
+				<th class="th-sm">Estado</th>
+				<th class="th-sm">Cep</th>
+				<th class="th-sm">Editar</th>
+				<th class="th-sm">Deletar</th>
+			  </tr>
+			</thead>
+			<tbody>
+            {% for empresa in empresas %}
+
+			  <tr>
+				<td nowrap="true">{{empresa.cnpj}}</td>
+				<td nowrap="true">{{empresa.razao_social}}</td>
+				<td nowrap="true">{{empresa.nome}}</td>
+				<td nowrap="true">{{empresa.endereco}}</td>
+				<td nowrap="true">{{empresa.cidade}}</td>
+				<td nowrap="true">{{empresa.estado}}</td>
+				<td nowrap="true">{{empresa.cep}}</td>
+				<td>
+					<a href="/editarEmpresa/{{empresa.id_empresa}}"
+					class="btn btn-primary" role="button">
+						Edição
+					</a>
+				</td><td>
+					<a href="/deletarEmpresa/{{empresa.id_empresa}}"
+					class="btn btn-danger" role="button">
+						Deletar
+					</a>
+				</td>
+			  </tr>
+
+			  {% endfor %}
+
+			</tbody>
+		  </table>
+	</div>
+{% endblock %}

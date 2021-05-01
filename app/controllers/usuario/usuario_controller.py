@@ -16,7 +16,7 @@ def cadastrarUsuario():
 
 
 @app.route('/salvar_cadastro',methods=['POST'])
-@login_required
+# @login_required
 def salvar_cadastro():
 	nome = request.form.get('nome')
 	email = request.form.get('email')
@@ -36,7 +36,7 @@ def salvar_cadastro():
 	return render_template('listarUsuarios.html', usuarios=usuarios)
     
 @app.route('/listarUsuarios')
-@login_required
+# @login_required
 @requires_roles('Cliente')
 def listarUsuarios():
 	usuarios = UsuarioModel.query.all()
@@ -44,7 +44,7 @@ def listarUsuarios():
 
 
 @app.route('/deletarUsuario/<int:id>')
-@login_required
+# @login_required
 def deletarUsuario(id=0):
 	usuario = UsuarioModel.query.filter_by(id=id).first()
 
@@ -52,7 +52,7 @@ def deletarUsuario(id=0):
 
     
 @app.route('/savedeletarUsuario',methods=['POST'])
-@login_required
+# @login_required
 def savedeletarUsuario():
 	id = int(request.form.get('id'))
 
@@ -65,14 +65,14 @@ def savedeletarUsuario():
 	return render_template('listarUsuarios.html', usuarios=usuarios)
 
 @app.route('/editarUsuario/<int:id>')
-@login_required
+# @login_required
 def editarUsuario(id=0):
 	usuario = usuarios = UsuarioModel.query.filter_by(id=id).first()
 	return render_template('editarUsuario.html', usuario=usuario)
 
 
 @app.route('/saveEditarUsuario',methods=['POST'])
-@login_required
+# @login_required
 def saveeditarUsuario():
 	id = int(request.form.get('id'))
 	nome_form = request.form.get('nome')

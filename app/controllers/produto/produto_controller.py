@@ -15,7 +15,7 @@ def cadastrarProduto():
 	return render_template('produtos/cadastroProduto.html')
 
 @app.route('/salvar_produto',methods=['POST'])
-@login_required
+# @login_required
 def salvar_produto():
     notaFiscal = int(request.form.get('notaFiscal'))
     cnpj = int(request.form.get('cnpj'))
@@ -44,7 +44,7 @@ def salvar_produto():
     
     
 @app.route('/listarProdutos')
-@login_required
+# @login_required
 def listarProdutos():
 	produtos = ProdutoModel.query.all()
 	return render_template('listarProdutos.html', produtos=produtos)
@@ -52,14 +52,14 @@ def listarProdutos():
 
 
 @app.route('/deletarProduto/<int:id>')
-@login_required
+# @login_required
 def deletarProduto(id=0):
 	produto = ProdutoModel.query.filter_by(idProduto=id).first()
 	return render_template('deletarProduto.html', produto=produto)
 
 
 @app.route('/saveDeleteProduto',methods=['POST'])
-@login_required
+# @login_required
 def saveDeleteProduto():
 	id = int(request.form.get('idProduto'))
 
@@ -73,14 +73,14 @@ def saveDeleteProduto():
 
 
 @app.route('/editarProduto/<int:id>')
-@login_required
+# @login_required
 def editarProduto(id=0):
 	produto = ProdutoModel.query.filter_by(idProduto=id).first()
 	return render_template('editarProduto.html', produto=produto)
 
 
 @app.route('/saveEditarProduto',methods=['POST'])
-@login_required
+# @login_required
 def saveEditarProduto():
     id = int(request.form.get('idProduto'))
     notaFiscal = int(request.form.get('notaFiscal'))
