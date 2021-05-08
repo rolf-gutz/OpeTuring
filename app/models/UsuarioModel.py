@@ -14,9 +14,9 @@ class UsuarioModel(db.Model,UserMixin):
 	estado = db.Column(db.String(50))
 	cep = db.Column(db.String(10))
 	tipoUsuario = db.Column(db.String(50))
-	empresa_id = db.Column(db.Integer, db.ForeignKey('empresa.id_empresa'),nullable=False)
+	id_empresa = db.Column(db.Integer, db.ForeignKey('empresa.id_empresa'),nullable=False)
 
-
+							
 	def __init__(self, cpf,nome,email,password,endereco,cidade,estado,cep,tipoUsuario,id_empresa):
 		self.cpf = cpf
 		self.nome = nome

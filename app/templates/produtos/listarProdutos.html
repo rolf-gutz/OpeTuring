@@ -7,16 +7,8 @@
 		<table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
 			<thead>
 			  <tr>
-				<th class="th-sm">Nota Fiscal</th>
-				<th class="th-sm">CNPJ</th>
-				<th class="th-sm">Razão Social</th>
 				<th class="th-sm">Nome do Produto</th>
-				<th class="th-sm">Data Entrada</th>
-				<th class="th-sm">Saldo</th>
-				<th class="th-sm">Prazo de Pagamento</th>
 				<th class="th-sm">Valor KG</th>
-				<th class="th-sm">Caixa</th>
-				<th class="th-sm">Sacos</th>
 				<th class="th-sm">KG</th>
                 <th class="th-sm">Editar</th>
 				<th class="th-sm">Deletar</th>
@@ -26,16 +18,8 @@
             {% for produto in produtos %}
 
 			  <tr>
-				<td nowrap="true">{{produto.notaFiscal}}</td>
-				<td nowrap="true">{{produto.cnpj}}</td>
-				<td nowrap="true">{{produto.razaoSocial}}</td>
-				<td nowrap="true">{{produto.nome}}</td>
-				<td nowrap="true">{{produto.dataEntrada}}</td>
-				<td nowrap="true">{{produto.saldo}}</td>
-				<td nowrap="true">{{produto.prazoPagamento}}</td>
-				<td nowrap="true">{{produto.valorkg}}</td>
-				<td nowrap="true">{{produto.caixa}}</td>
-				<td nowrap="true">{{produto.sacos}}</td>
+				<td nowrap="true">{{produto.nome}}</td>		
+				<td nowrap="true">{{produto.valor}}</td>
 				<td nowrap="true">{{produto.kg}}</td>
 				<td>
 					<a href="/editarProduto/{{produto.idProduto}}"

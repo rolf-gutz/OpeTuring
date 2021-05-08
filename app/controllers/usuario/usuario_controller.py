@@ -4,20 +4,24 @@ from app.models.PessoaModel import Pessoa
 from app.models.UsuarioModel import UsuarioModel
 from app.models.ProdutoModel import ProdutoModel
 from app.controllers.login.login import requires_roles 
-# from app.models import User, requires_roles
+from app.models.Empresa import Empresa
 from flask_login import LoginManager, UserMixin, login_required,login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
+import re
 
 
 @app.route('/cadastrarUsuario')
 # @login_required
 def cadastrarUsuario():
-	return render_template('cadastroUsuario.html')
+	empresas = Empresa.query.all()
+	return render_template('cadastroUsuario.html', empresas= empresas)
 
 
 @app.route('/salvar_cadastro',methods=['POST'])
 # @login_required
 def salvar_cadastro():
+	cpf_form = re.sub("[^a-zA-Z0-9áéíóúÁÉÍÓÚâêîôÂÊÎÔãõÃÕçÇ: ]+","",request.form.get('cpf'))
+	cpf = int(cpf_form)
 	nome = request.form.get('nome')
 	email = request.form.get('email')
 	password = generate_password_hash(request.form["password"])
@@ -26,8 +30,9 @@ def salvar_cadastro():
 	estado = request.form.get('estado')
 	cep = request.form.get('cep')
 	tipoUsuario = request.form.get('tipoUsuario')
+	id_empresa = request.form['id_empresa']
 
-	usuario = UsuarioModel(nome,email,password,endereco,cidade,estado,cep,tipoUsuario)
+	usuario = UsuarioModel(cpf,nome,email,password,endereco,cidade,estado,cep,tipoUsuario,id_empresa)
 
 	db.session.add(usuario)
 	db.session.commit()
@@ -37,7 +42,7 @@ def salvar_cadastro():
     
 @app.route('/listarUsuarios')
 # @login_required
-@requires_roles('Cliente')
+# @requires_roles('Administrador')
 def listarUsuarios():
 	usuarios = UsuarioModel.query.all()
 	return render_template('listarUsuarios.html', usuarios=usuarios)
@@ -46,7 +51,7 @@ def listarUsuarios():
 @app.route('/deletarUsuario/<int:id>')
 # @login_required
 def deletarUsuario(id=0):
-	usuario = UsuarioModel.query.filter_by(id=id).first()
+	usuario = UsuarioModel.query.filter_by(id_pessoa=id).first()
 
 	return render_template('deletarUsuario.html', usuario=usuario)
 
@@ -56,7 +61,7 @@ def deletarUsuario(id=0):
 def savedeletarUsuario():
 	id = int(request.form.get('id'))
 
-	usuario = usuarios = UsuarioModel.query.filter_by(id=id).first()
+	usuario = UsuarioModel.query.filter_by(id_pessoa=id).first()
 	
 	db.session.delete(usuario)
 	db.session.commit()
@@ -67,7 +72,7 @@ def savedeletarUsuario():
 @app.route('/editarUsuario/<int:id>')
 # @login_required
 def editarUsuario(id=0):
-	usuario = usuarios = UsuarioModel.query.filter_by(id=id).first()
+	usuario = UsuarioModel.query.filter_by(id_pessoa=id).first()
 	return render_template('editarUsuario.html', usuario=usuario)
 
 

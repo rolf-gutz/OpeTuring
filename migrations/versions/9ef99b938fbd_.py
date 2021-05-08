@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 680ab1d11942
+Revision ID: 9ef99b938fbd
 Revises: 
-Create Date: 2021-05-01 13:18:11.646275
+Create Date: 2021-05-08 00:14:49.454911
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '680ab1d11942'
+revision = '9ef99b938fbd'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -30,6 +30,14 @@ def upgrade():
     sa.PrimaryKeyConstraint('id_empresa')
     )
     op.create_index(op.f('ix_empresa_cnpj'), 'empresa', ['cnpj'], unique=True)
+    op.create_table('fornecedor',
+    sa.Column('id_fornecedor', sa.Integer(), nullable=False),
+    sa.Column('cnpj', sa.Integer(), nullable=False),
+    sa.Column('razao_social', sa.String(length=200), nullable=True),
+    sa.Column('nome', sa.String(length=150), nullable=False),
+    sa.PrimaryKeyConstraint('id_fornecedor')
+    )
+    op.create_index(op.f('ix_fornecedor_cnpj'), 'fornecedor', ['cnpj'], unique=True)
     op.create_table('pessoas',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('nome', sa.String(length=50), nullable=False),
@@ -40,13 +48,11 @@ def upgrade():
     )
     op.create_table('produto',
     sa.Column('idProduto', sa.Integer(), nullable=False),
-    sa.Column('notaFiscal', sa.Integer(), nullable=False),
-    sa.Column('cnpj', sa.Integer(), nullable=False),
-    sa.Column('razaoSocial', sa.String(length=250), nullable=False),
     sa.Column('nome', sa.String(length=150), nullable=False),
-    sa.Column('dataEntrada', sa.Date(), nullable=True),
-    sa.Column('valorkg', sa.Float(), nullable=True),
+    sa.Column('valor', sa.Float(), nullable=True),
     sa.Column('kg', sa.Float(), nullable=True),
+    sa.Column('id_fornecedor', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['id_fornecedor'], ['fornecedor.id_fornecedor'], ),
     sa.PrimaryKeyConstraint('idProduto')
     )
     op.create_table('usuarioSistema',
@@ -60,8 +66,8 @@ def upgrade():
     sa.Column('estado', sa.String(length=50), nullable=True),
     sa.Column('cep', sa.String(length=10), nullable=True),
     sa.Column('tipoUsuario', sa.String(length=50), nullable=True),
-    sa.Column('empresa_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['empresa_id'], ['empresa.id_empresa'], ),
+    sa.Column('id_empresa', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['id_empresa'], ['empresa.id_empresa'], ),
     sa.PrimaryKeyConstraint('id_pessoa')
     )
     op.create_index(op.f('ix_usuarioSistema_cpf'), 'usuarioSistema', ['cpf'], unique=True)
@@ -74,6 +80,8 @@ def downgrade():
     op.drop_table('usuarioSistema')
     op.drop_table('produto')
     op.drop_table('pessoas')
+    op.drop_index(op.f('ix_fornecedor_cnpj'), table_name='fornecedor')
+    op.drop_table('fornecedor')
     op.drop_index(op.f('ix_empresa_cnpj'), table_name='empresa')
     op.drop_table('empresa')
     # ### end Alembic commands ###

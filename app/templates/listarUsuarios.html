@@ -8,6 +8,7 @@
 			<thead>
 			  <tr>
 				<th class="th-sm">Nome</th>
+				<th class="th-sm">Cpf</th>
 				<th class="th-sm">Email</th>
 				<th class="th-sm">Endereço</th>
 				<th class="th-sm">Cidade</th>
@@ -23,6 +24,7 @@
 
 			  <tr>
 				<td nowrap="true">{{usuario.nome}}</td>
+				<td nowrap="true">{{usuario.cpf}}</td>
 				<td nowrap="true">{{usuario.email}}</td>
 				<td nowrap="true">{{usuario.endereco}}</td>
 				<td nowrap="true">{{usuario.cidade}}</td>
@@ -30,12 +32,12 @@
 				<td nowrap="true">{{usuario.cep}}</td>
 				<td nowrap="true">{{usuario.tipoUsuario}}</td>
 				<td>
-					<a href="/editarUsuario/{{usuario.id}}"
+					<a href="/editarUsuario/{{usuario.id_pessoa}}"
 					class="btn btn-primary" role="button">
 						Edicao
 					</a>
 				</td><td>
-					<a href="/deletarUsuario/{{usuario.id}}"
+					<a href="/deletarUsuario/{{usuario.id_pessoa}}"
 					class="btn btn-danger" role="button">
 						DELETAR
 					</a>

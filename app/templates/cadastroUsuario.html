@@ -1,7 +1,6 @@
 <title>Cadastro Usuario</title>
 
-{% extends "layout.html" %}
-
+{% extends "layout.html"  %}
 {% block rolf %}
 	<div class="container" style="height: 90%; width: 100%;">
 		<h2 id="titulo-pags">Cadastrar Usuário</h2>
@@ -16,9 +15,15 @@
 				<input type="password" name="password" class="form-control"  placeholder="Senha">
 				</div>
 			</div>
-			<div class="form-group">
-				<label for="inputAddress">Nome</label>
-				<input type="text" name="nome" class="form-control"  placeholder="Nome Completo">
+			<div class="form-row " >
+				<div class="form-group col-md-6">	
+					<label for="inputAddress">Nome</label>
+					<input type="text" name="nome" class="form-control"  placeholder="Nome Completo">
+				</div>
+				<div class="form-group col-md-6">	
+					<label for="inputAddress">Cpf</label>
+					<input type="text" name="cpf" class="form-control"  placeholder="CPF" max="14">
+				</div>
 			</div>
 			<div class="form-group">
 				<label for="inputAddress2">Endereço</label>
@@ -72,6 +77,16 @@
 					<option>Funcionario</option>
 					<option>Cliente</option>
 				</select>
+				</div>
+				<div class="form-group col-md-4">
+					<label for="inputEmpresa">Empresas</label>
+					<select  name="id_empresa" class="form-control">
+						{% for empresa in empresas %}	
+							<option value="{{empresa.id_empresa}}">
+								{{empresa.nome}}
+							</option>
+						{% endfor %}
+					</select>
 				</div>
 			</div>
 
