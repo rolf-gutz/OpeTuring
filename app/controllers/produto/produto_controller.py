@@ -3,63 +3,57 @@ from app import app, db, login_manager
 from app.models.PessoaModel import Pessoa
 from app.models.UsuarioModel import UsuarioModel
 from app.models.ProdutoModel import ProdutoModel
-from flask_login import LoginManager, UserMixin, login_required,login_user, logout_user
+from app.models.Fornecedor import Fornecedor
+from app.controllers.login.login import requires_roles
+from flask_login import LoginManager, UserMixin, login_required,login_user, logout_user,current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, date
 
 
 
 @app.route('/cadastrarProduto')
-@login_required
+# @requires_roles('Administrador')
+# @login_required
 def cadastrarProduto():
-	return render_template('cadastroProduto.html')
+    fornecedores = Fornecedor.query.all()
+    return render_template('produtos/cadastroProduto.html',fornecedores = fornecedores)
 
 @app.route('/salvar_produto',methods=['POST'])
-@login_required
+# @login_required
 def salvar_produto():
-    notaFiscal = int(request.form.get('notaFiscal'))
-    cnpj = int(request.form.get('cnpj'))
-    razaoSocial = request.form.get('razaoSocial')
     nome = request.form.get('nome')
-    dataEntrada = request.form.get('dataentrada')
-    saldo = float(request.form.get('saldo'))
-    prazoPagamento = int(request.form.get('prazopagamento'))
-    valorkg = float(request.form.get('valorkg'))
-    caixa = float(request.form.get('caixa'))
-    sacos = int(request.form.get('sacos'))
+    valor = float(request.form.get('valor'))
     kg = float(request.form.get('kg'))
+    id_fornecedor = request.form.get('id_fornecedor')
     
-    dataEntrada = datetime.strptime(dataEntrada, "%Y-%m-%d").date()
+    # dataEntrada = datetime.strptime(dataEntrada, "%Y-%m-%d").date()
 
-
-    produto = ProdutoModel(notaFiscal,cnpj,razaoSocial,nome,dataEntrada,saldo,
-                            prazoPagamento,valorkg,
-                            caixa,sacos,kg)
+    produto = ProdutoModel(nome,valor,kg,id_fornecedor)
 
     db.session.add(produto)
     db.session.commit()
 
     produtos = ProdutoModel.query.all()
-    return render_template('listarProdutos.html', produtos=produtos)
+    return render_template('produtos/listarProdutos.html', produtos = produtos)
     
     
 @app.route('/listarProdutos')
-@login_required
+# @login_required
 def listarProdutos():
 	produtos = ProdutoModel.query.all()
-	return render_template('listarProdutos.html', produtos=produtos)
+	return render_template('produtos/listarProdutos.html', produtos=produtos)
 
 
 
 @app.route('/deletarProduto/<int:id>')
-@login_required
+# @login_required
 def deletarProduto(id=0):
 	produto = ProdutoModel.query.filter_by(idProduto=id).first()
-	return render_template('deletarProduto.html', produto=produto)
+	return render_template('produtos/deletarProduto.html', produto=produto)
 
 
 @app.route('/saveDeleteProduto',methods=['POST'])
-@login_required
+# @login_required
 def saveDeleteProduto():
 	id = int(request.form.get('idProduto'))
 
@@ -69,18 +63,18 @@ def saveDeleteProduto():
 	db.session.commit()
 	
 	produtos = ProdutoModel.query.all()
-	return render_template('listarProdutos.html', produtos=produtos)
+	return render_template('produtos/listarProdutos.html', produtos=produtos)
 
 
 @app.route('/editarProduto/<int:id>')
-@login_required
+# @login_required
 def editarProduto(id=0):
 	produto = ProdutoModel.query.filter_by(idProduto=id).first()
-	return render_template('editarProduto.html', produto=produto)
+	return render_template('produtos/editarProduto.html', produto=produto)
 
 
 @app.route('/saveEditarProduto',methods=['POST'])
-@login_required
+# @login_required
 def saveEditarProduto():
     id = int(request.form.get('idProduto'))
     notaFiscal = int(request.form.get('notaFiscal'))
@@ -114,4 +108,4 @@ def saveEditarProduto():
     db.session.commit()
 
     produtos = ProdutoModel.query.all()
-    return render_template('listarProdutos.html', produtos=produtos)
+    return render_template('produtos/listarProdutos.html', produtos=produtos)

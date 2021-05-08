@@ -1,0 +1,44 @@
+<title>Listar Fornecedores</title>
+
+{% extends "layout.html" %}
+
+{% block rolf %}
+
+	<div class="container" style="height: 90%; width: 100%;">
+		<table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+			<thead>
+			  <tr>
+				<th class="th-sm">Nome do Fornecedor</th>
+				<th class="th-sm">CNPJ</th>
+				<th class="th-sm">Razão Social</th>
+				<th class="th-sm">Editar</th>
+				<th class="th-sm">Deletar</th>
+			  </tr>
+			</thead>
+			<tbody>
+            {% for fornecedor in fornecedores %}
+
+			  <tr>
+				<td nowrap="true">{{fornecedor.nome}}</td>
+				<td nowrap="true">{{fornecedor.cnpj}}</td>
+				<td nowrap="true">{{fornecedor.razao_social}}</td>		
+				<td>
+					<a href="/editarFornecedor/{{fornecedor.id_fornecedor}}"
+					class="btn btn-primary" role="button">
+						Edição
+					</a>
+				</td>
+				<td>
+					<a href="/deletarFornecedor/{{fornecedor.id_fornecedor}}"
+					class="btn btn-danger" role="button">
+						Deletar
+					</a>
+				</td>
+			  </tr>
+
+			  {% endfor %}
+
+			</tbody>
+		  </table>
+	</div>
+{% endblock %}
