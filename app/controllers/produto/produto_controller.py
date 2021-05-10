@@ -48,8 +48,8 @@ def listarProdutos():
 @app.route('/deletarProduto/<int:id>')
 # @login_required
 def deletarProduto(id=0):
-	produto = ProdutoModel.query.filter_by(idProduto=id).first()
-	return render_template('produtos/deletarProduto.html', produto=produto)
+    produto = ProdutoModel.query.filter_by(idProduto=id).first()
+    return render_template('produtos/deletarProduto.html', produto=produto)
 
 
 @app.route('/saveDeleteProduto',methods=['POST'])
@@ -69,41 +69,27 @@ def saveDeleteProduto():
 @app.route('/editarProduto/<int:id>')
 # @login_required
 def editarProduto(id=0):
-	produto = ProdutoModel.query.filter_by(idProduto=id).first()
-	return render_template('produtos/editarProduto.html', produto=produto)
+    produto = ProdutoModel.query.filter_by(idProduto=id).first()
+    return render_template('produtos/editarProduto.html', produto=produto, fornecedores = fornecedoress)
 
 
 @app.route('/saveEditarProduto',methods=['POST'])
 # @login_required
 def saveEditarProduto():
     id = int(request.form.get('idProduto'))
-    notaFiscal = int(request.form.get('notaFiscal'))
-    cnpj = int(request.form.get('cnpj'))
-    razaoSocial = request.form.get('razaoSocial')
     nome = request.form.get('nome')
-    dataEntrada = request.form.get('dataentrada')
-    saldo = float(request.form.get('saldo'))
-    prazoPagamento = int(request.form.get('prazopagamento'))
-    valorkg = float(request.form.get('valorkg'))
-    caixa = float(request.form.get('caixa'))
-    sacos = int(request.form.get('sacos'))
+    valor = float(request.form.get('valor'))
     kg = float(request.form.get('kg'))
+    id_fornecedor = request.form.get('id_fornecedor')
 
-    dataEntrada = datetime.strptime(dataEntrada, "%Y-%m-%d").date()
+    # dataEntrada = datetime.strptime(dataEntrada, "%Y-%m-%d").date()
 
     produto = ProdutoModel.query.filter_by(idProduto=id).first()
-
-    produto.notaFiscal = notaFiscal
-    produto.cnpj = cnpj
-    produto.razaoSocial = razaoSocial
+  
     produto.nome = nome
-    produto.dataEntrada = dataEntrada
-    produto.saldo = saldo
-    produto.prazoPagamento = prazoPagamento
-    produto.valorkg = valorkg
-    produto.caixa = caixa
-    produto.sacos = sacos
+    produto.valor = valor
     produto.kg = kg
+    produto.id_fornecedor = id_fornecedor
 
     db.session.commit()
 

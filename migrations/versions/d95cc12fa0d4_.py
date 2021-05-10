@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 9ef99b938fbd
+Revision ID: d95cc12fa0d4
 Revises: 
-Create Date: 2021-05-08 00:14:49.454911
+Create Date: 2021-05-10 16:46:55.733662
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '9ef99b938fbd'
+revision = 'd95cc12fa0d4'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -56,7 +56,7 @@ def upgrade():
     sa.PrimaryKeyConstraint('idProduto')
     )
     op.create_table('usuarioSistema',
-    sa.Column('id_pessoa', sa.Integer(), nullable=False),
+    sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('cpf', sa.Integer(), nullable=True),
     sa.Column('nome', sa.String(length=150), nullable=False),
     sa.Column('email', sa.String(length=150), nullable=False),
@@ -68,7 +68,7 @@ def upgrade():
     sa.Column('tipoUsuario', sa.String(length=50), nullable=True),
     sa.Column('id_empresa', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['id_empresa'], ['empresa.id_empresa'], ),
-    sa.PrimaryKeyConstraint('id_pessoa')
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_usuarioSistema_cpf'), 'usuarioSistema', ['cpf'], unique=True)
     # ### end Alembic commands ###

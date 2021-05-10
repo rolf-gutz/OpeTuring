@@ -11,6 +11,12 @@ from functools import wraps
 # def current_user(id):
 #     return UsuarioModel.query.get(id)
 
+@app.route('/login/menu', methods =['POST'])
+@login_required
+def loginMenu():
+	user =  {'tipoUsuario': current_user.tipoUsuario}
+	return user
+
 @app.route('/')
 @app.route('/login',methods =["GET","POST"])
 def login():
@@ -43,7 +49,7 @@ def load_user(id):
 @login_required
 def logout():
     logout_user()
-    return render_template("login.html")
+    return render_template("login/login.html")
 
 
 def requires_roles(*roles):

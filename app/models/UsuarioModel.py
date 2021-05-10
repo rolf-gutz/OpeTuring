@@ -4,7 +4,7 @@ from flask_login import LoginManager, UserMixin, login_required,login_user, logo
 class UsuarioModel(db.Model,UserMixin):
 	__tablename__ = 'usuarioSistema'
 
-	id_pessoa = db.Column(db.Integer, primary_key=True)
+	id = db.Column(db.Integer, primary_key=True)
 	cpf = db.Column(db.Integer,unique=True, index=True)
 	nome = db.Column(db.String(150), nullable=False)
 	email = db.Column(db.String(150),nullable=False)

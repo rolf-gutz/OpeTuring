@@ -11,10 +11,18 @@
 		<meta http-equiv='cache-control' content='no-cache'>
 		<meta http-equiv='expires' content='0'>
 		<meta http-equiv='pragma' content='no-cache'>
+		
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js" 
 		integrity="sha384-THVO/sM0mFD9h7dfSndI6TS0PgAGavwKvB5hAxRRvc0o9cPLohB0wb/PTA7LdUHs" 
 		crossorigin="anonymous"></script>
+		
+		<style>
+			.display {
+			  display: none;
+			}
+		</style>
+
 	</head>
 
 	<body>
@@ -29,8 +37,9 @@
 					<li class="nav-item active">
 						<a class="nav-link" href="#">Início<span class="sr-only">(current)</span></a>
 					</li>
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<li class="nav-item dropdown" id="LiDevelopmen">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+						 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						Existente
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -40,42 +49,49 @@
 						<a class="dropdown-item" href="/graficos">Graficos</a>
 						</div>
 					</li>
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<li class="nav-item dropdown" id="LiUsuario">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" 
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							Usuário
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 							<a class="dropdown-item" href="/cadastrarUsuario">Cadastrar Usuário</a>
 							<a class="dropdown-item" href="/listarUsuarios">Listar Usuario</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="/graficos">Graficos</a>
 						</div>
 					</li>
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Produtos</a>
+					<li class="nav-item dropdown" id="LiProduto">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" 
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Produtos</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 							<a class="dropdown-item" href="/cadastrarProduto">Cadastrar Produto</a>
 							<a class="dropdown-item" href="/listarProdutos">Listar Produto</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="/graficos">Graficos</a>
 						</div>
 					</li>	
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Empresa</a>
+					<li class="nav-item dropdown" id="LiEmpresa">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+						 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >Empresa</a> 
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 							<a class="dropdown-item" href="/cadastrarEmpresa">Cadastrar Empresa</a>
 							<a class="dropdown-item" href="/listarEmpresa">Listar Produto</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="/graficos">Graficos</a>
 						</div>
 					</li>
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Fornecedor</a>
+					<li class="nav-item dropdown"   id="LiFornecedor" aria-disabled="true"> 
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"  role="button" 
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Fornecedor</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 							<a class="dropdown-item" href="/cadastrarFornecedor">Cadastrar Fornecedor</a>
 							<a class="dropdown-item" href="/listarFornecedor">Listar Fornecedor</a>
 						</div>
 					</li>	
+					<li class="nav-item dropdown"  id="LiVendas">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" 
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+						Vendas
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="/adicionarProdutos">Produtos</a>
+						</div>
+					</li>
 				</ul>
 
 				<form class="form-inline my-2 my-lg-0">
@@ -110,4 +126,57 @@
 			</div>
 		</footer>
 	</body>
+
+<script>
+
+function changeMenu () {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", '/login/menu', true);
+        // Envia a informação do cabeçalho junto com a requisição.
+    
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    xhr.onreadystatechange = function() { // Chama a função quando o estado mudar.
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            var data = JSON.parse(this.responseText)
+            if  (data.tipoUsuario === 'Administrador') {
+                HidenMenuAdmn();
+            } else if( data.tipoUsuario === 'Cliente'){
+				HidenMenuClient();
+            } else {
+                HidenMenuFuncio();
+            }
+        }
+    }
+    xhr.send();
+    // xhr.send(new Int8Array());
+    // xhr.send(document);
+}   
+
+function HidenMenuClient () {
+	document.getElementById('LiFornecedor').classList.add('display');
+	document.getElementById('LiEmpresa').classList.add('display');
+	document.getElementById('LiProduto').classList.add('display');
+	document.getElementById('LiDevelopmen').classList.add('display');
+}
+
+function HidenMenuFuncio () {
+	document.getElementById('LiFornecedor').classList.add('display');
+	document.getElementById('LiEmpresa').classList.add('display');
+	document.getElementById('LiProduto').classList.add('display');
+	document.getElementById('LiUsuario').classList.add('display');
+	document.getElementById('LiDevelopmen').classList.add('display');
+
+}
+
+function HidenMenuAdmn() {
+	return  
+}
+
+changeMenu();
+
+</script>
+
+
+
 </html>
