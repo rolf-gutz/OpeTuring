@@ -8,8 +8,6 @@ from flask_login import LoginManager, UserMixin, login_required,login_user, logo
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-
-
 @app.route('/listagem')
 # @requires_roles('Cliente')
 # @login_required

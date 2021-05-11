@@ -3,7 +3,7 @@ from flask import Flask,render_template,redirect,request,url_for,flash
 from app import app, db,login_manager
 from app.models.UsuarioModel import UsuarioModel
 from flask_login import LoginManager, UserMixin, login_required,login_user, logout_user,current_user
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import  check_password_hash
 from functools import wraps
 
 

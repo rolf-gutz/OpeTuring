@@ -31,18 +31,17 @@ def salvar_produto():
     db.session.add(produto)
     db.session.commit()
 
-    produtos = ProdutoModel.query.all()
-    produtosArray = modelArray(produtos)
-    return render_template('produtos/listarProdutos.html', produtos = produtosArray)
+    produtos = produtosPagined(page=1)
+    return render_template('produtos/listarProdutos.html', produtos=produtos)
     
     
-@app.route('/listarProdutos')
+# @app.route('/listarProdutos/<int:page>',methods=['POST'],defaults={'page':1})
+@app.route('/listarProdutos/1')
+@app.route('/listarProdutos/<int:page>')
 # @login_required
-def listarProdutos():
-    produtos = ProdutoModel.query.all()
-    produtosArray = modelArray(produtos)
-    
-    return render_template('produtos/listarProdutos.html', produtos=produtosArray)
+def listarProdutos(page=1):
+    produtos = produtosPagined(page)
+    return render_template('produtos/listarProdutos.html', produtos=produtos)
 
 
 @app.route('/deletarProduto/<int:id>')
@@ -62,9 +61,9 @@ def saveDeleteProduto():
     db.session.delete(produto)
     db.session.commit()
 	
-    produtos = ProdutoModel.query.all()
-    produtosArray = modelArray(produtos)
-    return render_template('produtos/listarProdutos.html', produtos = produtosArray)
+    # produtos = ProdutoModel.query.all()
+    # produtosArray = modelArray(produtos)
+    return url_for('/listarProdutos/')
 
 
 @app.route('/editarProduto/<int:id>')
@@ -108,8 +107,14 @@ def modelArray (produtos):
         produtoJson = {'idProduto': x.idProduto,
                     'nome':x.nome,
                     'valor': conversorMoeda(x.valor),
-                    'kg': x.kg                  
+                    'kg': x.kg ,
+                    'Pagination' : x.Pagination              
             }
         produtosArray.append(produtoJson)
     
     return produtosArray
+
+def produtosPagined (page=1):
+    page = page
+    produtos = ProdutoModel.query.paginate(page , 15, False)
+    return produtos
