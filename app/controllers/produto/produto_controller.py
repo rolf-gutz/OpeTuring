@@ -1,7 +1,5 @@
 from flask import Flask,render_template,redirect,request,url_for,flash
 from app import app, db, login_manager
-from app.models.PessoaModel import Pessoa
-from app.models.UsuarioModel import UsuarioModel
 from app.models.ProdutoModel import ProdutoModel
 from app.models.Fornecedor import Fornecedor
 from app.controllers.login.login import requires_roles
@@ -34,15 +32,17 @@ def salvar_produto():
     db.session.commit()
 
     produtos = ProdutoModel.query.all()
-    return render_template('produtos/listarProdutos.html', produtos = produtos)
+    produtosArray = modelArray(produtos)
+    return render_template('produtos/listarProdutos.html', produtos = produtosArray)
     
     
 @app.route('/listarProdutos')
 # @login_required
 def listarProdutos():
-	produtos = ProdutoModel.query.all()
-	return render_template('produtos/listarProdutos.html', produtos=produtos)
-
+    produtos = ProdutoModel.query.all()
+    produtosArray = modelArray(produtos)
+    
+    return render_template('produtos/listarProdutos.html', produtos=produtosArray)
 
 
 @app.route('/deletarProduto/<int:id>')
@@ -55,23 +55,24 @@ def deletarProduto(id=0):
 @app.route('/saveDeleteProduto',methods=['POST'])
 # @login_required
 def saveDeleteProduto():
-	id = int(request.form.get('idProduto'))
+    id = int(request.form.get('idProduto'))
 
-	produto = ProdutoModel.query.filter_by(idProduto=id).first()
+    produto = ProdutoModel.query.filter_by(idProduto=id).first()
 
-	db.session.delete(produto)
-	db.session.commit()
+    db.session.delete(produto)
+    db.session.commit()
 	
-	produtos = ProdutoModel.query.all()
-	return render_template('produtos/listarProdutos.html', produtos=produtos)
+    produtos = ProdutoModel.query.all()
+    produtosArray = modelArray(produtos)
+    return render_template('produtos/listarProdutos.html', produtos = produtosArray)
 
 
 @app.route('/editarProduto/<int:id>')
 # @login_required
 def editarProduto(id=0):
     produto = ProdutoModel.query.filter_by(idProduto=id).first()
-    return render_template('produtos/editarProduto.html', produto=produto, fornecedores = fornecedoress)
-
+    fornecedores = Fornecedor.query.all()
+    return render_template('produtos/editarProduto.html', produto=produto, fornecedores = fornecedores)
 
 @app.route('/saveEditarProduto',methods=['POST'])
 # @login_required
@@ -94,4 +95,21 @@ def saveEditarProduto():
     db.session.commit()
 
     produtos = ProdutoModel.query.all()
-    return render_template('produtos/listarProdutos.html', produtos=produtos)
+    produtosArray = modelArray(produtos)
+    return render_template('produtos/listarProdutos.html', produtos = produtosArray)
+    
+def conversorMoeda (valor = 0 , moeda='R$'):
+        return f'{moeda}{valor:.2f}'.replace('.',',')
+
+
+def modelArray (produtos):
+    produtosArray  = []
+    for x in produtos:
+        produtoJson = {'idProduto': x.idProduto,
+                    'nome':x.nome,
+                    'valor': conversorMoeda(x.valor),
+                    'kg': x.kg                  
+            }
+        produtosArray.append(produtoJson)
+    
+    return produtosArray

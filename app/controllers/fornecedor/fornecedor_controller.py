@@ -1,4 +1,5 @@
 from flask import Flask,render_template,redirect,request,url_for,flash
+import flask_script
 from app import app, db, login_manager
 from app.models.PessoaModel import Pessoa
 from app.models.UsuarioModel import UsuarioModel
@@ -19,7 +20,14 @@ def cadastrarFornecedor():
 @app.route('/salvarFornecedor',methods=['POST'])
 # @login_required
 def salvarFornecedor():
-    cnpj = int(re.sub("[^a-zA-Z0-9áéíóúÁÉÍÓÚâêîôÂÊÎÔãõÃÕçÇ: ]+","",request.form.get('cnpj')))
+    cnpj_form = request.form.get('cnpj')
+    cnpj = int(re.sub("[^a-zA-Z0-9áéíóúÁÉÍÓÚâêîôÂÊÎÔãõÃÕçÇ: ]+","",cnpj_form))
+    msg = validDoc(cnpj_form)
+    
+    if msg is not None:
+        flash(message=msg, category="danger")        
+        return render_template('fornecedor/cadastroFornecedor.html')
+    
     razao_social = request.form.get('razao_social')
     nome = request.form.get('nome')
                         
@@ -46,51 +54,58 @@ def deletarFornecedor(id=0):
 	return render_template('fornecedor/deletarFornecedor.html', fornecedor = fornecedor)
 
     
-# @app.route('/saveDeletarFornecedor',methods=['POST'])
-# # @login_required
-# def saveDeletarFornecedor():
-# 	id = int(request.form.get('id_empresa'))
-# 	fornecedor = Fornecedor.query.filter_by(id_empresa=id).first()
+@app.route('/saveDeletarFornecedor',methods=['POST'])
+# @login_required
+def saveDeletarFornecedor():
+    id = int(request.form.get('id_fornecedor'))
+    fornecedor = Fornecedor.query.filter_by(id_fornecedor=id).first()
 	
-# 	db.session.delete(fornecedor)
-# 	db.session.commit()
+    db.session.delete(fornecedor)   
+    db.session.commit()
 	
-# 	fornecedor = Fornecedor.query.all()
-# 	return render_template('fornecedor/listarEmpresa.html',  fornecedor = fornecedor)
+    fornecedores = Fornecedor.query.all()
+    return render_template('fornecedor/listarFornecedor.html',  fornecedores = fornecedores)
 
 
-# @app.route('/editarFornecedor/<int:id>')
-# # @login_required
-# def editarFornecedor(id=0):
-# 	fornecedor =  Fornecedor.query.filter_by(id_empresa=id).first()
-# 	return render_template('fornecedor/editarEmpresa.html', fornecedor = fornecedor)
+@app.route('/editarFornecedor/<int:id>')
+# @login_required
+def editarFornecedor(id=0):
+	fornecedor =  Fornecedor.query.filter_by(id_fornecedor=id).first()
+	return render_template('fornecedor/editarFornecedor.html', fornecedor = fornecedor)
 
 
-# @app.route('/saveEditarFornecedor',methods=['POST'])
-# # @login_required
-# def saveeditarFornecedor():
-# 	id = int(request.form.get('id_empresa'))
-# 	razao_social = request.form.get('razao_social')
-# 	text2 = re.sub("[^a-zA-Z0-9áéíóúÁÉÍÓÚâêîôÂÊÎÔãõÃÕçÇ: ]+","",request.form.get('cnpj'))
-# 	cnpj = int(text2)
-# 	nome = request.form.get('nome')
-# 	endereco = request.form.get('endereco')
-# 	cidade = request.form.get('cidade')
-# 	estado = request.form.get('estado')
-# 	cep = request.form.get('cep')
+@app.route('/saveEditarFornecedor',methods=['POST'])
+# @login_required
+def saveEditarFornecedor():
+    id = int(request.form.get('id_fornecedor'))
+    cnpj_form = request.form.get('cnpj')
+    msg = validDoc(cnpj_form)
+    
+    if msg is not None:
+        flash(message=msg, category="danger")        
+        fornecedor =  Fornecedor.query.filter_by(id_fornecedor=id).first()
+        return render_template('fornecedor/editarFornecedor.html', fornecedor = fornecedor)
 
-# 	fornecedor = Fornecedor.query.filter_by(id_empresa=id).first()
+    cnpj = int(re.sub("[^a-zA-Z0-9áéíóúÁÉÍÓÚâêîôÂÊÎÔãõÃÕçÇ: ]+","",cnpj_form))
+    razao_social = request.form.get('razao_social')
+    nome = request.form.get('nome')
 
-# 	empresa.razao_social =razao_social
-# 	empresa.nome = nome
-# 	empresa.cnpj = cnpj
-# 	empresa.endereco = endereco
-# 	empresa.cidade = cidade
-# 	empresa.estado = estado
-# 	empresa.cep = cep
+           
+    fornecedor =  Fornecedor.query.filter_by(id_fornecedor=id).first()
 
-# 	db.session.commit()
+    fornecedor.cnpj = cnpj
+    fornecedor.razao_social = razao_social
+    fornecedor.nome = nome
+	
+    db.session.commit()
 
-# 	fornecedores = Fornecedor.query.all()
-# 	return render_template('fornecedor/listarEmpresa.html', fornecedores = fornecedores)
+    fornecedores = Fornecedor.query.all()
+    return render_template('fornecedor/listarFornecedor.html',  fornecedores = fornecedores)
 
+
+def validDoc (cnpj):
+    tamanho = len(cnpj)
+    if  tamanho <= 11 or tamanho > 18:
+        return 'CNPJ preenchimento inválido!!!'
+    else:
+        return None
