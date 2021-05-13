@@ -1,0 +1,116 @@
+<title>Listar Produto</title>
+
+{% extends "layout.html" %}
+
+{% block rolf %}
+
+	<div class="container" style="height: 85%; width: 100%;">
+		<table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+			<thead>
+			  <tr>
+				<th class="th-sm">Nome do Produto</th>
+				<th class="th-sm">Valor KG</th>
+				<th class="th-sm">KG</th>
+                <th class="th-sm">Selecionar Quilos</th>			
+                <th class="th-sm">Adicionar</th>			
+			  </tr>
+			</thead>
+			<tbody>
+            {% for produto in produtos %}
+			  <tr>
+				<td nowrap="true">{{produto.nome}}</td>		
+				<td nowrap="true">{{produto.valor}}</td>
+				<td id="quantidadeRestante{{produto.idProduto}}" nowrap="true">{{produto.kg}}</td>
+				<td nowrap="true">  
+					<input class="valor"type="text" id="{{produto.idProduto}}" value="" placeholder="Adicione os quilos">
+				</input>
+				</td>
+				<td>
+					<button class="btn btn-info" role="button" onclick="addProduto('{{produto.idProduto}}')">
+						Adicionar
+					</button>
+					<!-- <a href="/addCart/{{produto.idProduto}}"
+					class="btn btn-info" role="button">
+						Adicionar
+					</a> -->
+			  </tr>
+			  {% endfor %}
+			  
+			</tbody>
+		</table>
+		<button class="btn btn-info" role="button" onclick="enviarPedido()">
+			Finalizar Pedido
+		</button>
+		
+	</div>
+	
+
+<script>
+	document.listProdutos = []
+	
+	function addProduto(id) {
+	var quantity = document.getElementById(id).value
+    var result = document.listProdutos.find(x => x.idProduto === id)
+    if (result === undefined) {
+        document.listProdutos.push({idProduto: id, quantity: quantity})
+    }
+	console.log(document.listProdutos)
+	document.getElementById('quantidadeRestante'+id).innerText = 123
+
+}
+	
+// function enviarPedido () {
+//     var xhr = new XMLHttpRequest();
+//     xhr.open("POST", '/pedido/addPedido/', true);
+//         // Envia a informação do cabeçalho junto com a requisição.
+    
+//     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+//     xhr.onreadystatechange = function() { // Chama a função quando o estado mudar.
+//         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+//             var data = JSON.parse(this.responseText)
+//             if  (data.tipoUsuario === 'Administrador') {
+//                 HidenMenuAdmn();
+//             } else if( data.tipoUsuario === 'Cliente'){
+// 				HidenMenuClient();
+//             } else {
+//                 HidenMenuFuncio();
+//             }
+//         }
+//     }
+	
+// 	array_of_objects: JSON.stringify(
+// 		document.listProdutos
+// 	)
+
+//     xhr.send(array_of_objects);
+//     // xhr.send(new Int8Array());
+//     // xhr.send(document);
+// }   
+
+	
+function enviarPedido () {
+	$.ajax({
+    url: "/pedido/addPedido/",
+    type: "POST",
+    async: false,
+    data: {
+		lista : JSON.stringify(document.listProdutos),
+    },
+    success: function(response) {
+      console.log("===== SUCCESS =====");
+      console.log(response);
+	  console.log(response.idPedido)
+    },
+    error: function(response) {
+      console.log("===== ERROR =====");
+      console.log(response);
+    }
+  });
+}   
+
+
+</script>	
+
+	
+{% endblock %}

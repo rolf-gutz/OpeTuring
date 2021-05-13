@@ -36,7 +36,7 @@ def salvar_produto():
     
     
 # @app.route('/listarProdutos/<int:page>',methods=['POST'],defaults={'page':1})
-@app.route('/listarProdutos/1')
+@app.route('/listarProdutos')
 @app.route('/listarProdutos/<int:page>')
 # @login_required
 def listarProdutos(page=1):

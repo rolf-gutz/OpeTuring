@@ -24,3 +24,4 @@ from app.controllers.usuario import usuario_controller
 from app.controllers.produto import produto_controller
 from app.controllers.empresa import empresa_controller
 from app.controllers.fornecedor import fornecedor_controller
+from app.controllers.pedido import vendas_controller

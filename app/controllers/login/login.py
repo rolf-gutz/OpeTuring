@@ -36,7 +36,6 @@ def login():
 
 		login_user(usuario)
 		return redirect(url_for('listagem'))
-
 		
 	return render_template('login/login.html')
 
