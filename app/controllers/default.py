@@ -7,19 +7,18 @@ from app.controllers.login.login import requires_roles
 from flask_login import LoginManager, UserMixin, login_required,login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
-
 @app.route('/listagem')
 # @requires_roles('Cliente')
 # @login_required
 def listagem():
 	pessoas = Pessoa.query.all()
-	return render_template('listagem.html', pessoas=pessoas, ordem='id')
+	return render_template('development/listagem.html', pessoas=pessoas, ordem='id')
 
 @app.route('/selecao/<int:id>')
 # @login_required
 def selecao(id=0):
 	pessoas = Pessoa.query.filter_by(id=id).all()
-	return render_template('listagem.html', pessoas=pessoas, ordem='id')
+	return render_template('development/listagem.html', pessoas=pessoas, ordem='id')
 
 @app.route('/ordenacao/<campo>/<ordem_anterior>')
 # @login_required
@@ -52,7 +51,7 @@ def ordenacao(campo='id', ordem_anterior=''):
 	else:
 		pessoas = Pessoa.query.order_by(Pessoa.id).all()
 
-	return render_template('listagem.html', pessoas=pessoas, ordem=campo)
+	return render_template('development/listagem.html', pessoas=pessoas, ordem=campo)
 
 @app.route('/consulta', methods=['POST'])
 # @login_required
@@ -71,13 +70,12 @@ def consulta():
 	else:
 		pessoas = Pessoa.query.all()
 	
-	return render_template('listagem.html', pessoas=pessoas, ordem='id')
-
+	return render_template('development/listagem.html', pessoas=pessoas, ordem='id')
 
 @app.route('/insercao')
 # @login_required
 def insercao():
-	return render_template('insercao.html')
+	return render_template('development/insercao.html')
 
 @app.route('/salvar_insercao', methods=['POST'])
 def salvar_insercao():
@@ -92,14 +90,13 @@ def salvar_insercao():
 	db.session.commit()
 
 	pessoas = Pessoa.query.all()
-	return render_template('listagem.html', pessoas=pessoas, ordem='id')
+	return render_template('development/listagem.html', pessoas=pessoas, ordem='id')
 
 @app.route('/edicao/<int:id>')
 @login_required
 def edicao(id=0):
 	pessoa = Pessoa.query.filter_by(id =id).first()
-	return render_template('edicao.html', pessoa=pessoa)
-
+	return render_template('development/edicao.html', pessoa=pessoa)
 
 @app.route('/salvar_edicao',methods=['POST'])
 # @login_required
@@ -120,7 +117,7 @@ def salvar_edicao():
 	db.session.commit()
 
 	pessoas = Pessoa.query.all()
-	return render_template('listagem.html', pessoas=pessoas, ordem='id')
+	return render_template('development/listagem.html', pessoas=pessoas, ordem='id')
 
 @app.route('/delecao/<int:id>')
 # @login_required
@@ -139,7 +136,7 @@ def salvar_delecao():
 	db.session.commit()
 
 	pessoas = Pessoa.query.all()
-	return render_template('listagem.html', pessoas=pessoas, ordem='id')
+	return render_template('development/listagem.html', pessoas=pessoas, ordem='id')
 	
 
 @app.route('/graficos')
@@ -172,5 +169,5 @@ def graficos():
 	if len(pessoasF) > 0:
 		IdadeF = IdadeF / len(pessoasF)
 			
-	return render_template('graficos.html',
+	return render_template('development/graficos.html',
 							salarioM=salarioM, salarioF=salarioF, idadeM=IdadeM, idadeF=IdadeF)

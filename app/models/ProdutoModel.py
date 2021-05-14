@@ -10,7 +10,8 @@ class ProdutoModel(db.Model,UserMixin):
     valor = db.Column(db.Float)
     kg = db.Column(db.Float)
     id_fornecedor = db.Column(db.Integer, db.ForeignKey('fornecedor.id_fornecedor'),nullable=False)
-
+    produto = db.relationship('Itens_Pedido', backref="produto")
+    
 
 
     def __init__(self,nome,valor,kg,id_fornecedor):     

@@ -5,17 +5,17 @@ class UsuarioModel(db.Model,UserMixin):
 	__tablename__ = 'usuarioSistema'
 
 	id = db.Column(db.Integer, primary_key=True)
-	cpf = db.Column(db.Integer,unique=True, index=True)
-	nome = db.Column(db.String(150), nullable=False)
-	email = db.Column(db.String(150),nullable=False)
-	password = db.Column(db.String(255),nullable=False)
+	cpf = db.Column(db.Integer,unique=True, index = True)
+	nome = db.Column(db.String(150), nullable = False)
+	email = db.Column(db.String(150),nullable = False)
+	password = db.Column(db.String(255),nullable = False)
 	endereco = db.Column(db.String(255))
 	cidade = db.Column(db.String(255))
 	estado = db.Column(db.String(50))
 	cep = db.Column(db.String(10))
 	tipoUsuario = db.Column(db.String(50))
-	id_empresa = db.Column(db.Integer, db.ForeignKey('empresa.id_empresa'),nullable=False)
-
+	id_empresa = db.Column(db.Integer, db.ForeignKey('empresa.id_empresa'),nullable = False)
+	id_funcionario = db.relationship('Pedido', backref="usuarioSistema")
 							
 	def __init__(self, cpf,nome,email,password,endereco,cidade,estado,cep,tipoUsuario,id_empresa):
 		self.cpf = cpf
