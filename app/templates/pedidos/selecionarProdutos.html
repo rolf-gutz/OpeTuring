@@ -46,8 +46,9 @@
 			</div>
 			<div  >
 				<button class="btn btn-info" role="button" onclick="enviarPedido()">
-				Finalizar Pedido
+					Finalizar Pedido
 				</button>
+
 			</div>
 		</div>
 	</div>
@@ -98,7 +99,7 @@
 	
 	document.getElementById('quantidadeRestante'+id).innerText =  estoque
 	document.getElementById('somaProduto').innerText = valorSoma
-
+	
 }
 
 function CalcularSubTotal(valor, quantidade){
@@ -133,7 +134,8 @@ function enviarPedido () {
     success: function(response) {
       console.log("===== SUCCESS =====");
       console.log(response);
-	  console.log(response.idPedido)
+	  console.log(response.numeroPedido)
+	  window.location = '/detalhesPedido/'+response.numeroPedido;
     },
     error: function(response) {
       console.log("===== ERROR =====");

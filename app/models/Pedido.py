@@ -18,7 +18,7 @@ class Pedido(db.Model,UserMixin):
     id_pedido_item = db.relationship('Itens_Pedido', backref="pedido")
 
 
-    # dataPedido = datetime.strptime(dataPedido, "%Y-%m-%d").date()
+    # dataPedidoF = datetime.strptime(dataPedido, "%Y-%m-%d").date()
     
     
     def __init__(self,valor,notaFiscal,dataPedido,prazoPagamento,statusPagamento,observacao,id_empresa_funcionario,id_funcionario):
@@ -33,4 +33,4 @@ class Pedido(db.Model,UserMixin):
 
     
     def __repr__(self):
-        return '<Empresa %r>' % self.nome
+        return '<Pedido %r>' % self.valor
