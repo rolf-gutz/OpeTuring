@@ -86,7 +86,7 @@
 	valorSoma = 0
 	
 	function addProduto(id) {
-	var quantity = document.getElementById(id).value
+	var quantity = parseInt(document.getElementById(id).value)
 	var valorProduto = document.getElementById('valorProduto'+id).innerText
 	valorSoma += CalcularSubTotal(quantity,valorProduto)
     var result = document.listProdutos.find(x => x.idProduto === id)
@@ -99,6 +99,7 @@
 	
 	document.getElementById('quantidadeRestante'+id).innerText =  estoque
 	document.getElementById('somaProduto').innerText = valorSoma
+	document.getElementById(id).value = "";
 	
 }
 
@@ -109,18 +110,25 @@ function CalcularSubTotal(valor, quantidade){
 	
 	
 function removeProduto(id) {
-	var quantity = document.getElementById(id).value
+	
 	var valorProduto = document.getElementById('valorProduto'+id).innerText
-	valorSoma -= CalcularSubTotal(quantity,valorProduto)
+	var qtdDisponivel = document.getElementById('quantidadeRestante'+id).innerText
+
+	
     var result = document.listProdutos.find(x => x.idProduto === id)
     if (result.idProduto === id) {
         document.listProdutos.pop(result.idProduto)
     }
-
 	
+	var estoque = parseInt(qtdDisponivel) + parseInt(kgSelecionado)
+	var valorProduto = document.getElementById('valorProduto'+id).innerText
 
-	document.getElementById('quantidadeRestante'+id).innerText = qtdDisponivel
+	valorSoma -= CalcularSubTotal(kgSelecionado,valorProduto)
+
+	document.getElementById('quantidadeRestante'+id).innerText = estoque
 	document.getElementById('somaProduto').innerText = valorSoma
+	document.getElementById(id).value = "";
+	kgSelecionado = 0
 }
 
 function enviarPedido () {

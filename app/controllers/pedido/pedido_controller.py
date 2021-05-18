@@ -75,29 +75,36 @@ def detalhesPedido(id):
 
 def produtosPagined (page=1):
     page = page
-    produtos = ProdutoModel.query.paginate(page , 15, False)
+    produtos = ProdutoModel.query.filter(ProdutoModel.kg > 0).paginate(page,15,False)
     return produtos
 
 def Pedidosarray(pedido):
-    pedidoArray = []
-    paginas = pedido.per_page
+    pedidoResult = {'has_next': pedido.has_next,
+                    'has_prev':pedido.has_prev,
+                    'items': [],
+                    'next_num' : pedido.next_num,
+                    'page': pedido.page,
+                    'pages':pedido.pages,
+                    'per_page':pedido.per_page,
+                    'prev_num': pedido.prev_num
+                    }
+            
 
-    for index in range(paginas):
+    for index in range(1,pedidoResult['per_page']):
         empresa = Empresa.query.filter_by(id_empresa = pedido.items[index].id_empresa_funcionario).first()
         usuario = UsuarioModel.query.filter_by(id = pedido.items[index].id_funcionario).first()
         
-        page = {'pagina' : int(pedido.pages),
-                'detalhesPedido' :  { 'razaoSocial' :  empresa.razao_social,
+        detalhesPedido =  { 'razaoSocial' :  empresa.razao_social,
                             'nomeUsuario' :usuario.nome,
                             'numeroPedido' : pedido.items[index].id_pedido,
                             'DatadoPedido' : pedido.items[index].dataPedido,
-                            'ValorPedido' : pedido.items[index].valor,
-                            'StatusdePagamento' : pedido.items[index].statusPagamento
-                        }}
+                            'ValorPedido' : moeda(pedido.items[index].valor),
+                            'StatusdePagamento' : StatusDePagamento(pedido.items[index].statusPagamento)
+                        }
         
-        pedidoArray.append(page)
+        pedidoResult['items'].append(detalhesPedido)
     
-    return pedidoArray
+    return pedidoResult
 
 def PedidoItensArray(pedido):
     empresa = Empresa.query.filter_by(id_empresa = pedido.id_empresa_funcionario).first()
@@ -132,3 +139,16 @@ def pedidosPagined (page=1):
     pedido = Pedido.query.paginate(page , 15, False)
     pedidoArray = Pedidosarray(pedido)
     return pedidoArray
+
+def StatusDePagamento(status):
+    if status  == False:
+        return 'Em Aberto'
+    elif status == True:
+        return 'Pago'
+    else:
+        return 'Em Aberto'
+
+
+def moeda(preco = 0, moeda = 'R$: '):
+    preco = preco
+    return f'{moeda}{preco}'.replace('.',',')

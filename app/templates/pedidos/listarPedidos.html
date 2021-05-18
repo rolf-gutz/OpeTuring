@@ -18,17 +18,14 @@
       </tr>
     </thead>
     <tbody>
-
-
-      {% for pedido in pedidoArray %}
-        <tr>
-
-        <td nowrap="true" disable= "true">{{pedido.detalhesPedido.razaoSocial}} </td>
-        <td nowrap="true" disable= "true">{{pedido.detalhesPedido.nomeUsuario}} </td>
-        <td nowrap="true" disable= "true">{{pedido.detalhesPedido.numeroPedido}} </td>
-        <td nowrap="true" disable= "true">{{pedido.detalhesPedido.DatadoPedido}} </td>
-        <td nowrap="true" disable= "true">{{pedido.detalhesPedido.ValorPedido}} </td>
-        <td nowrap="true" disable= "true">{{pedido.detalhesPedido.StatusdePagamento}} </td>
+      {% for pedido in pedidoArray['items'] %}
+       <tr>
+        <td nowrap="true" disable= "true">{{pedido.razaoSocial}} </td>
+        <td nowrap="true" disable= "true">{{pedido.nomeUsuario}} </td>
+        <td nowrap="true" disable= "true">{{pedido.numeroPedido}} </td>
+        <td nowrap="true" disable= "true">{{pedido.DatadoPedido}} </td>
+        <td nowrap="true" disable= "true">{{pedido.ValorPedido}} </td>
+        <td nowrap="true" disable= "true">{{pedido.StatusdePagamento}} </td>
         <td>
 
           <a href="/detalhesPedido/{{pedido.numeroPedido}}"
@@ -42,27 +39,25 @@
   </table>
 </div>
 
-
 <div class="container  d-flex justify-content-center">
   <nav aria-label="...">
-    {% set numero =  pedidoArray[0].pagina | int  %}
     <ul class="pagination">
-    <!-- {% if not pedidoArray.has_prev %} -->
-      <li class="page-item">
-    <!-- {% endif %} -->
-
-      <a class="page-link" href="./{{page}}">Previous
-      </a>
+    {% if not pedidoArray.has_prev %}
+      <li class="page-item  
+    disabled" >
+    {% endif %}
+      <a class="page-link" href="./{{pedidoArray.prev_num}}">Previous</a>
     </li>
+    {% set numero =  pedidoArray.pages| int  %}
 
-     {% for page in range(numero) %}
-      <li class="page-item {% if page == numero %}
+    {% for page in range(numero) %}
+      <li class="page-item {% if page == pedidoArray.page %} 
       active {% endif %}">
-        <a class="page-link" href="./{{page}}" > {{page+1}}<span
+        <a class="page-link" href="./{{page}}" > {{page+1}}  <span
           class="sr-only">(current)</span></a>
       </li>
     {% endfor  %}
-
+  
     {% if not pedidoArray.has_next %}
       <li class="page-item disabled">
     {% endif %}
@@ -71,6 +66,7 @@
     </ul>
   </nav>
 </div>
+
 
 
 {% endblock %}

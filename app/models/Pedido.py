@@ -7,7 +7,7 @@ class Pedido(db.Model,UserMixin):
     __tablename__ = 'pedido'
 
     id_pedido = db.Column(db.Integer, primary_key=True)
-    valor = db.Column(db.Integer)
+    valor = db.Column(db.Float)
     notaFiscal = db.Column(db.Integer)
     dataPedido = db.Column(db.Date, default = date.today())
     prazoPagamento = db.Column(db.Integer)

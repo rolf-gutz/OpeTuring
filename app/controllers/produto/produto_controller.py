@@ -102,7 +102,7 @@ def conversorMoeda (valor = 0 , moeda='R$'):
 
 
 def modelArray (produtos):
-    produtosArray  = []
+    produtosArray  = [] 
     for x in produtos:
         produtoJson = {'idProduto': x.idProduto,
                     'nome':x.nome,
