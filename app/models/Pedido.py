@@ -8,7 +8,7 @@ class Pedido(db.Model,UserMixin):
 
     id_pedido = db.Column(db.Integer, primary_key=True)
     valor = db.Column(db.Float)
-    notaFiscal = db.Column(db.Integer)
+    notaFiscal = db.Column(db.String(50))
     dataPedido = db.Column(db.Date, default = date.today())
     prazoPagamento = db.Column(db.Integer)
     statusPagamento = db.Column(db.Boolean)

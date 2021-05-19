@@ -16,7 +16,7 @@
 			  </tr>
 			</thead>
 			<tbody>
-            {% for produto in produtos.items %}
+            {% for produto in produtos['items']%}
 			  <tr>
 				<td nowrap="true">{{produto.nome}}</td>		
 				<td nowrap="true">{{produto.valor}}</td>
@@ -48,8 +48,9 @@
 			{% endif %}
 				<a class="page-link" href="./{{produtos.prev_num}}">Previous</a>
 			</li>
-	
-			{% for page in produtos.iter_pages()%}
+			{% set numero =  produtos.pages| int  %}
+
+			{% for page in range(numero)%}
 				<li class="page-item {% if page == produtos.page %} 
 				active {% endif %}">
 					<a class="page-link" href="./{{page}}" > {{page}}  <span

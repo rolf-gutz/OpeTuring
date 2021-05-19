@@ -16,6 +16,8 @@ import re
 import json 
 
 
+
+
 @app.route('/selecionarProdutos')
 @app.route('/selecionarProdutos/<int:page>')
 # @login_required
@@ -58,12 +60,10 @@ def addPedido():
     itensPedido  = PedidoItensArray(pedido)
     return itensPedido 
 
-
 @app.route('/listarPedidos/')
 @app.route('/listarPedidos/<int:page>')
 def listarPedidos(page=1):
-    pedidos = pedidosPagined(page)
-    # pedidoArray = Pedidosarray(pedidos)  
+    pedidos = PedidosPagined(page)
     return render_template('pedidos/listarPedidos.html', pedidoArray = pedidos)
 
 @app.route('/detalhesPedido/<int:id>')
@@ -71,7 +71,6 @@ def detalhesPedido(id):
     pedido = Pedido.query.filter_by(id_pedido=id).first()
     itensPedido  = PedidoItensArray(pedido)
     return render_template('/pedidos/detalhesPedido.html',   itensPedido = itensPedido)
-
 
 def produtosPagined (page=1):
     page = page
@@ -88,9 +87,10 @@ def Pedidosarray(pedido):
                     'per_page':pedido.per_page,
                     'prev_num': pedido.prev_num
                     }
+    
             
-
-    for index in range(1,pedidoResult['per_page']):
+    itens = len(pedido.items)
+    for index in range(itens):
         empresa = Empresa.query.filter_by(id_empresa = pedido.items[index].id_empresa_funcionario).first()
         usuario = UsuarioModel.query.filter_by(id = pedido.items[index].id_funcionario).first()
         
@@ -98,7 +98,7 @@ def Pedidosarray(pedido):
                             'nomeUsuario' :usuario.nome,
                             'numeroPedido' : pedido.items[index].id_pedido,
                             'DatadoPedido' : pedido.items[index].dataPedido,
-                            'ValorPedido' : moeda(pedido.items[index].valor),
+                            'ValorPedido' : ConverterMoeda(pedido.items[index].valor),
                             'StatusdePagamento' : StatusDePagamento(pedido.items[index].statusPagamento)
                         }
         
@@ -131,13 +131,15 @@ def PedidoItensArray(pedido):
                     }
             
     return detalhesPedido   
-
-
     
-def pedidosPagined (page=1):
+def PedidosPagined (page=1):
     page = page
+    pedidoArray = []
     pedido = Pedido.query.paginate(page , 15, False)
-    pedidoArray = Pedidosarray(pedido)
+    if (pedido.pages > 0): 
+        pedidoArray = Pedidosarray(pedido)
+    else:
+        return pedido
     return pedidoArray
 
 def StatusDePagamento(status):
@@ -148,7 +150,9 @@ def StatusDePagamento(status):
     else:
         return 'Em Aberto'
 
-
-def moeda(preco = 0, moeda = 'R$: '):
-    preco = preco
-    return f'{moeda}{preco}'.replace('.',',')
+def ConverterMoeda(my_value):
+    moeda = 'R$ '
+    a = '{:,.2f}'.format(float(my_value))
+    b = a.replace(',','v')
+    c = b.replace('.',',')
+    return moeda + c.replace('v','.')

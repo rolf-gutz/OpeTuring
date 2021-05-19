@@ -53,7 +53,7 @@
     {% for page in range(numero) %}
       <li class="page-item {% if page == pedidoArray.page %} 
       active {% endif %}">
-        <a class="page-link" href="./{{page}}" > {{page+1}}  <span
+        <a class="page-link" href="./{{page}}" > {{page}}  <span
           class="sr-only">(current)</span></a>
       </li>
     {% endfor  %}
