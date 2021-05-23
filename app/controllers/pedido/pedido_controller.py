@@ -23,7 +23,8 @@ import json
 # @login_required
 def selecionarProdutos(page=1):
     produtos = produtosPagined(page)
-    return render_template('pedidos/selecionarProdutos.html', produtos=produtos)     
+    produtosPagina = ConvertePagina(produtos)
+    return render_template('pedidos/selecionarProdutos.html', produtos=produtosPagina)     
 
 
 @app.route('/pedido/addPedido/', methods=['POST'])
@@ -77,6 +78,31 @@ def produtosPagined (page=1):
     produtos = ProdutoModel.query.filter(ProdutoModel.kg > 0).paginate(page,15,False)
     return produtos
 
+def ConvertePagina(produtos):
+    produtoResult = {'has_next': produtos.has_next,
+                    'has_prev':produtos.has_prev,
+                    'items': [],
+                    'next_num' : produtos.next_num,
+                    'page': produtos.page,
+                    'pages':produtos.pages,
+                    'per_page':produtos.per_page,
+                    'prev_num': produtos.prev_num
+                    }
+    totalItens = len(produtos.items)
+    for index in range(totalItens):
+        produto = { 'idProduto' : produtos.items[index].idProduto,
+                    'nome':produtos.items[index].nome,
+                    'valorTela':ConverterMoeda(produtos.items[index].valor),
+                    'valor':produtos.items[index].valor,
+                    'kg':ConverterQuilos(produtos.items[index].kg),
+                    'id_fornecedor':produtos.items[index].id_fornecedor
+                   }
+
+        produtoResult['items'].append(produto)
+    
+    return produtoResult
+
+
 def Pedidosarray(pedido):
     pedidoResult = {'has_next': pedido.has_next,
                     'has_prev':pedido.has_prev,
@@ -88,7 +114,6 @@ def Pedidosarray(pedido):
                     'prev_num': pedido.prev_num
                     }
     
-            
     itens = len(pedido.items)
     for index in range(itens):
         empresa = Empresa.query.filter_by(id_empresa = pedido.items[index].id_empresa_funcionario).first()
@@ -156,3 +181,10 @@ def ConverterMoeda(my_value):
     b = a.replace(',','v')
     c = b.replace('.',',')
     return moeda + c.replace('v','.')
+
+
+def ConverterQuilos(my_value):
+    a = '{:,.0f}'.format(float(my_value))
+    b = a.replace(',','v')
+    c = b.replace('.',',')
+    return c.replace('v','.')

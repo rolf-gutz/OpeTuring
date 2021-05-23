@@ -12,20 +12,25 @@
 				<th class="th-sm">Valor KG</th>
 				<th class="th-sm">KG Disponiveis</th>
                 <th class="th-sm">Selecionar KG</th>			
+                <th class="th-sm">KG Selecionado</th>			
+				<th class="th-sm">Valor do Produto</th>			
                 <th class="th-sm">Adicionar</th>			
                 <th class="th-sm">Remover</th>			
 			  </tr>
 			</thead>
 			<tbody>
-            {% for produto in produtos.items %}
+            {% for produto in produtos['items'] %}
 			  <tr>
 				<td nowrap="true">{{produto.nome}}</td>		
-				<td nowrap="true"  id="valorProduto{{produto.idProduto}}">{{produto.valor}}</td>
+				<input type="hidden" id="valorProduto{{produto.idProduto}}" value="{{produto.valor}}">			
+				<td nowrap="true"  id="valorTela{{produto.idProduto}}">{{produto.valorTela}}</td>
 				<td id="quantidadeRestante{{produto.idProduto}}" nowrap="true">{{produto.kg}}</td>
 				<td nowrap="true">  
 					<input class="valor"type="text" id="{{produto.idProduto}}" value="" placeholder="Adicione os quilos">
 				</input>
 				</td>
+				<td id="quantidadeSelecionada{{produto.idProduto}}" nowrap="true" value=""> </td>
+				<td id="valorSelecionado{{produto.idProduto}}" nowrap="true" value=""> </td></td>
 				<td>
 					<button class="btn btn-info" role="button" onclick="addProduto('{{produto.idProduto}}')">
 						Adicionar
@@ -36,13 +41,14 @@
 						Remover
 					</button>
 				</td>
+				
 			  </tr>
 			  {% endfor %}		  
 			</tbody>
 		</table>
 		<div class="container  d-flex justify-content-center">
 			<div class="row col-md-10" >
-				<h3 id="somaProduto" >0.00</h3>
+				<h3 id="somaProduto" type="number" >0.00</h3>
 			</div>
 			<div  >
 				<button class="btn btn-info" role="button" onclick="enviarPedido()">
@@ -62,8 +68,8 @@
 			{% endif %}
 				<a class="page-link" href="./{{produtos.prev_num}}">Previous</a>
 			</li>
-	
-			{% for page in produtos.iter_pages()%}
+			{% set numero =  produtos.pages| int  %}
+			{% for page in range(numero) %}
 				<li class="page-item {% if page == produtos.page %} 
 				active {% endif %}">
 					<a class="page-link" href="./{{page}}" > {{page}}  <span
@@ -87,24 +93,59 @@
 	
 	function addProduto(id) {
 	var quantity = parseInt(document.getElementById(id).value)
-	var valorProduto = document.getElementById('valorProduto'+id).innerText
-	valorSoma += CalcularSubTotal(quantity,valorProduto)
+	var valorTela = document.getElementById('valorTela'+id).innerText
+	var valorProduto = document.getElementById('valorProduto'+id).value
+	var valortratado = parseFloat(valorProduto)
+	var qtdDisponivel = document.getElementById('quantidadeRestante'+id).innerText
+	qtdDisponivel = ConverterValorQuilo(qtdDisponivel)
+	if (quantity  > qtdDisponivel){
+		alert ('Quantidade selecionada não disponivel em estoque')
+		return
+	};
+	var estoque = parseInt(qtdDisponivel) - quantity
+	valorSoma += CalcularSubTotal(quantity,valortratado)
+
     var result = document.listProdutos.find(x => x.idProduto === id)
     if (result === undefined) {
-        document.listProdutos.push({idProduto: id, quantity: quantity , valorProduto: valorProduto})
-    }
-	var qtdDisponivel = document.getElementById('quantidadeRestante'+id).innerText
+		var quantidade = quantity 
+		var valorCalculo = valortratado
 
-	var estoque = qtdDisponivel - quantity
+        document.listProdutos.push({idProduto: id, 
+			quantity: quantity ,
+		    valorProduto: valortratado})
+		
+		var result = CalcularSubTotal(quantidade,valortratado)
+		const formatado = result.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+		document.getElementById('quantidadeSelecionada'+id).innerText = quantity
+		document.getElementById('valorSelecionado'+id).innerText = formatado
+    }else{
+		index = document.listProdutos.findIndex((obj => obj.idProduto == result.idProduto))
+		document.listProdutos[index].quantity += quantity
+		document.listProdutos[index].valorProduto = valortratado
+		var quantidade = document.listProdutos[index].quantity 
+		var quantidadeValor = document.listProdutos[index].valorProduto
+		var result = CalcularSubTotal(quantidade,quantidadeValor)
+		const formatado = result.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+		document.getElementById('quantidadeSelecionada'+id).innerText = document.listProdutos[index].quantity
+		document.getElementById('valorSelecionado'+id).innerText = formatado
+	}
+	
 	
 	document.getElementById('quantidadeRestante'+id).innerText =  estoque
-	document.getElementById('somaProduto').innerText = valorSoma
+	const valorTotal = valorSoma.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+	document.getElementById('somaProduto').innerText = valorTotal
 	document.getElementById(id).value = "";
 	
 }
 
-function CalcularSubTotal(valor, quantidade){
-	var valorProduto = valor * quantidade
+function ConverterValorQuilo (valor){
+	var valorConvertido = valor.replace('.','')
+	var valorConvertido = valorConvertido.replace(',','.')
+	return valorConvertido
+}
+
+function CalcularSubTotal(quantidade,valor){
+	var valorProduto =  quantidade * valor
 	return valorProduto
 }
 	
