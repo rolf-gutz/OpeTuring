@@ -36,9 +36,9 @@
 						Adicionar
 					</button>
 				</td>
-				<td>
+				<td nowrap="true">
 					<button class="btn btn-danger" role="button" onclick="removeProduto('{{produto.idProduto}}')">
-						Remover
+						Remover Produto
 					</button>
 				</td>
 				
@@ -151,25 +151,26 @@ function CalcularSubTotal(quantidade,valor){
 	
 	
 function removeProduto(id) {
-	
-	var valorProduto = document.getElementById('valorProduto'+id).innerText
+	var	index = document.listProdutos.findIndex((obj => obj.idProduto == id ))
 	var qtdDisponivel = document.getElementById('quantidadeRestante'+id).innerText
+	var kgSelecionado = document.listProdutos[index].quantity
 
-	
-    var result = document.listProdutos.find(x => x.idProduto === id)
-    if (result.idProduto === id) {
-        document.listProdutos.pop(result.idProduto)
+	if (document.listProdutos[index].idProduto == id) {
+        document.listProdutos.pop([index])
     }
 	
 	var estoque = parseInt(qtdDisponivel) + parseInt(kgSelecionado)
-	var valorProduto = document.getElementById('valorProduto'+id).innerText
+	var valorProduto = document.getElementById('valorProduto'+id).value
 
 	valorSoma -= CalcularSubTotal(kgSelecionado,valorProduto)
 
 	document.getElementById('quantidadeRestante'+id).innerText = estoque
-	document.getElementById('somaProduto').innerText = valorSoma
+	const valorTotal = valorSoma.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+	document.getElementById('somaProduto').innerText = valorTotal
+	document.getElementById('quantidadeSelecionada'+id).innerText = "";
+	document.getElementById('valorSelecionado'+id).innerText = "";
 	document.getElementById(id).value = "";
-	kgSelecionado = 0
+
 }
 
 function enviarPedido () {
