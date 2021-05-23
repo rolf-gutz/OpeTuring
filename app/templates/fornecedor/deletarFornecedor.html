@@ -6,7 +6,7 @@
 <div class="container" style="height: 90%; width: 100%;">
     <h2 id="titulo-pags">Deletar Fornecedor</h2>
     <form class="ml-3" action="/saveDeletarFornecedor" method="POST" name="form_insercao" class="ml-3"> 	
-        <input type="hidden" name="id_empresa" value="{{fornecedor.id_fornecedor}}">	
+        <input type="hidden" name="id_fornecedor" value="{{fornecedor.id_fornecedor}}">	
         <div class="form-group">
             <label for="inputNome">Nome</label>
             <input type="text" name="nome" class="form-control"  value="{{fornecedor.nome}}" disabled="true">

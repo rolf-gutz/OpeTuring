@@ -3,13 +3,19 @@ from flask import Flask,render_template,redirect,request,url_for,flash
 from app import app, db,login_manager
 from app.models.UsuarioModel import UsuarioModel
 from flask_login import LoginManager, UserMixin, login_required,login_user, logout_user,current_user
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import  check_password_hash
 from functools import wraps
 
 
 # @login_manager.user_loader
 # def current_user(id):
 #     return UsuarioModel.query.get(id)
+
+@app.route('/login/menu', methods =['POST'])
+@login_required
+def loginMenu():
+	user =  {'tipoUsuario': current_user.tipoUsuario}
+	return user
 
 @app.route('/')
 @app.route('/login',methods =["GET","POST"])
@@ -21,16 +27,15 @@ def login():
 		usuario = UsuarioModel.query.filter_by(email=email).first()
 
 		if not usuario:
-			flash("Credenciais incorretas")
-			return redirect(url_for("login"))
+			flash(message="Email inválido, contate o administrador", category="danger")
+			return render_template('login/login.html')
 
-		if not check_password_hash(usuario.password, password):
-			flash("Senha incorreta")
-			return redirect(url_for("login"))
+		if not check_password_hash(usuario.password, password):	
+			flash(message="Senha incorreta", category="danger")
+			return render_template('login/login.html')
 
 		login_user(usuario)
 		return redirect(url_for('listagem'))
-
 		
 	return render_template('login/login.html')
 
@@ -43,7 +48,7 @@ def load_user(id):
 @login_required
 def logout():
     logout_user()
-    return render_template("login.html")
+    return render_template("login/login.html")
 
 
 def requires_roles(*roles):

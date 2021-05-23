@@ -9,7 +9,7 @@ class Fornecedor(db.Model,UserMixin):
     cnpj = db.Column(db.Integer,nullable = False ,unique=True, index=True)
     razao_social = db.Column(db.String(200))
     nome = db.Column(db.String(150),nullable=False)
-    produto = db.relationship('ProdutoModel', backref="produto")
+    produto = db.relationship('ProdutoModel', backref="fornecedor")
 
     def __init__(self,cnpj,razao_social,nome):
         self.cnpj = cnpj

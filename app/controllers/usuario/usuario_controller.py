@@ -14,7 +14,7 @@ import re
 # @login_required
 def cadastrarUsuario():
 	empresas = Empresa.query.all()
-	return render_template('cadastroUsuario.html', empresas= empresas)
+	return render_template('usuario/cadastroUsuario.html', empresas= empresas)
 
 
 @app.route('/salvar_cadastro',methods=['POST'])
@@ -38,22 +38,22 @@ def salvar_cadastro():
 	db.session.commit()
 
 	usuarios = UsuarioModel.query.all()
-	return render_template('listarUsuarios.html', usuarios=usuarios)
+	return render_template('usuario/listarUsuarios.html', usuarios=usuarios)
     
 @app.route('/listarUsuarios')
 # @login_required
 # @requires_roles('Administrador')
 def listarUsuarios():
 	usuarios = UsuarioModel.query.all()
-	return render_template('listarUsuarios.html', usuarios=usuarios)
+	return render_template('usuario/listarUsuarios.html', usuarios=usuarios)
 
 
 @app.route('/deletarUsuario/<int:id>')
 # @login_required
 def deletarUsuario(id=0):
-	usuario = UsuarioModel.query.filter_by(id_pessoa=id).first()
+	usuario = UsuarioModel.query.filter_by(id=id).first()
 
-	return render_template('deletarUsuario.html', usuario=usuario)
+	return render_template('usuario/deletarUsuario.html', usuario=usuario)
 
     
 @app.route('/savedeletarUsuario',methods=['POST'])
@@ -61,19 +61,19 @@ def deletarUsuario(id=0):
 def savedeletarUsuario():
 	id = int(request.form.get('id'))
 
-	usuario = UsuarioModel.query.filter_by(id_pessoa=id).first()
+	usuario = UsuarioModel.query.filter_by(id=id).first()
 	
 	db.session.delete(usuario)
 	db.session.commit()
 	
 	usuarios = UsuarioModel.query.all()
-	return render_template('listarUsuarios.html', usuarios=usuarios)
+	return render_template('usuario/listarUsuarios.html', usuarios=usuarios)
 
 @app.route('/editarUsuario/<int:id>')
 # @login_required
 def editarUsuario(id=0):
-	usuario = UsuarioModel.query.filter_by(id_pessoa=id).first()
-	return render_template('editarUsuario.html', usuario=usuario)
+	usuario = UsuarioModel.query.filter_by(id=id).first()
+	return render_template('usuario/editarUsuario.html', usuario=usuario)
 
 
 @app.route('/saveEditarUsuario',methods=['POST'])
@@ -101,4 +101,4 @@ def saveeditarUsuario():
 	db.session.commit()
 
 	usuarios = UsuarioModel.query.all()
-	return render_template('listarUsuarios.html', usuarios=usuarios)
+	return render_template('usuario/listarUsuarios.html', usuarios=usuarios)

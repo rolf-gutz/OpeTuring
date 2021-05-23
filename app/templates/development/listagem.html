@@ -36,20 +36,20 @@
 						{% for pessoa in pessoas %}
 							<tr>
 								<td nowrap="true">
-									<a href="/selecao/{{pessoa.id}}" id="tableId">{{pessoa.id}}</a>
+									<a href="/selecao/{{pessoa.id_pessoa}}" id="tableId">{{pessoa.id_pessoa}}</a>
 								</td>
 								<td nowrap="true">{{pessoa.nome}}</td>
 								<td nowrap="true">{{pessoa.idade}}</td>
 								<td nowrap="true">{{pessoa.sexo}}</td>
 								<td nowrap="true">{{pessoa.salario}}</td>
 								<td>
-									<a href="/edicao/{{pessoa.id}}"
+									<a href="/edicao/{{pessoa.id_pessoa}}"
 									class="btn btn-primary text-uppercase" role="button">
 										Editar
 									</a>
 								</td>
 								<td>
-									<a href="/delecao/{{pessoa.id}}"
+									<a href="/delecao/{{pessoa.id_pessoa}}"
 									class="btn btn-danger text-uppercase" role="button">
 										Deletar
 									</a>
