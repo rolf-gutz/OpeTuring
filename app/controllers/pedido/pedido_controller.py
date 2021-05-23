@@ -143,15 +143,15 @@ def PedidoItensArray(pedido):
             produtoValor = x.valor
             quantidade = x.kg 
             p = {'nome' : itemNome,
-                'produtoValor': produtoValor ,
-                'quantidade': quantidade
+                'produtoValor': ConverterMoeda(produtoValor) ,
+                'quantidade': ConverterQuilos(quantidade)
                  }
             produtosDoPedido.append(p)
             
     detalhesPedido = { 'razaoSocial' :  empresa.razao_social,
                     'numeroPedido' : pedido.id_pedido,
                     'DatadoPedido' : pedido.dataPedido,
-                    'ValorTotalPedido' : pedido.valor,
+                    'ValorTotalPedido' : ConverterMoeda(pedido.valor),
                     'produtos' : produtosDoPedido
                     }
             

@@ -140,7 +140,7 @@ def ProdutosArray (produtos):
         produtoJson = {'idProduto': produtos.items[x].idProduto,
                         'nome': produtos.items[x].nome,
                         'valor': ConverterMoeda(produtos.items[x].valor),
-                        'kg': ConverterMoeda(produtos.items[x].kg) 
+                        'kg': ConverterQuilos(produtos.items[x].kg) 
                         }
         produtosResult['items'].append(produtoJson)
     
@@ -152,3 +152,10 @@ def ConverterMoeda(my_value):
     b = a.replace(',','v')
     c = b.replace('.',',')
     return moeda + c.replace('v','.')
+
+    
+def ConverterQuilos(my_value):
+    a = '{:,.0f}'.format(float(my_value))
+    b = a.replace(',','v')
+    c = b.replace('.',',')
+    return c.replace('v','.')
