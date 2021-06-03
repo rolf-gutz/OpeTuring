@@ -73,7 +73,7 @@
 						 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >Empresa</a> 
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 							<a class="dropdown-item" href="/cadastrarEmpresa">Cadastrar Empresa</a>
-							<a class="dropdown-item" href="/listarEmpresa">Listar Produto</a>
+							<a class="dropdown-item" href="/listarEmpresa">Listar Empresas</a>
 						</div>
 					</li>
 					<li class="nav-item dropdown"   id="LiFornecedor" aria-disabled="true"> 
@@ -102,7 +102,7 @@
 						Gerenciar Pedidos
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<a class="dropdown-item" href="/selecionarPedidos/1">Listar Pedidos</a>
+							<a class="dropdown-item" href="/gerenciarPedidos/1">Gerenciar Pedidos</a>
 						</div>
 					</li>
 				</ul>
@@ -163,8 +163,7 @@ function changeMenu () {
         }
     }
     xhr.send();
-    // xhr.send(new Int8Array());
-    // xhr.send(document);
+    
 }   
 
 function HidenMenuClient () {
@@ -172,6 +171,7 @@ function HidenMenuClient () {
 	document.getElementById('LiEmpresa').classList.add('display');
 	document.getElementById('LiProduto').classList.add('display');
 	document.getElementById('LiDevelopmen').classList.add('display');
+	document.getElementById('LiGerenciamentoPedidos').classList.add('display');
 }
 
 function HidenMenuFuncio () {
@@ -180,7 +180,7 @@ function HidenMenuFuncio () {
 	document.getElementById('LiProduto').classList.add('display');
 	document.getElementById('LiUsuario').classList.add('display');
 	document.getElementById('LiDevelopmen').classList.add('display');
-
+	document.getElementById('LiGerenciamentoPedidos').classList.add('display');
 }
 
 function HidenMenuAdmn() {

@@ -11,7 +11,7 @@ class Pedido(db.Model,UserMixin):
     notaFiscal = db.Column(db.String(50))
     dataPedido = db.Column(db.Date, default = date.today())
     prazoPagamento = db.Column(db.Integer)
-    statusPagamento = db.Column(db.Boolean)
+    statusPagamento = db.Column(db.Integer)
     observacao = db.Column(db.String(500))
     id_empresa_funcionario = db.Column(db.Integer,nullable = False)
     id_funcionario  = db.Column(db.Integer, db.ForeignKey('usuarioSistema.id'), nullable=False)

@@ -1,0 +1,93 @@
+<title>Detalhes do Pedido</title>
+
+{% extends "layout.html" %}
+
+{% block rolf %}
+
+<div class="container" style="height: 85%; width: 100%;">
+	<h2 id="titulo-pags">Detalhes do Pedido</h2>
+	<form class="ml-3" class="ml-3">
+		<input type="hidden" name="IdPedido" value="{{pedido.numeroPedido}}">
+		<table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+			<tr>
+				<th class="th-sm" disable="true">Nome da Empresa</th>
+				<th class="th-sm" disable="true">Número Pedido</th>
+				<th class="th-sm" disable="true">Data do Pedido</th>
+			</tr>
+			<tr>
+				<td nowrap="true" disable="true">{{pedido['razaoSocial']}}</td>
+				<td nowrap="true" disable="true">{{pedido['numeroPedido']}}</td>
+				<td nowrap="true" disable="true">{{pedido['DatadoPedido']}}</td>
+			</tr>
+			<tr>
+				<th class="th-sm" disable="true">Nota Fiscal</th>
+				<th class="th-sm" disable="true">Prazo de Pagamento</th>
+				<th class="th-sm" disable="true">Status de Pagamento</th>
+			</tr>
+			<tr>
+				<td nowrap="true" disable="true">
+					{{pedido['NotaFiscal']}}
+				</td>
+				<td nowrap="true" disable="true">
+					{{pedido['prazoPagamento']}}
+				</td>
+				<td nowrap="true" disable="true">
+					{{pedido['statusPagamento']}}
+				</td>
+			</tr>
+			<th colspan="3">Observação </th>
+			<tr>
+				<td colspan="3" disable="true">
+					<span class="form-control"> {{pedido['observacao']}} </span>
+				</td>
+			</tr>
+			<tr>
+				<th class="th-sm">Nome Produto</th>
+				<th class="th-sm">Quantidade em Quilos</th>
+				<th class="th-sm">Valor por Produto</th>
+			</tr>
+			{% set qtdProdutos = pedido['produtos'] |length %}
+			{% for index in range(qtdProdutos) %}
+			<tr>
+				<td nowrap="true" disable="true"> {{pedido['produtos'][index]['nome']}} </td>
+				<td nowrap="true" disable="true"> {{pedido['produtos'][index]['quantidade']}}</td>
+				<td nowrap="true" disable="true"> {{pedido['produtos'][index]['produtoValor']}} </td>
+			</tr>
+			{% endfor %}
+		</table>
+		<div>
+			<h3> TOTAL: {{pedido['ValorTotalPedido']}}</h3>
+		</div>
+		<a href="#" style="float: right; color: #000;" onclick="relatorio()">Imprimir Relatorio</a>
+		<textarea id="dados" style="display: none;">
+		
+		</textarea>
+	</form>
+	
+</div>
+
+<script>
+	function relatorio() {
+		const doc = new jsPDF({orientation:'landscape'});
+		const texto = document.getElementById('dados').innerText;
+		const arrLinhas = texto.split('#');
+		let conteudo = 'RELATORIO DE PESSOAS\n\n';
+
+		for (let linha = 0; linha<arrLinhas.length;linha++){
+			let arrColunas = arrLinhas[linha].split('|');
+			arrColunas[0] = arrColunas[0].trim().padEnd(35,'*')
+			if (arrColunas[0].indexOf('*')> 0 ){
+				conteudo += `NOME: ${arrColunas[0]} - `+
+							`IDADE: ${arrColunas[1]} - `+
+							`SEXO: ${arrColunas[2]} - `+
+							`SALARIO: R$ ${arrColunas[3]}\n`;
+			}
+		}
+		doc.setFontSize(12);
+		doc.setFont('Courier');
+		doc.text(conteudo,30,30);
+		doc.save('Relatorio.pdf');
+	}
+</script>
+
+{% endblock %}

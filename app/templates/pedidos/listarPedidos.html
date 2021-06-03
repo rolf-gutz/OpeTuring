@@ -5,6 +5,7 @@
 {% block rolf %}
 
 <div class="container" style="height: 85%; width: 100%;">
+  <h2 id="titulo-pags">Pedidos</h2>
   <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
     <thead>
       <tr>
@@ -26,7 +27,7 @@
         <td nowrap="true" disable= "true">{{pedido.DatadoPedido}} </td>
         <td nowrap="true" disable= "true">{{pedido.ValorPedido}} </td>
         <td nowrap="true" disable= "true">{{pedido.StatusdePagamento}} </td>
-        <td>
+        <td nowrap="true">
 
           <a href="/detalhesPedido/{{pedido.numeroPedido}}"
 					class="btn btn-info" role="button">

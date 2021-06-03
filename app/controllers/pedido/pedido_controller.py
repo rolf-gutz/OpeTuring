@@ -30,7 +30,7 @@ def selecionarProdutos(page=1):
 @app.route('/pedido/addPedido/', methods=['POST'])
 # @login_required
 def addPedido():    
-    pedido = Pedido(0,0,None,None,0,'',current_user.id_empresa,current_user.id) 
+    pedido = Pedido(0,0,None,0,1,'',current_user.id_empresa,current_user.id) 
     produtosLista = request.form['lista']
     jsonresult = json.loads(produtosLista)
     
@@ -52,7 +52,6 @@ def addPedido():
 
         db.session.add(itens)
         db.session.commit()
-
 
     pedido.valor =  valor_total
     
@@ -78,6 +77,60 @@ def produtosPagined (page=1):
     produtos = ProdutoModel.query.filter(ProdutoModel.kg > 0).paginate(page,15,False)
     return produtos
 
+
+@app.route('/gerenciarPedidos/')
+@app.route('/gerenciarPedidos/<int:page>')
+def gerenciarPedidos(page):  
+    page = page
+    pedidos = db.session.query(Pedido,Empresa).filter(Pedido.id_empresa_funcionario == Empresa.id_empresa).filter(UsuarioModel.id_empresa == Empresa.id_empresa).paginate(page, 15, False)
+    return render_template('/pedidos/gerenciarpedidos.html',   pedidos = pedidos)
+
+
+@app.route('/editarPedido/<int:id>')
+def editarPedido(id):  
+    pedidoId = Pedido.query.filter_by(id_pedido=id).first()
+    pedido  = PedidoItensArray(pedidoId)
+    return render_template('/pedidos/editarPedido.html', pedido = pedido)
+
+@app.route('/saveEditarPedido',methods=['POST'])
+def saveEditarPedido():
+    idProduto = int(request.form.get('IdPedido'))
+    notaFiscal = int(request.form.get('NotaFiscal'))
+    prazoDePagamento = int(request.form.get('prazoPagamento'))
+    status = int(request.form.get('status'))
+    observacao = request.form.get('observacao')
+    
+    pedido = Pedido.query.filter_by(id_pedido = idProduto).first()
+    
+    pedido.notaFiscal = notaFiscal
+    pedido.prazoPagamento = prazoDePagamento
+    pedido.statusPagamento = status
+    pedido.observacao = observacao
+
+    db.session.commit()
+    
+    produtosVoltarEstoque = []
+    if status == 2:    
+        produtosDoPedido =db.session.query(Itens_Pedido).filter(Itens_Pedido.id_pedido == pedido.id_pedido).all()  
+        for index in range(len(produtosDoPedido)):
+            produtosDoPedido[index]
+            produto = {'id_produto' : produtosDoPedido[index].id_produto,
+                       'quantidade' : int(produtosDoPedido[index].kg)
+                      }
+            produtosVoltarEstoque.append(produto)
+    
+    for p in range (len(produtosVoltarEstoque)):
+        produtoAdd = db.session.query(ProdutoModel).filter(ProdutoModel.idProduto == produtosVoltarEstoque[p]['id_produto']).first()
+        produtoAdd.kg = produtoAdd.kg + produtosVoltarEstoque[p]['quantidade']
+        db.session.commit()
+
+    page = 0
+    pedidos = db.session.query(Pedido,Empresa).filter(Pedido.id_empresa_funcionario == Empresa.id_empresa).filter(UsuarioModel.id_empresa == Empresa.id_empresa).paginate(page, 15, False)
+    return render_template('/pedidos/gerenciarpedidos.html',   pedidos = pedidos)
+
+
+
+   
 def ConvertePagina(produtos):
     produtoResult = {'has_next': produtos.has_next,
                     'has_prev':produtos.has_prev,
@@ -101,7 +154,6 @@ def ConvertePagina(produtos):
         produtoResult['items'].append(produto)
     
     return produtoResult
-
 
 def Pedidosarray(pedido):
     pedidoResult = {'has_next': pedido.has_next,
@@ -151,8 +203,12 @@ def PedidoItensArray(pedido):
     detalhesPedido = { 'razaoSocial' :  empresa.razao_social,
                     'numeroPedido' : pedido.id_pedido,
                     'DatadoPedido' : pedido.dataPedido,
+                    'NotaFiscal': pedido.notaFiscal,
                     'ValorTotalPedido' : ConverterMoeda(pedido.valor),
-                    'produtos' : produtosDoPedido
+                    'produtos' : produtosDoPedido,
+                    'observacao' : pedido.observacao,
+                    'prazoPagamento': ConverterPrazoPagamento(pedido.prazoPagamento),
+                    'statusPagamento' :StatusDePagamento(pedido.statusPagamento)
                     }
             
     return detalhesPedido   
@@ -160,7 +216,11 @@ def PedidoItensArray(pedido):
 def PedidosPagined (page=1):
     page = page
     pedidoArray = []
-    pedido = Pedido.query.paginate(page , 15, False)
+    usuario =current_user.tipoUsuario
+    if (usuario != "Administrador"):
+        pedido = Pedido.query.filter(Pedido.id_funcionario == current_user.id_empresa).paginate(page , 15, False)
+    else:
+        pedido = Pedido.query.filter().paginate(page , 15, False)
     if (pedido.pages > 0): 
         pedidoArray = Pedidosarray(pedido)
     else:
@@ -168,13 +228,21 @@ def PedidosPagined (page=1):
     return pedidoArray
 
 def StatusDePagamento(status):
-    if status  == False:
+    if status  == 0:
         return 'Em Aberto'
-    elif status == True:
+    elif status == 1:
         return 'Pago'
     else:
-        return 'Em Aberto'
+        return 'Cancelado'
 
+def StatusDePagamentoInt(status):
+    if status == "Em Aberto":
+        return 0
+    elif status == "Pago":
+        return 1 
+    else:
+        return 2 
+        
 def ConverterMoeda(my_value):
     moeda = 'R$ '
     a = '{:,.2f}'.format(float(my_value))
@@ -182,9 +250,42 @@ def ConverterMoeda(my_value):
     c = b.replace('.',',')
     return moeda + c.replace('v','.')
 
+def ConverterPrazoPagamento(my_value):
+    if my_value  == None:
+        return 0
+    else:
+        return my_value
 
 def ConverterQuilos(my_value):
     a = '{:,.0f}'.format(float(my_value))
     b = a.replace(',','v')
     c = b.replace('.',',')
     return c.replace('v','.')
+
+
+    
+@app.route('/gerenciarPedidos/consultaPedidos', methods=['POST'])
+# @login_required
+def consultaPedidos():
+    consulta = '%'+request.form.get('consulta')+'%'
+    campo = request.form.get('campo') 
+    if campo == 'nomeEmpresa':
+        pedidos = db.session.query(Pedido,Empresa).filter(Pedido.id_empresa_funcionario == Empresa.id_empresa).filter(UsuarioModel.id_empresa == Empresa.id_empresa).filter(Empresa.nome .like(consulta)).paginate(0, 15, False)
+    if campo == 'numeroPedido':
+        numeroPedido = int(consulta.replace('%',''))
+        pedidos = db.session.query(Pedido,Empresa).filter(Pedido.id_empresa_funcionario == Empresa.id_empresa).filter(UsuarioModel.id_empresa == Empresa.id_empresa).filter(Pedido.id_pedido == numeroPedido).paginate(0, 15, False)
+    if campo == 'status':
+        status = consulta.replace('%','')
+        sttusConvertido = StatusDePagamentoInt(status)
+        pedidos = db.session.query(Pedido,Empresa).filter(Pedido.id_empresa_funcionario == Empresa.id_empresa).filter(UsuarioModel.id_empresa == Empresa.id_empresa).filter(Pedido.statusPagamento == sttusConvertido).paginate(0, 15, False)
+   
+
+    return render_template('/pedidos/gerenciarpedidos.html',   pedidos = pedidos)
+
+
+
+@app.route('/detalhesPedidoAdm/<int:id>')
+def detalhesPedidoAdm(id):
+    pedidoId = Pedido.query.filter_by(id_pedido=id).first()
+    pedido  = PedidoItensArray(pedidoId)
+    return render_template('/pedidos/detalhesPedidoAdm.html',   pedido = pedido)
