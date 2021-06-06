@@ -5,16 +5,16 @@
 {% block rolf %}
 <div class="container" style="height: 90%; width: 100%;">
     <h2 id="titulo-pags">Cadastrar Empresa</h2>
-    <form class="ml-3" action="/saveDeletarEmpresa" method="POST" name="form_insercao" class="ml-3"> 	
-        <input type="hidden" name="id_empresa" value="{{empresa.id_empresa}}">	
+    <form class="ml-3" action="/saveDeletarEmpresa" method="POST" name="form_insercao" class="ml-3">
+        <input type="hidden" name="id_empresa" value="{{empresa.id_empresa}}">
         <div class="form-row">
             <div class="form-group col-md-6">
-            <label for="inputNome">Nome</label>
-            <input type="text" name="nome" class="form-control"  value="{{empresa.nome}}" disabled=true>
+                <label for="inputNome">Nome</label>
+                <input type="text" name="nome" class="form-control" value="{{empresa.nome}}" disabled=true>
             </div>
             <div class="form-group col-md-6">
-            <label for="inputCnpj">CNPJ</label>
-            <input type="text" name="cnpj" class="form-control"  value="{{empresa.cnpj}}" disabled=true>
+                <label for="inputCnpj">CNPJ</label>
+                <input type="text" name="cnpj" class="form-control" value="{{empresa.cnpj}}" disabled=true>
             </div>
         </div>
         <div class="form-group">
@@ -23,30 +23,30 @@
         </div>
         <div class="form-group">
             <label for="inputEndereco">Endereço</label>
-            <input type="text"  name="endereco" class="form-control" value="{{empresa.endereco}}" disabled=true>
+            <input type="text" name="endereco" class="form-control" value="{{empresa.endereco}}" disabled=true>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
-            <label for="inputCidade">Cidade</label>
-            <input type="text"  name="cidade" class="form-control" value="{{empresa.cidade}}" disabled=true >
+                <label for="inputCidade">Cidade</label>
+                <input type="text" name="cidade" class="form-control" value="{{empresa.cidade}}" disabled=true>
             </div>
             <div class="form-group col-md-4">
-            <label for="inputEstado">Estado</label>
-            <select  name="estado" class="form-control" value="{{empresa.estado}}" disabled="true">
-            </select>
+                <label for="inputEstado">Estado</label>
+                <select name="estado" class="form-control" value="{{empresa.estado}}" disabled="true">
+                </select>
             </div>
             <div class="form-group col-md-2">
-            <label for="inputCEP">CEP</label>
-            <input type="text" name="cep" class="form-control" value="{{empresa.cep}}" disabled="true" >
+                <label for="inputCEP">CEP</label>
+                <input type="text" name="cep" class="form-control" value="{{empresa.cep}}" disabled="true">
             </div>
         </div>
 
         <a href="/listarEmpresas" class="btn btn-secondary" role="button">Cancelar</a>
         <button type="submit" class="btn btn-success">Deletar</button>
-        </form>
-    </div>
-	<script>    
-        const estado = document.getElementsByName('estado')[0];
-        estado.value ="{{empresa.estado}}";
-	    </script>
+    </form>
+</div>
+<script>
+    const estado = document.getElementsByName('estado')[0];
+    estado.value = "{{empresa.estado}}";
+</script>
 {% endblock %}

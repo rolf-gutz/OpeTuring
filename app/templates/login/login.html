@@ -1,26 +1,30 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="https://fonts.googleapi.com/css?family=Comfortaa">
-        <link rel="stylesheet" type="text/css" href="../static/css/login.css">
-        <title>Login | GRAO</title>
-    </head>
-    <body>
-        {% include '/components/loginFailed.html' %}  
-            <div class="login">                
-                <img src="https://cozinhatecnica.com/wp-content/uploads/2018/11/grao-de-bico-kabuli.jpg" class="icone" width="100" height="100" alt="Imagem Grão">
-                <h1>Login</h1>
-                <form id="login-form" action="/login" method="post">
-                    <p>Email</p>
-                    <input type="text" name="email" placeholder="Insira seu email">
-                    <p>Senha</p>
-                    <input type="password" name="password" placeholder="Insira sua senha">
-                    <input type="checkbox" id="lembrar" name="lembrar">
-                    <label id="lembrar" for="lembrar">Lembrar-me</label>
-                    <input type="submit" name="entrar" value="Entrar">
-                    <a href="#">Recuperar senha</a>
-                </form>
-        </div>    
-    </body>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://fonts.googleapi.com/css?family=Comfortaa">
+    <link rel="stylesheet" type="text/css" href="../static/css/login.css">
+    <title>Login | GRAO</title>
+</head>
+
+<body>
+    {% include '/components/loginFailed.html' %}
+    <div class="login">
+        <img src="https://cozinhatecnica.com/wp-content/uploads/2018/11/grao-de-bico-kabuli.jpg" class="icone"
+            width="100" height="100" alt="Imagem Grão">
+        <h1>Login</h1>
+        <form id="login-form" action="/login" method="post">
+            <p>Email</p>
+            <input type="text" name="email" placeholder="Insira seu email">
+            <p>Senha</p>
+            <input type="password" name="password" placeholder="Insira sua senha">
+            <input type="checkbox" id="lembrar" name="lembrar">
+            <label id="lembrar" for="lembrar">Lembrar-me</label>
+            <input type="submit" name="entrar" value="Entrar">
+            <a href="#">Recuperar senha</a>
+        </form>
+    </div>
+</body>
+
 </html>

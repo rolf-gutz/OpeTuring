@@ -4,31 +4,31 @@
 
 {% block rolf %}
 <div class="container" style="height: 90%; width: 100%;">
-		<h2>Editar Usuário </h2>
-		<form class="ml-3" action="/saveEditarUsuario" method="POST" name="form_edicao_usuario" class="ml-3"> 			
-			<input type="hidden" name="id" value="{{usuario.id}}">
-			<div class="form-row">
-			  <div class="form-group col-md-6">
+	<h2>Editar Usuário </h2>
+	<form class="ml-3" action="/saveEditarUsuario" method="POST" name="form_edicao_usuario" class="ml-3">
+		<input type="hidden" name="id" value="{{usuario.id}}">
+		<div class="form-row">
+			<div class="form-group col-md-6">
 				<label for="inputEmail4">Email</label>
-				<input type="email" name="email" class="form-control"  value="{{usuario.email}}">
-			  </div>
+				<input type="email" name="email" class="form-control" value="{{usuario.email}}">
 			</div>
-			<div class="form-group">
-			  <label for="inputAddress">Nome</label>
-			  <input type="text" name="nome" class="form-control"  value="{{usuario.nome}}">
-			</div>
-			<div class="form-group">
-			  <label for="inputAddress2">Endereço</label>
-			  <input type="text"  name="endereco" class="form-control" value="{{usuario.endereco}}">
-			</div>
-			<div class="form-row">
-			  <div class="form-group col-md-6">
+		</div>
+		<div class="form-group">
+			<label for="inputAddress">Nome</label>
+			<input type="text" name="nome" class="form-control" value="{{usuario.nome}}">
+		</div>
+		<div class="form-group">
+			<label for="inputAddress2">Endereço</label>
+			<input type="text" name="endereco" class="form-control" value="{{usuario.endereco}}">
+		</div>
+		<div class="form-row">
+			<div class="form-group col-md-6">
 				<label for="inputCity">Cidade</label>
-				<input type="text"  name="cidade" class="form-control" value="{{usuario.cidade}}" >
-			  </div>
-			  <div class="form-group col-md-4">
+				<input type="text" name="cidade" class="form-control" value="{{usuario.cidade}}">
+			</div>
+			<div class="form-group col-md-4">
 				<label for="inputEstado">Estado</label>
-				<select  name="estado" class="form-control" >
+				<select name="estado" class="form-control">
 					<option>Acre (AC)</option>
 					<option>Alagoas (AL)</option>
 					<option>Amapá (AP)</option>
@@ -57,31 +57,31 @@
 					<option>Sergipe (SE)</option>
 					<option>Tocantins (TO)</option>
 				</select>
-			  </div>
-			  <div class="form-group col-md-2">
+			</div>
+			<div class="form-group col-md-2">
 				<label for="inputCEP">CEP</label>
-				<input type="text" name="cep"class="form-control" value="{{usuario.cep}}">
-			  </div>
-			  <div class="form-group col-md-4">
+				<input type="text" name="cep" class="form-control" value="{{usuario.cep}}">
+			</div>
+			<div class="form-group col-md-4">
 				<label for="inputTipo">Tipo de Usuário</label>
-				<select  name="tipoUsuario" class="form-control" >
+				<select name="tipoUsuario" class="form-control">
 					<option>Administrador</option>
 					<option>Funcionario</option>
 					<option>Cliente</option>
 				</select>
-			  </div>
 			</div>
+		</div>
 
-            <a href="/listarUsuarios" class="btn btn-secondary" role="button">Cancelar</a>
-            <button type="submit" class="btn btn-success">Editar</button>
-		  </form>
-	</div>
-	<script>    
-        const estado = document.getElementsByName('estado')[0];
-        estado.value ="{{usuario.estado}}";
-		
-		const tipoUsuario = document.getElementsByName('tipoUsuario')[0];
-        tipoUsuario.value = "{{usuario.tipoUsuario}}";
+		<a href="/listarUsuarios" class="btn btn-secondary" role="button">Cancelar</a>
+		<button type="submit" class="btn btn-success">Editar</button>
+	</form>
+</div>
+<script>
+	const estado = document.getElementsByName('estado')[0];
+	estado.value = "{{usuario.estado}}";
 
-    </script>
+	const tipoUsuario = document.getElementsByName('tipoUsuario')[0];
+	tipoUsuario.value = "{{usuario.tipoUsuario}}";
+
+</script>
 {% endblock %}

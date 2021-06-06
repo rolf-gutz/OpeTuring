@@ -24,12 +24,12 @@
 			{% for produto in produtos['items'] %}
 			<tr>
 				<td nowrap="true">{{produto.nome}}</td>
-				<input type="hidden" id="valorProduto{{produto.idProduto}}" value="{{produto.valor}}" >
+				<input type="hidden" id="valorProduto{{produto.idProduto}}" value="{{produto.valor}}">
 				<td nowrap="true" id="valorTela{{produto.idProduto}}">{{produto.valorTela}}</td>
 				<td id="quantidadeRestante{{produto.idProduto}}" nowrap="true">{{produto.kg}}</td>
 				<td nowrap="true">
 					<input class="valor" type="text" id="{{produto.idProduto}}" value=""
-						placeholder="Adicione os quilos" >
+						placeholder="Adicione os quilos">
 					</input>
 				</td>
 				<td id="quantidadeSelecionada{{produto.idProduto}}" nowrap="true" value=""> </td>
