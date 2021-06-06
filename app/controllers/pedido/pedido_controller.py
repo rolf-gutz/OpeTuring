@@ -8,6 +8,7 @@ from app.models.ItensPedido import Itens_Pedido
 from app.models.Empresa import Empresa
 from app.models.UsuarioModel import UsuarioModel
 from app.models.ItensPedido import Itens_Pedido
+from datetime import date, datetime
 
 from app.controllers.login.login import requires_roles 
 from flask_login import LoginManager, UserMixin, login_required,login_user, logout_user,current_user
@@ -174,7 +175,7 @@ def Pedidosarray(pedido):
         detalhesPedido =  { 'razaoSocial' :  empresa.razao_social,
                             'nomeUsuario' :usuario.nome,
                             'numeroPedido' : pedido.items[index].id_pedido,
-                            'DatadoPedido' : pedido.items[index].dataPedido,
+                            'DatadoPedido' : ConvertData(pedido.items[index].dataPedido),
                             'ValorPedido' : ConverterMoeda(pedido.items[index].valor),
                             'StatusdePagamento' : StatusDePagamento(pedido.items[index].statusPagamento)
                         }
@@ -182,6 +183,11 @@ def Pedidosarray(pedido):
         pedidoResult['items'].append(detalhesPedido)
     
     return pedidoResult
+
+def ConvertData(dtPedido):
+    data = dtPedido
+    dataFormatada = data.strftime('%d/%m/%Y')
+    return dataFormatada
 
 def PedidoItensArray(pedido):
     empresa = Empresa.query.filter_by(id_empresa = pedido.id_empresa_funcionario).first()
@@ -194,15 +200,19 @@ def PedidoItensArray(pedido):
             itemNome = produto.nome       
             produtoValor = x.valor
             quantidade = x.kg 
+            valorProdutos = x.kg * x.valor
             p = {'nome' : itemNome,
                 'produtoValor': ConverterMoeda(produtoValor) ,
-                'quantidade': ConverterQuilos(quantidade)
+                'quantidade': ConverterQuilos(quantidade),
+                'valorProdutos': ConverterMoeda(valorProdutos)
                  }
             produtosDoPedido.append(p)
             
     detalhesPedido = { 'razaoSocial' :  empresa.razao_social,
+                    'cnpj':empresa.cnpj,
                     'numeroPedido' : pedido.id_pedido,
-                    'DatadoPedido' : pedido.dataPedido,
+                    'DatadoPedido' : ConvertData(pedido.dataPedido),
+                    'NomeUsuario':pedido.usuarioSistema.nome,
                     'NotaFiscal': pedido.notaFiscal,
                     'ValorTotalPedido' : ConverterMoeda(pedido.valor),
                     'produtos' : produtosDoPedido,
