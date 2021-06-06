@@ -38,7 +38,7 @@
         <td nowrap="true" disable="true">{{pedido.Pedido.usuarioSistema.nome}} </td>
         <td nowrap="true" disable="true">{{pedido.Pedido.id_pedido}} </td>
         <td nowrap="true" disable="true">{{pedido.Pedido.dataPedido}} </td>
-        <td nowrap="true" disable="true" id="valorPedido" value="{{pedido.Pedido.valor}}">{{pedido.Pedido.valor}} </td>
+        <td nowrap="true" disable="true" id="valorPedido" value="{{pedido.Pedido.valor}}">{{pedido.Pedido.valor}}</td>
         <td nowrap="true" disable="true">
           {% if pedido.Pedido.statusPagamento == 0 %}
           Em Aberto
@@ -75,7 +75,6 @@
         {% endif %}
         <a class="page-link" href="./{{pedidos.prev_num}}">Previous</a>
       </li>
-
       {% for page in pedidos.iter_pages()%}
       <li class="page-item {% if page == pedidos.page %} 
       active {% endif %}">

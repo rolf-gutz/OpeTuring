@@ -63,7 +63,7 @@ def addPedido():
 
 @app.route('/listarPedidos/')
 @app.route('/listarPedidos/<int:page>')
-def listarPedidos(page=1):
+def listarPedidos(page):
     pedidos = PedidosPagined(page)
     return render_template('pedidos/listarPedidos.html', pedidoArray = pedidos)
 
@@ -83,7 +83,7 @@ def produtosPagined (page=1):
 @app.route('/gerenciarPedidos/<int:page>')
 def gerenciarPedidos(page):  
     page = page
-    pedidos = db.session.query(Pedido,Empresa).filter(Pedido.id_empresa_funcionario == Empresa.id_empresa).filter(UsuarioModel.id_empresa == Empresa.id_empresa).paginate(page, 15, False)
+    pedidos = db.session.query(Pedido,Empresa).filter(Pedido.id_empresa_funcionario == Empresa.id_empresa).filter(UsuarioModel.id_empresa == Empresa.id_empresa).paginate(page, 20, False)
     return render_template('/pedidos/gerenciarpedidos.html',   pedidos = pedidos)
 
 
