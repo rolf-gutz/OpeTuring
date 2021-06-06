@@ -81,7 +81,7 @@ def produtosPagined (page=1):
 
 @app.route('/gerenciarPedidos/')
 @app.route('/gerenciarPedidos/<int:page>')
-def gerenciarPedidos(page):  
+def gerenciarPedidos(page=1):  
     page = page
     pedidos = db.session.query(Pedido,Empresa).filter(Pedido.id_empresa_funcionario == Empresa.id_empresa).filter(UsuarioModel.id_empresa == Empresa.id_empresa).paginate(page, 20, False)
     return render_template('/pedidos/gerenciarpedidos.html',   pedidos = pedidos)
@@ -125,12 +125,8 @@ def saveEditarPedido():
         produtoAdd.kg = produtoAdd.kg + produtosVoltarEstoque[p]['quantidade']
         db.session.commit()
 
-    page = 0
-    pedidos = db.session.query(Pedido,Empresa).filter(Pedido.id_empresa_funcionario == Empresa.id_empresa).filter(UsuarioModel.id_empresa == Empresa.id_empresa).paginate(page, 15, False)
-    return render_template('/pedidos/gerenciarpedidos.html',   pedidos = pedidos)
-
-
-
+    return redirect(url_for('gerenciarPedidos'))
+    
    
 def ConvertePagina(produtos):
     produtoResult = {'has_next': produtos.has_next,
@@ -284,10 +280,6 @@ def consultaPedidos():
     if campo == 'numeroPedido':
         numeroPedido = int(consulta.replace('%',''))
         pedidos = db.session.query(Pedido,Empresa).filter(Pedido.id_empresa_funcionario == Empresa.id_empresa).filter(UsuarioModel.id_empresa == Empresa.id_empresa).filter(Pedido.id_pedido == numeroPedido).paginate(0, 15, False)
-    if campo == 'status':
-        status = consulta.replace('%','')
-        sttusConvertido = StatusDePagamentoInt(status)
-        pedidos = db.session.query(Pedido,Empresa).filter(Pedido.id_empresa_funcionario == Empresa.id_empresa).filter(UsuarioModel.id_empresa == Empresa.id_empresa).filter(Pedido.statusPagamento == sttusConvertido).paginate(0, 15, False)
    
 
     return render_template('/pedidos/gerenciarpedidos.html',   pedidos = pedidos)
