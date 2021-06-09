@@ -3,8 +3,8 @@
 {% extends "layout.html" %}
 
 {% block rolf %}
-<div class="container" style="height: 90%; width: 100%;">
-	<h2 id="titulo-pags">Gráficos</h2>
+<div class="container" style="height: 90%; width: 300%;">
+	<h2 id="titulo-pags">Gráfico de Pedidos</h2>
 	<input type="hidden" id="janeiro" value="{{janeiro}}">
 	<input type="hidden" id="fevereiro" value="{{fevereiro}}">
 	<input type="hidden" id="marco" value="{{marco}}">
@@ -18,6 +18,9 @@
 	<input type="hidden" id="outubro" value="{{outubro}}">
 	<input type="hidden" id="dezembro" value="{{dezembro}}">
 
+	<input type="hidden" id="aberto" value="{{aberto}}">
+	<input type="hidden" id="pago" value="{{pago}}">
+	<input type="hidden" id="cancelado" value="{{cancelado}}">
 
 	<button type="button" class="btn btn-sm btn-primary" onclick="plot('bar')">
 		Vendas Mensal
@@ -49,15 +52,16 @@
 		const outubro = Number(document.getElementById('outubro').value.replace(',', '.'));
 		const dezembro = Number(document.getElementById('dezembro').value.replace(',', '.'));
 
-
-		// const idadeM = Number(document.getElementById('pago').value.replace(',', '.'));
-		// const idadeF = Number(document.getElementById('aberto').value.replace(',', '.'));
+	
+		const aberto = Number(document.getElementById('aberto').value.replace(',', '.'));
+		const pago = Number(document.getElementById('pago').value.replace(',', '.'));
+		const cancelado = Number(document.getElementById('cancelado').value.replace(',', '.'));
 
 		let serie = {};
 		if (type == 'pie') {
 			serie = {
-				values: [idadeM, idadeF],
-				labels: ['Masculino', 'Femenino'],
+				values: [aberto,pago,cancelado ],
+				labels: ['Em Aberto', 'Pago', 'Cancelado'],
 				type: type
 			};
 		} else {

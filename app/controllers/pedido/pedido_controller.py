@@ -351,14 +351,20 @@ def graficosPedido():
     outubroTotal = totalMes(mesOutubro)
     dezembroTotal = totalMes(mesDezembro)
   
+    emAberto  = db.session.query(Pedido).filter(Pedido.statusPagamento == 0).all()
+    emAberto = len(emAberto)
+    pago  = db.session.query(Pedido).filter(Pedido.statusPagamento == 1).all()
+    pago = len(pago)
+    cancelado  = db.session.query(Pedido).filter(Pedido.statusPagamento == 2).all()
+    cancelado = len(cancelado)
+
     return render_template('/pedidos/graficoPedidos.html', 
                             janeiro = janeiroTotal, fevereiro = fevereiroTotal,
                             marco = marcoTotal, abril = abrilTotal, maio = maioTotal,
                             junho = junhoTotal, julho = julhoTotal, agosto = agostoTotal,
                             setembro = setembroTotal, outubro =  outubroTotal,
-                            novembro = novembroTotal, dezembro = dezembroTotal )
-
-
+                            novembro = novembroTotal, dezembro = dezembroTotal ,
+                            aberto = emAberto, pago = pago, cancelado = cancelado )
 
 def totalMes(mes):
     mesTotal = 0
