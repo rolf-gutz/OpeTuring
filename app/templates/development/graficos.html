@@ -1,56 +1,56 @@
 <title>Graficos</title>
 
 {% extends "layout.html" %}
-	
+
 {% block rolf %}
-	<div class="container" style="height: 90%; width: 100%;">
-		<h2 id="titulo-pags">Gráficos</h2>
-		<input type="hidden" id="salarioM" value="{{salarioM}}">
-		<input type="hidden" id="salarioF" value="{{salarioF}}">
-		<input type="hidden" id="idadeM" value="{{idadeM}}">
-		<input type="hidden" id="idadeF" value="{{idadeF}}">
-		<button type="button" class="btn btn-sm btn-primary" onclick="plot('bar')">
-			Faixa Etária
-		</button>
-		<button type="button" class="btn btn-sm btn-primary" onclick="plot('pie')">
-			Média Salarial
-		</button>
-		<br>
-		<br>
-		<center>
-			<div id="grafico" style="width: 800px; height: 400px;"></div>
-		</center>
-    </div>
+<div class="container" style="height: 90%; width: 100%;">
+	<h2 id="titulo-pags">Gráficos</h2>
+	<input type="hidden" id="salarioM" value="{{salarioM}}">
+	<input type="hidden" id="salarioF" value="{{salarioF}}">
+	<input type="hidden" id="idadeM" value="{{idadeM}}">
+	<input type="hidden" id="idadeF" value="{{idadeF}}">
+	<button type="button" class="btn btn-sm btn-primary" onclick="plot('bar')">
+		Faixa Etária
+	</button>
+	<button type="button" class="btn btn-sm btn-primary" onclick="plot('pie')">
+		Média Salarial
+	</button>
+	<br>
+	<br>
+	<center>
+		<div id="grafico" style="width: 800px; height: 400px;"></div>
+	</center>
+</div>
 
-    <script>
-        function plot(type='bar') {
-            type = type.toString().toLowerCase().trim();
+<script>
+	function plot(type = 'bar') {
+		type = type.toString().toLowerCase().trim();
 
-            const salarioM = Number(document.getElementById('salarioM').value.replace(',','.'));
-            const salarioF = Number(document.getElementById('salarioF').value.replace(',','.'));
-           
-			const idadeM = Number(document.getElementById('idadeM').value.replace(',', '.'));
-			const idadeF = Number(document.getElementById('idadeF').value.replace(',', '.'));
+		const salarioM = Number(document.getElementById('salarioM').value.replace(',', '.'));
+		const salarioF = Number(document.getElementById('salarioF').value.replace(',', '.'));
 
-            let serie = {};
-            if (type =='pie'){
-                serie = {
-                    values: [salarioM,salarioF],
-                    labels: ['Masculino','Femenino'],
-                    type: type
-                };
-            }else {
-				serie = {
-					x: ['Masculino', 'Feminino'],
-					y: [idadeM, idadeF],
-					type: type
-				};				
-			}
+		const idadeM = Number(document.getElementById('idadeM').value.replace(',', '.'));
+		const idadeF = Number(document.getElementById('idadeF').value.replace(',', '.'));
 
-			const data = [serie];
-			Plotly.newPlot('grafico', data);			
-        }
+		let serie = {};
+		if (type == 'pie') {
+			serie = {
+				values: [salarioM, salarioF],
+				labels: ['Masculino', 'Femenino'],
+				type: type
+			};
+		} else {
+			serie = {
+				x: ['Masculino', 'Feminino'],
+				y: [idadeM, idadeF],
+				type: type
+			};
+		}
 
-        plot();
-    </script>
+		const data = [serie];
+		Plotly.newPlot('grafico', data);
+	}
+
+	plot();
+</script>
 {% endblock %}

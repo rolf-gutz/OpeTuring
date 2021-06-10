@@ -75,12 +75,12 @@
 			{% endfor %}
 		</textarea>
 	</form>
-	
+
 </div>
 
 <script>
 	function relatorio() {
-		const doc = new jsPDF({orientation:'portrait'});
+		const doc = new jsPDF({ orientation: 'portrait' });
 		const texto = document.getElementById('detalhesPedido').innerText.trim();
 		const arrLinhas = texto.split('#');
 		let conteudo = 'DETALHES DO PEDIDO\n\n';
@@ -89,37 +89,37 @@
 		let dtPedido = document.getElementById('dtPedido').innerText;
 		let cnpj = document.getElementById('cnpj').innerText;
 		let dtPedido1 = new Date(dtPedido)
-		let dataFormatada = ((dtPedido1.getDate()+ 1 )) + "/" + ((dtPedido1.getMonth() + 1)) + "/" + dtPedido1.getFullYear(); 
+		let dataFormatada = ((dtPedido1.getDate() + 1)) + "/" + ((dtPedido1.getMonth() + 1)) + "/" + dtPedido1.getFullYear();
 		let valorTotalpedido = document.getElementById('totaPedido').innerText;
 		let usuario = document.getElementById('usuario').innerText;
 		let status = document.getElementById('statusPedido').innerText;
 		let espaco = ''.padStart(38)
 
-		conteudo += `Nome da Empresa: ${nmEmpresa} - `+
-					`CNPJ: ${cnpj}  \n`+
-					`Número Pedido: ${nrPedido} - `+
-					`Data Do Pedido: R$  ${dtPedido}\n` +
-					`Pedido Realizado: ${usuario} \n` +
-					`Situação do Pedido: ${status}\n\n\n\n`;
+		conteudo += `Nome da Empresa: ${nmEmpresa} - ` +
+			`CNPJ: ${cnpj}  \n` +
+			`Número Pedido: ${nrPedido} - ` +
+			`Data Do Pedido: R$  ${dtPedido}\n` +
+			`Pedido Realizado: ${usuario} \n` +
+			`Situação do Pedido: ${status}\n\n\n\n`;
 
 		conteudo += `PRODUTOS: \n`
 
-		for (let linha = 0; linha<arrLinhas.length;linha++){
+		for (let linha = 0; linha < arrLinhas.length; linha++) {
 			let arrColunas = arrLinhas[linha].split('|');
-			arrColunas[0] = arrColunas[0].trim().padEnd(45,'*')
-			if (arrColunas[0].indexOf('*')> 0 ){	
-				conteudo += `Nome Produto: ${arrColunas[0]}\n`+
-							`Quantidade em Quilos: ${arrColunas[1]} - `+
-							`Valor por Produto: R$  ${arrColunas[2]}\n`+
-							`${espaco}Sub Total:${arrColunas[3]}\n\n`;
-							
+			arrColunas[0] = arrColunas[0].trim().padEnd(45, '*')
+			if (arrColunas[0].indexOf('*') > 0) {
+				conteudo += `Nome Produto: ${arrColunas[0]}\n` +
+					`Quantidade em Quilos: ${arrColunas[1]} - ` +
+					`Valor por Produto: R$  ${arrColunas[2]}\n` +
+					`${espaco}Sub Total:${arrColunas[3]}\n\n`;
+
 			}
 		}
-		conteudo+= `${valorTotalpedido.padStart(60)}`
-		
+		conteudo += `${valorTotalpedido.padStart(60)}`
+
 		doc.setFontSize(12);
 		doc.setFont('Courier');
-		doc.text(conteudo,20,20);
+		doc.text(conteudo, 20, 20);
 		doc.save('Relatorio.pdf');
 	}
 </script>
