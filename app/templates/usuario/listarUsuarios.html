@@ -27,12 +27,19 @@
 
 			<tr>
 				<td nowrap="true">{{usuario.nome}}</td>
-				<td nowrap="true">{{usuario.cpf}}</td>
+				<td width="8px" >
+					 <input class="cpf" size="11" type="text" style="border: none " value="{{usuario.cpf}}" disabled="true"> </input>
+					 <!-- <input type="text" name="idade" size="10" maxlength="3"> -->
+
+				</td>
 				<td nowrap="true">{{usuario.email}}</td>
 				<td nowrap="true">{{usuario.endereco}}</td>
 				<td nowrap="true">{{usuario.cidade}}</td>
 				<td nowrap="true">{{usuario.estado}}</td>
-				<td nowrap="true">{{usuario.cep}}</td>
+			
+				<td nowrap="true" >
+					<input  nowrap="true" size="7" class="cep" type="text"  style="border: none "  value="{{usuario.cep}}" disabled="true"> </input>
+			   </td>
 				<td nowrap="true">{{usuario.tipoUsuario}}</td>
 				<td>
 					<a href="/editarUsuario/{{usuario.id}}" class="btn btn-info" role="button">
@@ -51,4 +58,18 @@
 		</tbody>
 	</table>
 </div>
+
+<script>
+
+	$(document).ready(function(){
+    $('.date').mask('00/00/0000');
+    $('.time').mask('00:00:00');
+    $('.cep').mask('00000-000');
+    $('.phone').mask('(00) 00000-0000');
+    $('.cpf').mask('000.000.000-00');
+    $('.money').mask('000.000.000.000,00');
+});
+
+</script>
+
 {% endblock %}

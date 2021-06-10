@@ -18,8 +18,6 @@ import re
 import json 
 
 
-
-
 @app.route('/selecionarProdutos')
 @app.route('/selecionarProdutos/<int:page>')
 # @login_required
@@ -79,7 +77,6 @@ def produtosPagined (page=1):
     produtos = ProdutoModel.query.filter(ProdutoModel.kg > 0).paginate(page,15,False)
     return produtos
 
-
 @app.route('/gerenciarPedidos/')
 @app.route('/gerenciarPedidos/<int:page>')
 def gerenciarPedidos(page=1):  
@@ -87,7 +84,6 @@ def gerenciarPedidos(page=1):
     pedidos = db.session.query(Pedido,Empresa).filter(Pedido.id_empresa_funcionario == Empresa.id_empresa).filter(UsuarioModel.id_empresa == Empresa.id_empresa).paginate(page, 25, False)
     pedidos = ConverterPedidosAdm(pedidos)
     return render_template('/pedidos/gerenciarpedidos.html',   pedidos = pedidos)
-
 
 @app.route('/editarPedido/<int:id>')
 def editarPedido(id):  
@@ -128,7 +124,72 @@ def saveEditarPedido():
         db.session.commit()
 
     return redirect(url_for('gerenciarPedidos'))
-    
+
+@app.route('/gerenciarPedidos/consultaPedidos',methods=['POST'])   
+@app.route('/gerenciarPedidos/consultaPedidos/<int:page>', methods=['POST'])
+# @login_required
+def consultaPedidos(page=1):
+    consulta = '%'+request.form.get('consulta')+'%'
+    campo = request.form.get('campo') 
+    if campo == 'nomeEmpresa':
+        pedidos = db.session.query(Pedido,Empresa).filter(Pedido.id_empresa_funcionario == Empresa.id_empresa).filter(UsuarioModel.id_empresa == Empresa.id_empresa).filter(Empresa.nome .like(consulta)).paginate(page, 25, False)
+        pedidos = ConverterPedidosAdm(pedidos)
+    if campo == 'numeroPedido':
+        numeroPedido = int(consulta.replace('%',''))
+        pedidos = db.session.query(Pedido,Empresa).filter(Pedido.id_empresa_funcionario == Empresa.id_empresa).filter(UsuarioModel.id_empresa == Empresa.id_empresa).filter(Pedido.id_pedido == numeroPedido).paginate(page, 25, False)
+        pedidos = ConverterPedidosAdm(pedidos)
+
+    return render_template('/pedidos/gerenciarpedidos.html',   pedidos = pedidos)
+
+@app.route('/detalhesPedidoAdm/<int:id>')
+def detalhesPedidoAdm(id):
+    pedidoId = Pedido.query.filter_by(id_pedido=id).first()
+    pedido  = PedidoItensArray(pedidoId)
+    return render_template('/pedidos/detalhesPedidoAdm.html',   pedido = pedido)
+
+@app.route('/graficoPedidos/')
+def graficosPedido():
+    mesJaneiro = db.session.query(Pedido).filter(extract('year', Pedido.dataPedido)== 2021).filter(extract('month',Pedido.dataPedido)==1).all()
+    mesFevereiro = db.session.query(Pedido).filter(extract('year', Pedido.dataPedido)== 2021).filter(extract('month',Pedido.dataPedido)==2).all()
+    mesMarco = db.session.query(Pedido).filter(extract('year', Pedido.dataPedido)== 2021).filter(extract('month',Pedido.dataPedido)==3).all()
+    mesAbril = db.session.query(Pedido).filter(extract('year', Pedido.dataPedido)== 2021).filter(extract('month',Pedido.dataPedido)==4).all()
+    mesMaio = db.session.query(Pedido).filter(extract('year', Pedido.dataPedido)== 2021).filter(extract('month',Pedido.dataPedido)==5).all()
+    mesJunho = db.session.query(Pedido).filter(extract('year', Pedido.dataPedido)== 2021).filter(extract('month',Pedido.dataPedido)==6).all()
+    mesJulho = db.session.query(Pedido).filter(extract('year', Pedido.dataPedido)== 2021).filter(extract('month',Pedido.dataPedido)==7).all()
+    mesAgosto = db.session.query(Pedido).filter(extract('year', Pedido.dataPedido)== 2021).filter(extract('month',Pedido.dataPedido)==8).all()
+    mesSetembro = db.session.query(Pedido).filter(extract('year', Pedido.dataPedido)== 2021).filter(extract('month',Pedido.dataPedido)==9).all()
+    mesNovembro = db.session.query(Pedido).filter(extract('year', Pedido.dataPedido)== 2021).filter(extract('month',Pedido.dataPedido)==10).all()
+    mesOutubro = db.session.query(Pedido).filter(extract('year', Pedido.dataPedido)== 2021).filter(extract('month',Pedido.dataPedido)==11).all()
+    mesDezembro = db.session.query(Pedido).filter(extract('year', Pedido.dataPedido)== 2021).filter(extract('month',Pedido.dataPedido)==12).all()
+
+    janeiroTotal = totalMes(mesJaneiro)
+    fevereiroTotal = totalMes(mesFevereiro)
+    marcoTotal = totalMes(mesMarco)
+    abrilTotal = totalMes(mesAbril)
+    maioTotal = totalMes(mesMaio)
+    junhoTotal = totalMes(mesJunho)
+    julhoTotal = totalMes(mesJulho)
+    agostoTotal = totalMes(mesAgosto)
+    setembroTotal = totalMes(mesSetembro)
+    novembroTotal = totalMes(mesNovembro)
+    outubroTotal = totalMes(mesOutubro)
+    dezembroTotal = totalMes(mesDezembro)
+  
+    emAberto  = db.session.query(Pedido).filter(Pedido.statusPagamento == 0).all()
+    emAberto = len(emAberto)
+    pago  = db.session.query(Pedido).filter(Pedido.statusPagamento == 1).all()
+    pago = len(pago)
+    cancelado  = db.session.query(Pedido).filter(Pedido.statusPagamento == 2).all()
+    cancelado = len(cancelado)
+
+    return render_template('/pedidos/graficoPedidos.html', 
+                            janeiro = janeiroTotal, fevereiro = fevereiroTotal,
+                            marco = marcoTotal, abril = abrilTotal, maio = maioTotal,
+                            junho = junhoTotal, julho = julhoTotal, agosto = agostoTotal,
+                            setembro = setembroTotal, outubro =  outubroTotal,
+                            novembro = novembroTotal, dezembro = dezembroTotal ,
+                            aberto = emAberto, pago = pago, cancelado = cancelado )
+
    
 def ConvertePagina(produtos):
     produtoResult = {'has_next': produtos.has_next,
@@ -207,7 +268,7 @@ def PedidoItensArray(pedido):
             produtosDoPedido.append(p)
             
     detalhesPedido = { 'razaoSocial' :  empresa.razao_social,
-                    'cnpj':empresa.cnpj,
+                    'cnpj': FormatarCNPJ(empresa.cnpj),
                     'numeroPedido' : pedido.id_pedido,
                     'DatadoPedido' : ConvertData(pedido.dataPedido),
                     'NomeUsuario':pedido.usuarioSistema.nome,
@@ -258,7 +319,6 @@ def ConverterMoeda(my_value):
     c = b.replace('.',',')
     return moeda + c.replace('v','.')
 
-  
 def ConverterPrazoPagamento(my_value):
     if my_value  == None:
         return 0
@@ -271,29 +331,13 @@ def ConverterQuilos(my_value):
     c = b.replace('.',',')
     return c.replace('v','.')
 
-
-@app.route('/gerenciarPedidos/consultaPedidos',methods=['POST'])   
-@app.route('/gerenciarPedidos/consultaPedidos/<int:page>', methods=['POST'])
-# @login_required
-def consultaPedidos(page=1):
-    consulta = '%'+request.form.get('consulta')+'%'
-    campo = request.form.get('campo') 
-    if campo == 'nomeEmpresa':
-        pedidos = db.session.query(Pedido,Empresa).filter(Pedido.id_empresa_funcionario == Empresa.id_empresa).filter(UsuarioModel.id_empresa == Empresa.id_empresa).filter(Empresa.nome .like(consulta)).paginate(page, 25, False)
-        pedidos = ConverterPedidosAdm(pedidos)
-    if campo == 'numeroPedido':
-        numeroPedido = int(consulta.replace('%',''))
-        pedidos = db.session.query(Pedido,Empresa).filter(Pedido.id_empresa_funcionario == Empresa.id_empresa).filter(UsuarioModel.id_empresa == Empresa.id_empresa).filter(Pedido.id_pedido == numeroPedido).paginate(page, 25, False)
-        pedidos = ConverterPedidosAdm(pedidos)
-
-    return render_template('/pedidos/gerenciarpedidos.html',   pedidos = pedidos)
-
-
-@app.route('/detalhesPedidoAdm/<int:id>')
-def detalhesPedidoAdm(id):
-    pedidoId = Pedido.query.filter_by(id_pedido=id).first()
-    pedido  = PedidoItensArray(pedidoId)
-    return render_template('/pedidos/detalhesPedidoAdm.html',   pedido = pedido)
+def totalMes(mes):
+    mesTotal = 0
+    for m in range(len(mes)):
+        mesTotal += mes[m].valor
+    if len(mes) > 0:
+        mesTotal = mesTotal/len(mes)
+    return mesTotal
 
 def ConverterPedidosAdm(pedido):
     pedidoResult = {'has_next': pedido.has_next,
@@ -323,53 +367,6 @@ def ConverterPedidosAdm(pedido):
     return pedidoResult
 
 
-@app.route('/graficoPedidos/')
-def graficosPedido():
-    mesJaneiro = db.session.query(Pedido).filter(extract('year', Pedido.dataPedido)== 2021).filter(extract('month',Pedido.dataPedido)==1).all()
-    mesFevereiro = db.session.query(Pedido).filter(extract('year', Pedido.dataPedido)== 2021).filter(extract('month',Pedido.dataPedido)==2).all()
-    mesMarco = db.session.query(Pedido).filter(extract('year', Pedido.dataPedido)== 2021).filter(extract('month',Pedido.dataPedido)==3).all()
-    mesAbril = db.session.query(Pedido).filter(extract('year', Pedido.dataPedido)== 2021).filter(extract('month',Pedido.dataPedido)==4).all()
-    mesMaio = db.session.query(Pedido).filter(extract('year', Pedido.dataPedido)== 2021).filter(extract('month',Pedido.dataPedido)==5).all()
-    mesJunho = db.session.query(Pedido).filter(extract('year', Pedido.dataPedido)== 2021).filter(extract('month',Pedido.dataPedido)==6).all()
-    mesJulho = db.session.query(Pedido).filter(extract('year', Pedido.dataPedido)== 2021).filter(extract('month',Pedido.dataPedido)==7).all()
-    mesAgosto = db.session.query(Pedido).filter(extract('year', Pedido.dataPedido)== 2021).filter(extract('month',Pedido.dataPedido)==8).all()
-    mesSetembro = db.session.query(Pedido).filter(extract('year', Pedido.dataPedido)== 2021).filter(extract('month',Pedido.dataPedido)==9).all()
-    mesNovembro = db.session.query(Pedido).filter(extract('year', Pedido.dataPedido)== 2021).filter(extract('month',Pedido.dataPedido)==10).all()
-    mesOutubro = db.session.query(Pedido).filter(extract('year', Pedido.dataPedido)== 2021).filter(extract('month',Pedido.dataPedido)==11).all()
-    mesDezembro = db.session.query(Pedido).filter(extract('year', Pedido.dataPedido)== 2021).filter(extract('month',Pedido.dataPedido)==12).all()
-
-    janeiroTotal = totalMes(mesJaneiro)
-    fevereiroTotal = totalMes(mesFevereiro)
-    marcoTotal = totalMes(mesMarco)
-    abrilTotal = totalMes(mesAbril)
-    maioTotal = totalMes(mesMaio)
-    junhoTotal = totalMes(mesJunho)
-    julhoTotal = totalMes(mesJulho)
-    agostoTotal = totalMes(mesAgosto)
-    setembroTotal = totalMes(mesSetembro)
-    novembroTotal = totalMes(mesNovembro)
-    outubroTotal = totalMes(mesOutubro)
-    dezembroTotal = totalMes(mesDezembro)
-  
-    emAberto  = db.session.query(Pedido).filter(Pedido.statusPagamento == 0).all()
-    emAberto = len(emAberto)
-    pago  = db.session.query(Pedido).filter(Pedido.statusPagamento == 1).all()
-    pago = len(pago)
-    cancelado  = db.session.query(Pedido).filter(Pedido.statusPagamento == 2).all()
-    cancelado = len(cancelado)
-
-    return render_template('/pedidos/graficoPedidos.html', 
-                            janeiro = janeiroTotal, fevereiro = fevereiroTotal,
-                            marco = marcoTotal, abril = abrilTotal, maio = maioTotal,
-                            junho = junhoTotal, julho = julhoTotal, agosto = agostoTotal,
-                            setembro = setembroTotal, outubro =  outubroTotal,
-                            novembro = novembroTotal, dezembro = dezembroTotal ,
-                            aberto = emAberto, pago = pago, cancelado = cancelado )
-
-def totalMes(mes):
-    mesTotal = 0
-    for m in range(len(mes)):
-        mesTotal += mes[m].valor
-    if len(mes) > 0:
-        mesTotal = mesTotal/len(mes)
-    return mesTotal
+def FormatarCNPJ(cnpj):
+    cnpj = str(cnpj)
+    return "%s.%s.%s/%s-%s" % (cnpj[0:2],cnpj[2:5],cnpj[5:8],cnpj[8:12],cnpj[12:14])
