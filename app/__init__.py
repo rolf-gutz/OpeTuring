@@ -5,8 +5,7 @@ from flask_migrate import Migrate, MigrateCommand
 from flask_login import LoginManager, UserMixin, login_required,login_user, logout_user
 
 
-app = Flask(__name__,
-template_folder="templates")
+app = Flask(__name__, template_folder="templates")
 
 app.config.from_object('config')
 login_manager = LoginManager(app)
@@ -26,3 +25,4 @@ from app.controllers.empresa import empresa_controller
 from app.controllers.fornecedor import fornecedor_controller
 from app.controllers.pedido import pedido_controller
 from app.controllers.itensPedido import itensPedido
+from app.controllers.inicio import inicio

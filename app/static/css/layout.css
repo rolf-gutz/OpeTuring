@@ -1,36 +1,90 @@
-.navbar {
-    background-color: rgba(0, 0, 5, 0.8);
+body {
+    background-color: #FFFBE9;
 }
 
 tr {
     text-align: center;
 }
 
-.table-format, #tableId {
-    text-decoration: none;
-    color: #000000;
-  }
+label, th {
+    font-family: "Comfortaa", cursive;
+}
 
-  .table-format:hover {
+#navb {
+    background-color: #3C2415;
+    font-family: "Comfortaa", cursive;
+}
+
+#img_nav {
+    width: 120px;
+    height: 50px;
+}
+
+.card-img {
+    height: 100%;
+}
+
+#card_over {
+    margin-top: 300px;
+}
+
+#card_over_txt {
+    text-shadow: black 0.1em 0.1em 0.2em;
+}
+
+#btn_img {
+    background-color: #228B22;
+}
+
+#btn_img:hover {
+    background-color: #FFF;
+    color: #228B22;
+    transition: 0.2s;
+}
+
+#div_icons {
+    height: 60px;
+    padding: 20px;
+    text-transform: uppercase;
+    margin-top: 2px;
+}
+
+#borda_icons {
+    border-right: 2px solid #228B22;
+}
+
+#tableId {
     text-decoration: none;
     color: #000000;
-  }
+}
 
 #titulo-pags {
     text-align: center;
-  }
+    font-family: "Roboto Condensed", sans-serif;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.table {
+    background-color: #FFF;
+}
+
+#botoes {
+    border: 1px solid #000;
+}
+
 
 footer {
-    background-color: #E9E3E6;
-    border-top: 1px solid #A2999E;
+    background-color: #B38B6D;
+    border-top: 1px solid #000;
     color: #000000;
     padding: 2px;
 }
 
 #email {
-    color: #A2999E;
+    color: #3C2415;
 }
 
 #email:hover {
-    color: #000000;
+    color: #228B22;
 }
