@@ -3,8 +3,9 @@
 {% extends "layout.html" %}
 
 {% block rolf %}
+<div class="container">
+  <h2 id="titulo-pags">Gerenciar Pedidos </h2>
 
-<div class="container" style="height: 85%; width: 250%;">
   <form action="consultaPedidos" method="POST" name="form_consulta" class="ml-3">
     <div class=form-group>
       <div class="row">
@@ -17,20 +18,20 @@
       </div>
     </div>
   </form>
-  <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
-    <thead>
-      <tr>
-        <th nowrap="true" class="th-sm">Nome da Empresa</th>
-        <th nowrap="true" class="th-sm">Nome Usúario</th>
-        <th nowrap="true" class="th-sm">Número Pedido</th>
-        <th nowrap="true" class="th-sm">Data do Pedido</th>
-        <th nowrap="true" class="th-sm">Valor do Pedido</th>
-        <th nowrap="true" class="th-sm">Status de Pagamento</th>
-        <th nowrap="true" class="th-sm">Editar Pedido</th>
-        <th nowrap="true" class="th-sm">Detalhes do Pedido</th>
-      </tr>
-    </thead>
-    <tbody>
+    <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th nowrap="true" class="th-sm text-uppercase">Nome da Empresa</th>
+          <th nowrap="true" class="th-sm text-uppercase">Nome Usúario</th>
+          <th nowrap="true" class="th-sm text-uppercase">Número Pedido</th>
+          <th nowrap="true" class="th-sm text-uppercase">Data do Pedido</th>
+          <th nowrap="true" class="th-sm text-uppercase">Valor do Pedido</th>
+          <th nowrap="true" class="th-sm text-uppercase">Status de Pagamento</th>
+          <th nowrap="true" class="th-sm text-uppercase">Editar Pedido</th>
+          <th nowrap="true" class="th-sm text-uppercase">Detalhes do Pedido</th>
+        </tr>
+      </thead>
+      <tbody>
       {% for pedido in pedidos['items'] %}
       <tr>
         <td nowrap="true" disable="true">{{pedido.empresa}}</td>
@@ -41,49 +42,44 @@
         <td nowrap="true" disable="true">
           {{pedido.StatusdePagamento}}
         </td>
-        <td nowrap="true" disable="true">
-          <a href="/editarPedido/{{pedido.numeroPedido}}" class="btn btn-danger" role="button">
-            Editar Pedido
+        <td disable="true">
+          <a href="/editarPedido/{{pedido.numeroPedido}}"  class="btn btn-primary" role="button" id="botoes">
+            <img src="../static/icons/pencil-square.svg" alt="Editar">
           </a>
-
         </td>
-        <td nowrap="true" disable="true">
-          <a href="/detalhesPedidoAdm/{{pedido.numeroPedido}}" class="btn btn-info" role="button">
-            Detalhes do Pedido
+        <td disable="true">
+          <a href="/detalhesPedidoAdm/{{pedido.numeroPedido}}" class="btn btn-info" role="button" id="botoes">
+            <img src="../static/icons/card-list.svg" alt="Detalhes">
           </a>
         </td>
       </tr>
       {% endfor %}
     </tbody>
-  </table>
+    </table>
 
-</div>
+  </div>
 
-<div class="container  d-flex justify-content-center">
-  <nav aria-label="...">
-    <ul class="pagination">
-      {% if not pedidos.has_prev %}
-      <li class="page-item  
-    disabled">
-        {% endif %}
-        <a class="page-link" href="./{{pedidos.prev_num}}">Previous</a>
-      </li>
-      {% set numero = pedidos.pages| int %}
-      {% for page in range(1,numero+1) %}
-      <li class="page-item {% if page == pedidos.page %} 
-      active {% endif %}">
-        <a class="page-link" href="./{{page}}"> {{page}} <span class="sr-only">(current)</span></a>
-      </li>
-      {% endfor %}
+  <div class="container d-flex justify-content-center">
+    <nav aria-label="...">
+      <ul class="pagination">
+        {% if not pedidos.has_prev %}
+        <li class="page-item disabled">
+          {% endif %}
+          <a class="page-link" href="./{{pedidos.prev_num}}">Previous</a>
+        </li>
+        {% set numero = pedidos.pages| int %}
+        {% for page in range(1,numero+1) %}
+        <li class="page-item {% if page == pedidos.page %} active {% endif %}">
+          <a class="page-link" href="./{{page}}"> {{page}} <span class="sr-only">(current)</span></a>
+        </li>
+        {% endfor %}
 
-      {% if not pedidos.has_next %}
-      <li class="page-item disabled">
-        {% endif %}
-        <a class="page-link" href="./{{pedidos.next_num}}">Next</a>
-      </li>
-    </ul>
-  </nav>
-</div>
-
-
-{% endblock %}
+        {% if not pedidos.has_next %}
+        <li class="page-item disabled">
+          {% endif %}
+          <a class="page-link" href="./{{pedidos.next_num}}">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  {% endblock %}

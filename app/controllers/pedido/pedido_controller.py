@@ -26,7 +26,6 @@ def selecionarProdutos(page=1):
     produtosPagina = ConvertePagina(produtos)
     return render_template('pedidos/selecionarProdutos.html', produtos=produtosPagina)     
 
-
 @app.route('/pedido/addPedido/', methods=['POST'])
 # @login_required
 def addPedido():    
@@ -80,10 +79,9 @@ def produtosPagined (page=1):
 @app.route('/gerenciarPedidos/')
 @app.route('/gerenciarPedidos/<int:page>')
 def gerenciarPedidos(page=1):  
-    page = page
     pedidos = db.session.query(Pedido,Empresa).filter(Pedido.id_empresa_funcionario == Empresa.id_empresa).filter(UsuarioModel.id_empresa == Empresa.id_empresa).paginate(page, 25, False)
     pedidos = ConverterPedidosAdm(pedidos)
-    return render_template('/pedidos/gerenciarpedidos.html',   pedidos = pedidos)
+    return render_template('pedidos/gerenciarpedidos.html',   pedidos = pedidos)
 
 @app.route('/editarPedido/<int:id>')
 def editarPedido(id):  
