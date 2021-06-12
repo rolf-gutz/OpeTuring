@@ -14,8 +14,7 @@ class ProdutoModel(db.Model,UserMixin):
     
 
 
-    def __init__(self,idProduto,nome,valor,kg,id_fornecedor):     
-        self.idProduto = idProduto
+    def __init__(self,nome,valor,kg,id_fornecedor):     
         self.nome = nome
         self.valor = valor
         self.kg = kg
@@ -24,11 +23,3 @@ class ProdutoModel(db.Model,UserMixin):
     
     def __repr__(self):
         return '<ProdutoModel %r>' % self.nome
-
-        
-def ConverterMoeda(my_value):
-    moeda = 'R$ '
-    a = '{:,.2f}'.format((my_value))
-    b = a.replace(',','v')
-    c = b.replace('.',',')
-    return moeda + c.replace('v','.')

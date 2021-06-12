@@ -13,6 +13,11 @@ h3 {
     box-shadow: 4px 6px 8px 4px rgba(245, 12, 12, 0.2);
 }
 
+
+#card-login2 {
+    box-shadow: 4px 6px 8px 4px rgba(12, 245, 70, 0.2);
+}
+
 .login {
     width: 320px;
     height: 420px;
@@ -104,4 +109,18 @@ h1 {
 .login a:hover {
     transition: 0.2s;
     color: #FFFFFF;
+}
+
+.error {
+    background-color: white;
+    color: red;
+    box-shadow: 4px 6px 8px 4px rgba(245, 12, 12, 0.2);
+}
+
+
+.sucess {
+    background-color: white;
+    color: green;
+    box-shadow: 4px 6px 8px 4px rgba(12, 245, 70, 0.2);
+
 }

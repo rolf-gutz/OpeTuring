@@ -3,6 +3,8 @@
 {% extends "layout.html" %}
 
 {% block rolf %}
+{% include '/components/loginFailed.html' %}
+
 <div class="container" style="height: 90%; width: 100%;">
 	<h2 id="titulo-pags">Cadastrar Usuário</h2>
 	<form class="ml-3" action="/salvar_cadastro" method="POST" name="form_insercao" class="ml-3">
@@ -13,7 +15,7 @@
 			</div>
 			<div class="form-group col-md-6">
 				<label for="inputPassword4">Senha</label>
-				<input type="password" name="password" class="form-control" placeholder="Senha">
+				<input style="background-color: white;" type="password" name="password" class="form-control" placeholder="Senha">
 			</div>
 		</div>
 		<div class="form-row ">
