@@ -3,38 +3,44 @@
 {% extends "layout.html" %}
 
 {% block rolf %}
-<div class="container" style="height: 90%; width: 100%;">
-	<h2 id="titulo-pags">Cadastrar Produto </h2>
-	<div class="form-row">
-		<div class="form-group col-md-6">
-			<label>Produto:</label>
-			<input type="text" id='nome' name="nome" class="form-control" placeholder="Nome do Produto">
-		</div>
-		<div class="form-group col-md-6">
-			<label for="inputEmpresa">Fornecedores:</label>
-			<select name="id_fornecedor" id='id_fornecedor' class="form-control">
-				{% for fornecedor in fornecedores %}
-				<option value="{{fornecedor.id_fornecedor}}">
-					{{fornecedor.nome}}
-				</option>
-				{% endfor %}
-			</select>
-		</div>
-	</div>
+	<div class="container">
+		<h2 id="titulo-pags">Cadastrar Produto</h2>
 
-	<div class="form-row">
-		<div class="form-group col-md-6">
-			<label>Kg:</label>
-			<input id="Kg" type="number" name="kg" class="form-control" placeholder="Quilos">
+		<!-- action="/salvar_produto" -->
+		<!-- <form class="ml-3" method="POST" name="form_insercao" class="ml-3"> -->
+		<div class="form-row">
+			<div class="form-group col-md-6">
+				<label >Produto:</label>
+				<input type="text" id='nome' name="nome" class="form-control" placeholder="Nome do Produto">
+			</div>
+
+			<div class="form-group col-md-6">
+				<label for="inputEmpresa">Fornecedores:</label>
+				<select name="id_fornecedor" id='id_fornecedor' class="form-control">
+					{% for fornecedor in fornecedores %}
+						<option value="{{fornecedor.id_fornecedor}}">
+							{{fornecedor.nome}}
+						</option>
+					{% endfor %}
+				</select>
+			</div>
 		</div>
-		<div class="form-group col-md-6">
-			<label>Valor Kg:</label>
-			<input type="number" id="valor" name="valor" class="form-control" placeholder="Valor do Quilo"
-				onchange="setTwoNumberDecimal" min="0" step="0.01" value="0.00">
+
+		<div class="form-row">
+			<div class="form-group col-md-6">
+				<label>Kg:</label>
+				<input id="Kg" type="number" name="kg" class="form-control" placeholder="Quilos">
+			</div>
+
+			<div class="form-group col-md-6">
+				<label >Valor Kg:</label>
+				<input type="number" id="valor" name="valor" class="form-control" placeholder="Valor do Quilo"onchange="setTwoNumberDecimal" min="0" step="0.01" value="0.00">
+			</div>
 		</div>
+
+		<a href="/listarProdutos/1" class="btn btn-warning text-white" role="button" id="botoes">Cancelar</a>
+		<button type="submit" class="btn btn-success" id="botoes" onclick="sendData()" class="btn btn-success" href="/listarProdutos/1">Inserir</button>
 	</div>
-	<a href="/listarProdutos/1" class="btn btn-secondary" role="button">Cancelar</a>
-	<button onclick="sendData()" class="btn btn-success" href="/listarProdutos/1"> Inserir</button>
 </div>
 
 <script>
