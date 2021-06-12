@@ -76,13 +76,12 @@
                 </div>
             </div>
 
-            <a href="/listarEmpresas" class="btn btn-warning text-white" role="button" id="botoes">Cancelar</a>
-            <button type="submit" class="btn btn-primary" id="botoes">Editar</button>
-        </form>
-    </div>
-
-	<script>
-        const estado = document.getElementsByName('estado')[0];
-        estado.value ="{{empresa.estado}}";
-	</script>
+        <a href="/listarEmpresa" class="btn btn-secondary" role="button">Cancelar</a>
+        <button type="submit" class="btn btn-success">Editar</button>
+    </form>
+</div>
+<script>
+    const estado = document.getElementsByName('estado')[0];
+    estado.value = "{{empresa.estado}}";
+</script>
 {% endblock %}

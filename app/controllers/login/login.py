@@ -35,7 +35,7 @@ def login():
 			return render_template('login/login.html')
 
 		login_user(usuario)
-		return redirect(url_for('listagem'))
+		return redirect(url_for('inicio'))
 		
 	return render_template('login/login.html')
 

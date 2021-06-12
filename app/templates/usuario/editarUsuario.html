@@ -78,17 +78,36 @@
 					</select>
 			    </div>
 			</div>
+			<a href="/listarUsuarios" class="btn btn-secondary" role="button">Cancelar</a>
+			<button type="submit" class="btn btn-success">Editar</button>
+		</div>
 
-			<a href="/listarUsuarios" class="btn btn-warning text-white" role="button" id="botoes">Cancelar</a>
-			<button type="submit" class="btn btn-primary" id="botoes">Editar</button>
-		</form>
-	</div>
-
-	<script>
-        const estado = document.getElementsByName('estado')[0];
-        estado.value ="{{usuario.estado}}";
 		
-		const tipoUsuario = document.getElementsByName('tipoUsuario')[0];
-        tipoUsuario.value = "{{usuario.tipoUsuario}}";
-    </script>
+	</form>
+</div>
+<script>
+	const estado = document.getElementsByName('estado')[0];
+	estado.value = "{{usuario.estado}}";
+
+	const tipoUsuario = document.getElementsByName('tipoUsuario')[0];
+	tipoUsuario.value = "{{usuario.tipoUsuario}}";
+
+	$(document).ready(function () {
+		var $seuCampoCpf = $("#CPF");
+		$seuCampoCpf.mask('000.000.000-00');
+		var cep = $('#cep');
+		var $seuCampoCep = $("#cep");
+		$seuCampoCep.mask('00000-000');
+		
+	});
+
+	$(document).ready(function(){
+    $('.date').mask('00/00/0000');
+    $('.time').mask('00:00:00');
+    $('.cep').mask('00000-000');
+    $('.phone').mask('(00) 00000-0000');
+    $('.cpf').mask('000.000.000-00');
+    $('.money').mask('000.000.000.000,00');
+});
+</script>
 {% endblock %}
