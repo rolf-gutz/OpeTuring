@@ -27,11 +27,11 @@ def login():
 		usuario = UsuarioModel.query.filter_by(email=email).first()
 
 		if not usuario:
-			flash(message="Email inválido, contate o administrador", category="danger")
+			flash(message="Email inválido, contate o administrador", category="error")
 			return render_template('login/login.html')
 
 		if not check_password_hash(usuario.password, password):	
-			flash(message="Senha incorreta", category="danger")
+			flash(message="Senha incorreta", category="error")
 			return render_template('login/login.html')
 
 		login_user(usuario)

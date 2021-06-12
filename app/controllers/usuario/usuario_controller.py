@@ -20,8 +20,8 @@ def cadastrarUsuario():
 @app.route('/salvar_cadastro',methods=['POST'])
 # @login_required
 def salvar_cadastro():
-	cpf_form = re.sub("[^a-zA-Z0-9áéíóúÁÉÍÓÚâêîôÂÊÎÔãõÃÕçÇ: ]+","",request.form.get('cpf'))
-	cpf = int(cpf_form)
+	# cpf_form = re.sub("[^a-zA-Z0-9áéíóúÁÉÍÓÚâêîôÂÊÎÔãõÃÕçÇ: ]+","",request.form.get('cpf'))
+	cpf = request.form.get('cpf')	
 	nome = request.form.get('nome')
 	email = request.form.get('email')
 	password = generate_password_hash(request.form["password"])
@@ -33,10 +33,17 @@ def salvar_cadastro():
 	id_empresa = request.form['id_empresa']
 
 	usuario = UsuarioModel(cpf,nome,email,password,endereco,cidade,estado,cep,tipoUsuario,id_empresa)
-
+	
+	msg = validDoc(usuario)
+	if msg is not None:
+		flash(message=msg, category="error")        
+		empresas = Empresa.query.all()
+		return render_template('usuario/cadastroUsuario.html', empresas= empresas)
+	
+	usuario.cpf = int(re.sub("[^a-zA-Z0-9áéíóúÁÉÍÓÚâêîôÂÊÎÔãõÃÕçÇ: ]+","",cpf))
 	db.session.add(usuario)
 	db.session.commit()
-
+	
 	usuarios = UsuarioModel.query.all()
 	return render_template('usuario/listarUsuarios.html', usuarios=usuarios)
     
@@ -102,3 +109,10 @@ def saveeditarUsuario():
 
 	usuarios = UsuarioModel.query.all()
 	return render_template('usuario/listarUsuarios.html', usuarios=usuarios)
+
+
+def validDoc (usuario):
+	if usuario.nome == '' or usuario.email == '' or usuario.endereco == '' or usuario.cidade == '' or  usuario.estado == '' or usuario.cep == '':
+		return'Preenchimento de todos os campos necessário'
+	else:
+		return None

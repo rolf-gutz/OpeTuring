@@ -18,28 +18,28 @@
       </div>
     </div>
   </form>
-    <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+    <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0">
       <thead>
         <tr>
-          <th nowrap="true" class="th-sm text-uppercase">Nome da Empresa</th>
-          <th nowrap="true" class="th-sm text-uppercase">Nome Usúario</th>
-          <th nowrap="true" class="th-sm text-uppercase">Número Pedido</th>
-          <th nowrap="true" class="th-sm text-uppercase">Data do Pedido</th>
-          <th nowrap="true" class="th-sm text-uppercase">Valor do Pedido</th>
-          <th nowrap="true" class="th-sm text-uppercase">Status de Pagamento</th>
-          <th nowrap="true" class="th-sm text-uppercase">Editar Pedido</th>
-          <th nowrap="true" class="th-sm text-uppercase">Detalhes do Pedido</th>
+          <th class="th-sm text-uppercase">Nome da Empresa</th>
+          <th class="th-sm text-uppercase">Nome Usúario</th>
+          <th class="th-sm text-uppercase">Número Pedido</th>
+          <th class="th-sm text-uppercase">Data do Pedido</th>
+          <th class="th-sm text-uppercase">Valor do Pedido</th>
+          <th class="th-sm text-uppercase">Status de Pagamento</th>
+          <th class="th-sm text-uppercase">Editar Pedido</th>
+          <th class="th-sm text-uppercase">Detalhes do Pedido</th>
         </tr>
       </thead>
       <tbody>
       {% for pedido in pedidos['items'] %}
       <tr>
-        <td nowrap="true" disable="true">{{pedido.empresa}}</td>
-        <td nowrap="true" disable="true">{{pedido.nomeUsuario}} </td>
-        <td nowrap="true" disable="true">{{pedido.numeroPedido}} </td>
-        <td nowrap="true" disable="true">{{pedido.DatadoPedido}} </td>
-        <td nowrap="true" disable="true" id="valorPedido" value="{{pedido.ValorPedido}}">{{pedido.ValorPedido}}</td>
-        <td nowrap="true" disable="true">
+        <td disable="true">{{pedido.empresa}}</td>
+        <td disable="true">{{pedido.nomeUsuario}} </td>
+        <td disable="true">{{pedido.numeroPedido}} </td>
+        <td disable="true">{{pedido.DatadoPedido}} </td>
+        <td disable="true" id="valorPedido" value="{{pedido.ValorPedido}}">{{pedido.ValorPedido}}</td>
+        <td disable="true">
           {{pedido.StatusdePagamento}}
         </td>
         <td disable="true">
