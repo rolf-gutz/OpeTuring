@@ -78,7 +78,7 @@ def produtosPagined (page=1):
 
 @app.route('/gerenciarPedidos/')
 @app.route('/gerenciarPedidos/<int:page>')
-def gerenciarPedidos(page):  
+def gerenciarPedidos(page=1):  
     pedidos = db.session.query(Pedido,Empresa).filter(Pedido.id_empresa_funcionario == Empresa.id_empresa).filter(UsuarioModel.id_empresa == Empresa.id_empresa).paginate(page, 25, False)
     pedidos = ConverterPedidosAdm(pedidos)
     return render_template('pedidos/gerenciarpedidos.html',   pedidos = pedidos)
