@@ -10,7 +10,6 @@ from flask_login import LoginManager, UserMixin, login_required,login_user, logo
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, date
 import locale
-# from flask.ext.sqlalchemy import exc
 
 
 
