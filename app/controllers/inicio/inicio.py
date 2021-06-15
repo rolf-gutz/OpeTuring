@@ -11,6 +11,6 @@ import re
 
 
 @app.route('/inicio')
-# @login_required
+@login_required
 def inicio():
     return render_template('inicio/inicio.html')

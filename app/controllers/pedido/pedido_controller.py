@@ -20,14 +20,14 @@ import json
 
 @app.route('/selecionarProdutos')
 @app.route('/selecionarProdutos/<int:page>')
-# @login_required
+@login_required
 def selecionarProdutos(page=1):
     produtos = produtosPagined(page)
     produtosPagina = ConvertePagina(produtos)
     return render_template('pedidos/selecionarProdutos.html', produtos=produtosPagina)     
 
 @app.route('/pedido/addPedido/', methods=['POST'])
-# @login_required
+@login_required
 def addPedido():    
     pedido = Pedido(0,0,None,0,0,'',current_user.id_empresa,current_user.id) 
     produtosLista = request.form['lista']
@@ -79,7 +79,7 @@ def produtosPagined (page=1):
 @app.route('/gerenciarPedidos/')
 @app.route('/gerenciarPedidos/<int:page>')
 def gerenciarPedidos(page=1):  
-    pedidos = db.session.query(Pedido,Empresa).filter(Pedido.id_empresa_funcionario == Empresa.id_empresa).filter(UsuarioModel.id_empresa == Empresa.id_empresa).paginate(page, 25, False)
+    pedidos = db.session.query(Pedido,Empresa).filter(Pedido.id_empresa_funcionario == Empresa.id_empresa).filter(UsuarioModel.id_empresa == Empresa.id_empresa).paginate(page, 40, False)
     pedidos = ConverterPedidosAdm(pedidos)
     return render_template('pedidos/gerenciarpedidos.html',   pedidos = pedidos)
 
@@ -125,16 +125,16 @@ def saveEditarPedido():
 
 @app.route('/gerenciarPedidos/consultaPedidos',methods=['POST'])   
 @app.route('/gerenciarPedidos/consultaPedidos/<int:page>', methods=['POST'])
-# @login_required
+@login_required
 def consultaPedidos(page=1):
     consulta = '%'+request.form.get('consulta')+'%'
     campo = request.form.get('campo') 
     if campo == 'nomeEmpresa':
-        pedidos = db.session.query(Pedido,Empresa).filter(Pedido.id_empresa_funcionario == Empresa.id_empresa).filter(UsuarioModel.id_empresa == Empresa.id_empresa).filter(Empresa.nome .like(consulta)).paginate(page, 25, False)
+        pedidos = db.session.query(Pedido,Empresa).filter(Pedido.id_empresa_funcionario == Empresa.id_empresa).filter(UsuarioModel.id_empresa == Empresa.id_empresa).filter(Empresa.nome .like(consulta)).paginate(page, 40, False)
         pedidos = ConverterPedidosAdm(pedidos)
     if campo == 'numeroPedido':
         numeroPedido = int(consulta.replace('%',''))
-        pedidos = db.session.query(Pedido,Empresa).filter(Pedido.id_empresa_funcionario == Empresa.id_empresa).filter(UsuarioModel.id_empresa == Empresa.id_empresa).filter(Pedido.id_pedido == numeroPedido).paginate(page, 25, False)
+        pedidos = db.session.query(Pedido,Empresa).filter(Pedido.id_empresa_funcionario == Empresa.id_empresa).filter(UsuarioModel.id_empresa == Empresa.id_empresa).filter(Pedido.id_pedido == numeroPedido).paginate(page, 40, False)
         pedidos = ConverterPedidosAdm(pedidos)
 
     return render_template('/pedidos/gerenciarpedidos.html',   pedidos = pedidos)
@@ -284,10 +284,10 @@ def PedidosPagined (page=1):
     page = page
     pedidoArray = []
     usuario =current_user.tipoUsuario
-    if (usuario != "Administrador"):
-        pedido = Pedido.query.filter(Pedido.id_funcionario == current_user.id_empresa).paginate(page , 15, False)
-    else:
+    if (usuario == "Administrador"):
         pedido = Pedido.query.filter().paginate(page , 15, False)
+    else:
+        pedido = Pedido.query.filter(Pedido.id_empresa_funcionario == current_user.id_empresa).paginate(page , 15, False)
     if (pedido.pages > 0): 
         pedidoArray = Pedidosarray(pedido)
     else:

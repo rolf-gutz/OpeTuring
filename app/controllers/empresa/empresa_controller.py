@@ -11,13 +11,13 @@ import re
 
 
 @app.route('/cadastrarEmpresa')
-# @login_required
+@login_required
 def cadastrarEmpresa():
 	return render_template('empresa/cadastroEmpresa.html')
 
 
 @app.route('/salvar_empresa',methods=['POST'])
-# @login_required
+@login_required
 def salvar_empresa():
 	razao_social = request.form.get('razao_social')
 	text2 = re.sub("[^a-zA-Z0-9áéíóúÁÉÍÓÚâêîôÂÊÎÔãõÃÕçÇ: ]+","",request.form.get('cnpj'))
@@ -37,7 +37,7 @@ def salvar_empresa():
 	return render_template('empresa/listarEmpresa.html', empresas=empresas)
     
 @app.route('/listarEmpresa')
-# @login_required
+@login_required
 # @requires_roles('Cliente')
 def listarEmpresa():
 	empresas = Empresa.query.all()
@@ -45,14 +45,14 @@ def listarEmpresa():
 
 
 @app.route('/deletarEmpresa/<int:id>')
-# @login_required
+@login_required
 def deletarEmpresa(id=0):
 	empresa = Empresa.query.filter_by(id_empresa=id).first()
 	return render_template('empresa/deletarEmpresa.html', empresa=empresa)
 
     
 @app.route('/saveDeletarEmpresa',methods=['POST'])
-# @login_required
+@login_required
 def saveDeletarEmpresa():
 	id = int(request.form.get('id_empresa'))
 	empresa = Empresa.query.filter_by(id_empresa=id).first()
@@ -65,14 +65,14 @@ def saveDeletarEmpresa():
 
 
 @app.route('/editarEmpresa/<int:id>')
-# @login_required
+@login_required
 def editarEmpresa(id=0):
 	empresa =  Empresa.query.filter_by(id_empresa=id).first()
 	return render_template('empresa/editarEmpresa.html', empresa=empresa)
 
 
 @app.route('/saveEditarEmpresa',methods=['POST'])
-# @login_required
+@login_required
 def saveeditarEmpresa():
 	id = int(request.form.get('id_empresa'))
 	razao_social = request.form.get('razao_social')

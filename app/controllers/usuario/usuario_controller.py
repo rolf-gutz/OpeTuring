@@ -5,7 +5,7 @@ from app.models.UsuarioModel import UsuarioModel
 from app.models.ProdutoModel import ProdutoModel
 from app.controllers.login.login import requires_roles 
 from app.models.Empresa import Empresa
-from flask_login import LoginManager, UserMixin, login_required,login_user, logout_user
+from flask_login import LoginManager, UserMixin, login_required,login_user, logout_user ,current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
 
@@ -51,7 +51,12 @@ def salvar_cadastro():
 # @login_required
 # @requires_roles('Administrador')
 def listarUsuarios():
-	usuarios = UsuarioModel.query.all()
+	usuario = current_user.tipoUsuario
+	if (usuario != "Administrador"):
+		usuarios = UsuarioModel.query.filter(UsuarioModel.id_empresa == current_user.id_empresa).all()
+	else:
+		usuarios = UsuarioModel.query.all()
+	
 	return render_template('usuario/listarUsuarios.html', usuarios=usuarios)
 
 

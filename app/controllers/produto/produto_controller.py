@@ -14,14 +14,14 @@ import locale
 
 
 @app.route('/cadastrarProduto')
-# @requires_roles('Administrador')
-# @login_required
+@requires_roles('Administrador')
+@login_required
 def cadastrarProduto():
     fornecedores = Fornecedor.query.all()
     return render_template('produtos/cadastroProduto.html',fornecedores = fornecedores)
 
 @app.route('/salvar_produto',methods=['POST'])
-# @login_required
+@login_required
 def salvar_produto():
     nome_form = request.form.get('nome')
     valor_form = request.form.get('valor')
@@ -55,17 +55,16 @@ def CheckFormulario(produto):
 	    return None
     
     
-# @app.route('/listarProdutos/<int:page>',methods=['POST'],defaults={'page':1})
 @app.route('/listarProdutos')
 @app.route('/listarProdutos/<int:page>')
-# @login_required
+@login_required
 def listarProdutos(page=1):
     produtos = produtosPagined(page)
     return render_template('produtos/listarProdutos.html', produtos=produtos)
 
 
 @app.route('/deletarProduto/<int:id>')
-# @login_required
+@login_required
 def deletarProduto(id=0):
     produto = ProdutoModel.query.filter_by(idProduto=id).first()
 
@@ -74,7 +73,7 @@ def deletarProduto(id=0):
 
 
 @app.route('/saveDeleteProduto',methods=['POST'])
-# @login_required
+@login_required
 def saveDeleteProduto():
     id = int(request.form.get('idProduto'))
     produto = ProdutoModel.query.filter_by(idProduto=id).first()
@@ -97,14 +96,14 @@ def saveDeleteProduto():
 
 
 @app.route('/editarProduto/<int:id>')
-# @login_required
+@login_required
 def editarProduto(id=0):
     produto = ProdutoModel.query.filter_by(idProduto=id).first()
     fornecedores = Fornecedor.query.all()
     return render_template('produtos/editarProduto.html', produto=produto, fornecedores = fornecedores)
 
 @app.route('/saveEditarProduto',methods=['POST'])
-# @login_required
+@login_required
 def saveEditarProduto():
     id = int(request.form.get('idProduto'))
     nome = request.form.get('nome')
@@ -148,10 +147,12 @@ def ProdutosArray (produtos):
                     }
     itens = len(produtos.items)
     for x in range(itens):
+        fornecedor = Fornecedor.query.filter(produtos.items[x].id_fornecedor == Fornecedor.id_fornecedor).first()
         produtoJson = {'idProduto': produtos.items[x].idProduto,
                         'nome': produtos.items[x].nome,
                         'valor': ConverterMoeda(produtos.items[x].valor),
-                        'kg': ConverterQuilos(produtos.items[x].kg) 
+                        'kg': ConverterQuilos(produtos.items[x].kg) ,
+                        'fornecedor': fornecedor.razao_social
                         }
         produtosResult['items'].append(produtoJson)
     

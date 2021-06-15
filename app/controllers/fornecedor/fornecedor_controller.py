@@ -12,13 +12,13 @@ import re
 
 
 @app.route('/cadastrarFornecedor')
-# @login_required
+@login_required
 def cadastrarFornecedor():
     return render_template('fornecedor/cadastroFornecedor.html')
 
 
 @app.route('/salvarFornecedor',methods=['POST'])
-# @login_required
+@login_required
 def salvarFornecedor():
     cnpj_form = request.form.get('cnpj')
     cnpj = int(re.sub("[^a-zA-Z0-9áéíóúÁÉÍÓÚâêîôÂÊÎÔãõÃÕçÇ: ]+","",cnpj_form))
@@ -40,7 +40,7 @@ def salvarFornecedor():
     return render_template('fornecedor/listarFornecedor.html', fornecedores = fornecedores)
     
 @app.route('/listarFornecedor')
-# @login_required
+@login_required
 # @requires_roles('Cliente')
 def listarFornecedor():
 	fornecedores = Fornecedor.query.all()
@@ -48,14 +48,14 @@ def listarFornecedor():
 
 
 @app.route('/deletarFornecedor/<int:id>')
-# @login_required
+@login_required
 def deletarFornecedor(id=0):
 	fornecedor = Fornecedor.query.filter_by(id_fornecedor=id).first()
 	return render_template('fornecedor/deletarFornecedor.html', fornecedor = fornecedor)
 
     
 @app.route('/saveDeletarFornecedor',methods=['POST'])
-# @login_required
+@login_required
 def saveDeletarFornecedor():
     id = int(request.form.get('id_fornecedor'))
     fornecedor = Fornecedor.query.filter_by(id_fornecedor=id).first()
@@ -68,14 +68,14 @@ def saveDeletarFornecedor():
 
 
 @app.route('/editarFornecedor/<int:id>')
-# @login_required
+@login_required
 def editarFornecedor(id=0):
 	fornecedor =  Fornecedor.query.filter_by(id_fornecedor=id).first()
 	return render_template('fornecedor/editarFornecedor.html', fornecedor = fornecedor)
 
 
 @app.route('/saveEditarFornecedor',methods=['POST'])
-# @login_required
+@login_required
 def saveEditarFornecedor():
     id = int(request.form.get('id_fornecedor'))
     cnpj_form = request.form.get('cnpj')

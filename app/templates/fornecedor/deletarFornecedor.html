@@ -17,7 +17,7 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="inputCnpj">CNPJ</label>
-                <input type="text" name="cnpj" class="form-control" value="{{fornecedor.cnpj}}" disabled="true">
+                <input type="text" id="CNPJ" name="cnpj" class="form-control" value="{{fornecedor.cnpj}}" disabled="true">
             </div>
 
             <div class="form-group col-md-6">
@@ -30,4 +30,28 @@
         <button type="submit" class="btn btn-danger" id="botoes">Deletar</button>
         </form>
     </div>
+    
+	<script>
+		$(document).ready(function () {
+			var $seuCampoCpf = $("#CPF");
+			$seuCampoCpf.mask('000.000.000-00');
+			var cep = $('#cep');
+			var $seuCampoCep = $("#cep");
+			$seuCampoCep.mask('00000-000');
+			var CNPJ = $('#CNPJ');
+			var $seuCampoCNPJ = $("#CNPJ");
+			$seuCampoCNPJ.mask('00.000.000/0000-00');	
+			
+		});
+	
+		$(document).ready(function(){
+		$('.date').mask('00/00/0000');
+		$('.time').mask('00:00:00');
+		$('.cep').mask('00000-000');
+		$('.phone').mask('(00) 00000-0000');
+		$('.cpf').mask('000.000.000-00');
+		$('.money').mask('000.000.000.000,00');
+	});
+	
+	</script>
 {% endblock %}

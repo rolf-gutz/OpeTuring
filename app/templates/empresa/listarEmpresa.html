@@ -24,7 +24,10 @@
 			<tbody>
 				{% for empresa in empresas %}
 					<tr>
-						<td>{{empresa.cnpj}}</td>
+						<td>
+							<input style="border: none; color: #000;" type="text" class="cnpj text-center" 
+							name="cnpj" id="CNPJ"  value="{{empresa.cnpj}} "disabled="true"   min="14" max="18" >
+						</td>
 						<td>{{empresa.razao_social}}</td>
 						<td>{{empresa.nome}}</td>
 						<td>{{empresa.endereco}}</td>
@@ -49,13 +52,17 @@
 	
 <script>
 	$(document).ready(function () {
-		var $seuCampoCnpj = $("#CNPJ");
-		$seuCampoCnpj.mask('00.000.000/0000-00')
-		var cep = $('#cep')
+		var $seuCampoCpf = $("#CPF");
+		$seuCampoCpf.mask('000.000.000-00');
+		var cep = $('#cep');
 		var $seuCampoCep = $("#cep");
 		$seuCampoCep.mask('00000-000');
-		
+		var cep = $('#cep');
+		var $seuCampoCep = $("#cep");
+		$seuCampoCep.mask('00000-000');
+
 	});
+
 
 	$(document).ready(function () {
 		$('.date').mask('00/00/0000');
@@ -63,9 +70,10 @@
 		$('.cep').mask('00000-000');
 		$('.phone').mask('(00) 00000-0000');
 		$('.cpf').mask('000.000.000-00');
-		$('.cnpj').mask('00.000.000/0000-00')
 		$('.money').mask('000.000.000.000,00');
+		$('.cnpj').mask('00.000.000/0000-00');
 	});
 
 </script>
+
 {% endblock %}

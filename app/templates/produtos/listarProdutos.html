@@ -12,6 +12,7 @@
 			<thead>
 				<tr>
 					<th nowrap="true" class="th-sm text-uppercase">Produto</th>
+					<th nowrap="true" class="th-sm text-uppercase">Fornecedor</th>
 					<th nowrap="true" class="th-sm text-uppercase">Valor KG</th>
 					<th nowrap="true" class="th-sm text-uppercase">KG</th>
 					<th nowrap="true" class="th-sm text-uppercase">Editar</th>
@@ -23,6 +24,7 @@
             	{% for produto in produtos['items']%}
 					<tr>
 						<td>{{produto.nome}}</td>
+						<td>{{produto.fornecedor}}</td>
 						<td>{{produto.valor}}</td>
 						<td>{{produto.kg}}</td>
 						<td>
