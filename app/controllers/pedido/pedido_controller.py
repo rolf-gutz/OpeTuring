@@ -29,7 +29,7 @@ def selecionarProdutos(page=1):
 @app.route('/pedido/addPedido/', methods=['POST'])
 # @login_required
 def addPedido():    
-    pedido = Pedido(0,0,None,0,1,'',current_user.id_empresa,current_user.id) 
+    pedido = Pedido(0,0,None,0,0,'',current_user.id_empresa,current_user.id) 
     produtosLista = request.form['lista']
     jsonresult = json.loads(produtosLista)
     
